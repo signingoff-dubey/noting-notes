@@ -44,14 +44,17 @@ def _get_lock(path: str) -> asyncio.Lock:
     return _locks[path]
 
 
-def _read_json_sync(path: Path, default=None):
+_MISSING = object()  # sentinel — distinguishes "no default given" from None
+
+
+def _read_json_sync(path: Path, default=_MISSING):
     if not path.exists():
-        return default if default is not None else []
+        return [] if default is _MISSING else default
     try:
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f)
     except (json.JSONDecodeError, IOError):
-        return default if default is not None else []
+        return [] if default is _MISSING else default
 
 
 def _write_json_sync(path: Path, data):

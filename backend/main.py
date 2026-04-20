@@ -52,5 +52,11 @@ app.include_router(settings.router)
 
 @app.get("/api/health")
 async def health_check():
-    return {"status": "ok", "service": "noted-backend"}
+    from backend.services.ai_service import check_ollama
+    ollama_ok = await check_ollama()
+    return {
+        "status": "ok",
+        "service": "noted-backend",
+        "ollama": "running" if ollama_ok else "not running",
+    }
 

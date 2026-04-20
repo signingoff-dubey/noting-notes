@@ -12,14 +12,6 @@ async def list_folders() -> list[dict]:
     return await store.read_all_folders()
 
 
-async def get_folder(folder_id: str) -> dict:
-    folders = await store.read_all_folders()
-    folder = next((f for f in folders if f["id"] == folder_id), None)
-    if not folder:
-        raise HTTPException(status_code=404, detail="Folder not found")
-    return folder
-
-
 async def create_folder(data: FolderCreate) -> dict:
     now = datetime.now(timezone.utc).isoformat()
     folder = {

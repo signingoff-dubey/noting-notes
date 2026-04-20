@@ -7,7 +7,8 @@ from fastapi import HTTPException
 
 from backend.storage import store
 
-# In-memory session token — cleared on restart or lock
+# WARNING: _session_token is in-memory and not shared across uvicorn workers.
+# Run with a single worker only (default). Do NOT use --workers > 1.
 _session_token: str | None = None
 
 _BCRYPT_ROUNDS = int(os.getenv("VAULT_BCRYPT_ROUNDS", "12"))
@@ -16,12 +17,14 @@ _SETTINGS_KEY = "vault_pin_hash"
 
 async def setup_pin(pin: str) -> None:
     """Hash and store a new vault PIN."""
+    global _session_token
     if len(pin) < 4:
         raise HTTPException(status_code=400, detail="PIN must be at least 4 characters")
     hashed = bcrypt.hashpw(pin.encode(), bcrypt.gensalt(rounds=_BCRYPT_ROUNDS)).decode()
     settings = await store.read_settings()
     settings[_SETTINGS_KEY] = hashed
     await store.write_settings(settings)
+    _session_token = None
 
 
 async def unlock(pin: str) -> str:

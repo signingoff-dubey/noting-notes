@@ -1,0 +1,81 @@
+import { create } from 'zustand'
+
+const THEMES = ['nothing-dark', 'nothing-light', 'midnight', 'terminal', 'warm-paper', 'sakura', 'forest']
+
+export const ACCENT_MAP = {
+  white:  { color: '#f0f0f0', dim: '#f0f0f018', label: 'White' },
+  red:    { color: '#eb0029', dim: '#eb002918', label: 'Red' },
+  green:  { color: '#00d26a', dim: '#00d26a18', label: 'Green' },
+  blue:   { color: '#58a6ff', dim: '#58a6ff18', label: 'Blue' },
+  amber:  { color: '#f59e0b', dim: '#f59e0b18', label: 'Amber' },
+  purple: { color: '#a78bfa', dim: '#a78bfa18', label: 'Purple' },
+}
+
+const applyTheme = (theme) => {
+  document.documentElement.setAttribute('data-theme', theme)
+  localStorage.setItem('ink_theme', theme)
+}
+
+const applyAccent = (accent) => {
+  const entry = ACCENT_MAP[accent]
+  if (!entry) return
+  document.documentElement.style.setProperty('--color-accent', entry.color)
+  document.documentElement.style.setProperty('--color-accent-dim', entry.dim)
+  localStorage.setItem('ink_accent', accent)
+}
+
+export const useUIStore = create((set, get) => ({
+  theme: localStorage.getItem('ink_theme') || localStorage.getItem('noted_theme') || 'nothing-dark',
+  accent: localStorage.getItem('ink_accent') || 'white',
+  activePanel: 'notes',
+  viewerAttachment: null,
+  toasts: [],
+  themes: THEMES,
+
+  initTheme: () => {
+    const saved = localStorage.getItem('ink_theme') || localStorage.getItem('noted_theme') || 'nothing-dark'
+    const savedAccent = localStorage.getItem('ink_accent') || 'white'
+    applyTheme(saved)
+    applyAccent(savedAccent)
+    set({ theme: saved, accent: savedAccent })
+  },
+
+  setTheme: (theme) => {
+    applyTheme(theme)
+    set({ theme })
+  },
+
+  setAccent: (accent) => {
+    applyAccent(accent)
+    set({ accent })
+  },
+
+  setActivePanel: (panel) => set({ activePanel: panel }),
+  setViewerAttachment: (att) => set({ viewerAttachment: att }),
+
+  addToast: (toast) => {
+    const id = Date.now().toString()
+    const newToast = { id, type: 'info', duration: 3000, ...toast }
+    set(state => ({ toasts: [...state.toasts, newToast] }))
+    if (newToast.duration > 0) {
+      setTimeout(() => get().removeToast(id), newToast.duration)
+    }
+    return id
+  },
+
+  removeToast: (id) => set(state => ({ toasts: state.toasts.filter(t => t.id !== id) })),
+
+  toast: {
+    success: (message) => useUIStore.getState().addToast({ type: 'success', message }),
+    error:   (message) => useUIStore.getState().addToast({ type: 'error', message, duration: 5000 }),
+    info:    (message) => useUIStore.getState().addToast({ type: 'info', message }),
+    warning: (message) => useUIStore.getState().addToast({ type: 'warning', message }),
+  },
+}))
+
+export const toast = {
+  success: (message) => useUIStore.getState().addToast({ type: 'success', message }),
+  error:   (message) => useUIStore.getState().addToast({ type: 'error', message, duration: 5000 }),
+  info:    (message) => useUIStore.getState().addToast({ type: 'info', message }),
+  warning: (message) => useUIStore.getState().addToast({ type: 'warning', message }),
+}

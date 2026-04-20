@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>INK — Think local. Think deep.</title>
+
+<!-- Fonts: Dot Gothic 16 (N-Type feel) + Space Mono + Geist -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Dot+Gothic+16&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body, #root { height: 100%; width: 100%; overflow: hidden; }
+
+/* ── Base tokens ── */
+:root {
+  --font-display: 'Dot Gothic 16', 'Space Mono', monospace;
+  --font-mono:    'Space Mono', 'Courier New', monospace;
+  --font-body:    'Geist', 'Inter', sans-serif;
+  --font-editor:  'Geist', Georgia, serif;
+
+  --text-xs:   0.6875rem;  /* 11px */
+  --text-sm:   0.75rem;    /* 12px */
+  --text-base: 0.875rem;   /* 14px */
+  --text-md:   1rem;       /* 16px */
+  --text-lg:   1.125rem;   /* 18px */
+  --text-xl:   1.375rem;   /* 22px */
+  --text-2xl:  1.75rem;    /* 28px */
+}
+
+/* ─────────────────────────────────────────────
+   NOTHING DARK (default)
+   Palette: deep black · near-white · muted greys
+   Accent: user-selectable (default = white)
+   Nothing Red  = #eb0029
+   Nothing Green = #00d26a
+───────────────────────────────────────────── */
+[data-theme="nothing-dark"] {
+  --color-bg:               #080808;
+  --color-surface:          #101010;
+  --color-surface-2:        #161616;
+  --color-surface-hover:    #1c1c1c;
+  --color-surface-active:   #212121;
+  --color-border:           #1e1e1e;
+  --color-border-strong:    #2e2e2e;
+
+  --color-text-primary:     #ebebeb;
+  --color-text-secondary:   #7a7a7a;
+  --color-text-muted:       #3e3e3e;
+  --color-text-disabled:    #262626;
+
+  --color-accent:           #f0f0f0;    /* overridden by JS per accent choice */
+  --color-accent-dim:       #f0f0f018;
+
+  --color-success:          #00d26a;
+  --color-warning:          #f59e0b;
+  --color-error:            #eb0029;
+  --color-info:             #58a6ff;
+
+  --color-priority-urgent:  #eb0029;
+  --color-priority-high:    #f97316;
+  --color-priority-medium:  #f59e0b;
+  --color-priority-low:     #00d26a;
+
+  --color-sidebar-bg:           #060606;
+  --color-sidebar-item-hover:   #101010;
+  --color-sidebar-item-active:  #181818;
+}
+
+/* ─────────────────────────────────────────────
+   NOTHING LIGHT
+───────────────────────────────────────────── */
+[data-theme="nothing-light"] {
+  --color-bg:               #f2f2f0;
+  --color-surface:          #fafaf8;
+  --color-surface-2:        #ebebea;
+  --color-surface-hover:    #e2e2e0;
+  --color-surface-active:   #d8d8d6;
+  --color-border:           #d4d4d0;
+  --color-border-strong:    #b0b0ac;
+
+  --color-text-primary:     #111110;
+  --color-text-secondary:   #555552;
+  --color-text-muted:       #9a9a96;
+  --color-text-disabled:    #d0d0cc;
+
+  --color-accent:           #111110;
+  --color-accent-dim:       #11111012;
+
+  --color-success:          #00a854;
+  --color-warning:          #d97706;
+  --color-error:            #eb0029;
+  --color-info:             #2563eb;
+
+  --color-priority-urgent:  #eb0029;
+  --color-priority-high:    #ea580c;
+  --color-priority-medium:  #d97706;
+  --color-priority-low:     #00a854;
+
+  --color-sidebar-bg:       #e8e8e6;
+  --color-sidebar-item-hover:   #dcdcda;
+  --color-sidebar-item-active:  #d4d4d2;
+}
+
+/* ─────────────────────────────────────────────
+   TERMINAL
+───────────────────────────────────────────── */
+[data-theme="terminal"] {
+  --color-bg:               #000000;
+  --color-surface:          #001800;
+  --color-surface-2:        #002200;
+  --color-surface-hover:    #003000;
+  --color-surface-active:   #004000;
+  --color-border:           #002800;
+  --color-border-strong:    #004400;
+
+  --color-text-primary:     #00ff41;
+  --color-text-secondary:   #00bb30;
+  --color-text-muted:       #004d14;
+  --color-text-disabled:    #002800;
+
+  --color-accent:           #00ff41;
+  --color-accent-dim:       #00ff4118;
+
+  --color-success:          #00ff41;
+  --color-warning:          #ccff00;
+  --color-error:            #ff3333;
+  --color-info:             #00ccff;
+
+  --color-priority-urgent:  #ff3333;
+  --color-priority-high:    #ffaa00;
+  --color-priority-medium:  #ccff00;
+  --color-priority-low:     #00ff41;
+
+  --color-sidebar-bg:       #000000;
+  --color-sidebar-item-hover:   #001200;
+  --color-sidebar-item-active:  #002000;
+
+  --font-body:    'Space Mono', monospace;
+  --font-editor:  'Space Mono', monospace;
+}
+
+/* ─────────────────────────────────────────────
+   WARM PAPER
+───────────────────────────────────────────── */
+[data-theme="warm-paper"] {
+  --color-bg:               #f0e8dc;
+  --color-surface:          #faf4ec;
+  --color-surface-2:        #e8dfd4;
+  --color-surface-hover:    #dfd6ca;
+  --color-surface-active:   #d4cbbf;
+  --color-border:           #cfc3b4;
+  --color-border-strong:    #b4a898;
+
+  --color-text-primary:     #26180e;
+  --color-text-secondary:   #72604e;
+  --color-text-muted:       #a8978a;
+  --color-text-disabled:    #cfc3b4;
+
+  --color-accent:           #26180e;
+  --color-accent-dim:       #26180e14;
+
+  --color-success:          #3d7a3d;
+  --color-warning:          #8a6a00;
+  --color-error:            #8a2020;
+  --color-info:             #1a4a7a;
+
+  --color-priority-urgent:  #8a2020;
+  --color-priority-high:    #8a5000;
+  --color-priority-medium:  #8a6a00;
+  --color-priority-low:     #3d7a3d;
+
+  --color-sidebar-bg:       #e8dfd4;
+  --color-sidebar-item-hover:   #dfd6ca;
+  --color-sidebar-item-active:  #d4cbbf;
+}
+
+/* ─────────────────────────────────────────────
+   MIDNIGHT
+───────────────────────────────────────────── */
+[data-theme="midnight"] {
+  --color-bg:               #0c1018;
+  --color-surface:          #141921;
+  --color-surface-2:        #1a2030;
+  --color-surface-hover:    #20273a;
+  --color-surface-active:   #263040;
+  --color-border:           #1e2840;
+  --color-border-strong:    #2c3850;
+
+  --color-text-primary:     #dce8f8;
+  --color-text-secondary:   #6880a0;
+  --color-text-muted:       #303c50;
+  --color-text-disabled:    #1e2840;
+
+  --color-accent:           #58a6ff;
+  --color-accent-dim:       #58a6ff18;
+
+  --color-success:          #3fb950;
+  --color-warning:          #e3b341;
+  --color-error:            #f85149;
+  --color-info:             #58a6ff;
+
+  --color-priority-urgent:  #f85149;
+  --color-priority-high:    #f0883e;
+  --color-priority-medium:  #e3b341;
+  --color-priority-low:     #3fb950;
+
+  --color-sidebar-bg:       #090d14;
+  --color-sidebar-item-hover:   #131820;
+  --color-sidebar-item-active:  #18202c;
+}
+
+/* ─────────────────────────────────────────────
+   SAKURA
+───────────────────────────────────────────── */
+[data-theme="sakura"] {
+  --color-bg:               #160e12;
+  --color-surface:          #1e1218;
+  --color-surface-2:        #261620;
+  --color-surface-hover:    #301a28;
+  --color-surface-active:   #3a2030;
+  --color-border:           #302030;
+  --color-border-strong:    #44303c;
+
+  --color-text-primary:     #f4e8ee;
+  --color-text-secondary:   #a07888;
+  --color-text-muted:       #4c303c;
+  --color-text-disabled:    #302030;
+
+  --color-accent:           #e890a8;
+  --color-accent-dim:       #e890a818;
+
+  --color-success:          #5a9060;
+  --color-warning:          #c49040;
+  --color-error:            #c04040;
+  --color-info:             #6080c8;
+
+  --color-priority-urgent:  #e05060;
+  --color-priority-high:    #e08040;
+  --color-priority-medium:  #c4a040;
+  --color-priority-low:     #5a9060;
+
+  --color-sidebar-bg:       #110c10;
+  --color-sidebar-item-hover:   #1a1018;
+  --color-sidebar-item-active:  #221420;
+}
+
+/* ─────────────────────────────────────────────
+   FOREST
+───────────────────────────────────────────── */
+[data-theme="forest"] {
+  --color-bg:               #0a1208;
+  --color-surface:          #101a0e;
+  --color-surface-2:        #162014;
+  --color-surface-hover:    #1c2a18;
+  --color-surface-active:   #223420;
+  --color-border:           #1a2c18;
+  --color-border-strong:    #243c22;
+
+  --color-text-primary:     #cce0c0;
+  --color-text-secondary:   #688060;
+  --color-text-muted:       #2c4428;
+  --color-text-disabled:    #1a2c18;
+
+  --color-accent:           #7acc50;
+  --color-accent-dim:       #7acc5018;
+
+  --color-success:          #5aaa3a;
+  --color-warning:          #aab030;
+  --color-error:            #cc4433;
+  --color-info:             #3aaa99;
+
+  --color-priority-urgent:  #cc4433;
+  --color-priority-high:    #cc8833;
+  --color-priority-medium:  #aab030;
+  --color-priority-low:     #5aaa3a;
+
+  --color-sidebar-bg:       #070f06;
+  --color-sidebar-item-hover:   #0e170c;
+  --color-sidebar-item-active:  #141f12;
+}
+
+/* ── Global ── */
+body {
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrollbars ── */
+::-webkit-scrollbar { width: 3px; height: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-border-strong); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-text-muted); }
+
+/* ── Editor typography ── */
+[contenteditable] h1 { font-size: 2rem; font-weight: 700; margin: 28px 0 14px; line-height: 1.2; letter-spacing: -0.02em; }
+[contenteditable] h2 { font-size: 1.45rem; font-weight: 600; margin: 22px 0 10px; line-height: 1.25; }
+[contenteditable] h3 { font-size: 1.2rem; font-weight: 600; margin: 18px 0 8px; }
+[contenteditable] p  { margin: 0 0 14px; }
+[contenteditable] code {
+  font-family: var(--font-mono); font-size: 0.85em;
+  background: var(--color-surface-2); padding: 2px 6px;
+  border: 1px solid var(--color-border); border-radius: 3px;
+}
+[contenteditable] pre {
+  background: var(--color-surface); border: 1px solid var(--color-border);
+  padding: 18px 20px; overflow-x: auto; margin: 16px 0;
+  font-family: var(--font-mono); font-size: 0.85em; line-height: 1.6;
+  border-left: 3px solid var(--color-border-strong);
+}
+[contenteditable] blockquote {
+  border-left: 2px solid var(--color-border-strong);
+  margin: 16px 0; padding: 6px 18px;
+  color: var(--color-text-secondary); font-style: italic;
+}
+[contenteditable] ul, [contenteditable] ol { padding-left: 26px; margin: 0 0 14px; }
+[contenteditable] li { margin: 5px 0; line-height: 1.6; }
+[contenteditable] strong { font-weight: 600; }
+[contenteditable] em { font-style: italic; }
+[contenteditable] a { color: var(--color-accent); text-decoration: underline; }
+[contenteditable] hr { border: none; border-top: 1px solid var(--color-border); margin: 20px 0; }
+[contenteditable]:focus { outline: none; }
+
+/* ── Animations ── */
+@keyframes blink   { 0%,100% { opacity:1; } 50% { opacity:0; } }
+@keyframes floatIn { from { opacity:0; transform:translateY(5px); } to { opacity:1; transform:translateY(0); } }
+
+/* ── Focus rings ── */
+*:focus-visible { outline: 1px solid var(--color-accent); outline-offset: 2px; }
+input:focus, textarea:focus, select:focus { outline: none; }
+
+/* ── Selection ── */
+::selection { background: var(--color-accent-dim); color: var(--color-text-primary); }
+
+/* ── Custom range sliders ── */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: var(--color-border-strong);
+  border-radius: 99px;
+  outline: none;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  border: 3px solid var(--color-bg);
+  box-shadow: 0 0 0 1px var(--color-accent);
+  cursor: pointer;
+  transition: transform 150ms, box-shadow 150ms;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 0 0 3px var(--color-accent-dim);
+}
+input[type="range"]::-moz-range-thumb {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  border: 3px solid var(--color-bg);
+  box-shadow: 0 0 0 1px var(--color-accent);
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  border-radius: 99px;
+}
+
+/* ── Themed selects — global override ── */
+select {
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  background-color: var(--color-surface-2) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 8px !important;
+  color: var(--color-text-primary) !important;
+  font-family: var(--font-mono) !important;
+  font-size: var(--text-xs) !important;
+  padding: 7px 30px 7px 10px !important;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 150ms;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23666'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 10px center !important;
+}
+select:hover { border-color: var(--color-border-strong) !important; }
+select:focus { border-color: var(--color-accent) !important; outline: none !important; }
+select option {
+  background: var(--color-surface-2);
+  color: var(--color-text-primary);
+  font-family: var(--font-mono);
+  padding: 8px 12px;
+}
+
+/* ── Print styles ── */
+@media print {
+  @page { size: A4 landscape; margin: 0; }
+
+  * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+  body { overflow: visible !important; height: auto !important; }
+  #root { height: auto !important; overflow: visible !important; }
+
+  /* Hide AI sidebar toggle and sidebar */
+  button[title*="Toggle AI"],
+  button[title*="Ctrl+Shift+A"] { display: none !important; }
+
+  /* Layout: make root scrollable & visible */
+  #root > div { height: auto !important; overflow: visible !important; flex-wrap: wrap; }
+
+  /* Each major panel breaks to its own page */
+  .print-page { break-before: page; break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="Sidebar.jsx"></script>
+<script type="text/babel" src="AISidebar.jsx"></script>
+<script type="text/babel" src="Center.jsx"></script>
+<script type="text/babel" src="App.jsx"></script>
+<script type="text/babel">
+// Auto-print: wait for React + fonts + brief settle delay
+Promise.all([
+  document.fonts.ready,
+  new Promise(resolve => {
+    const check = () => document.getElementById('root')?.children.length > 0 ? resolve() : setTimeout(check, 100);
+    check();
+  })
+]).then(() => setTimeout(() => window.print(), 800));
+</script>
+
+<template id="__bundler_thumbnail" data-bg-color="#080808">
+  <svg viewBox="0 0 160 112" xmlns="http://www.w3.org/2000/svg">
+    <rect width="160" height="112" fill="#080808"/>
+    <rect x="0" y="0" width="40" height="112" fill="#060606"/>
+    <rect x="40" y="0" width="1" height="112" fill="#1e1e1e"/>
+    <text x="12" y="24" font-family="monospace" font-size="11" fill="#ebebeb" font-weight="bold" letter-spacing="3">INK</text>
+    <text x="12" y="34" font-family="monospace" font-size="5" fill="#3e3e3e" letter-spacing="1">NOTES</text>
+    <rect x="8" y="42" width="24" height="9" rx="0" fill="none" stroke="#1e1e1e" stroke-width="0.8"/>
+    <text x="11" y="49" font-family="monospace" font-size="4.5" fill="#7a7a7a">+ Note</text>
+    <rect x="41" y="0" width="82" height="112" fill="#080808"/>
+    <rect x="41" y="14" width="82" height="1" fill="#1e1e1e"/>
+    <rect x="47" y="4" width="50" height="8" rx="0" fill="#101010" stroke="#1e1e1e" stroke-width="0.5"/>
+    <rect x="41" y="15" width="2" height="15" fill="#f0f0f0"/>
+    <text x="48" y="27" font-family="monospace" font-size="5.5" fill="#ebebeb" font-weight="bold">Q2 Product Roadmap</text>
+    <text x="48" y="34" font-family="monospace" font-size="4" fill="#7a7a7a">Key initiatives for Q2…</text>
+    <rect x="41" y="39" width="82" height="1" fill="#1e1e1e"/>
+    <text x="48" y="50" font-family="monospace" font-size="5.5" fill="#ebebeb">Meeting Notes — Apr 19</text>
+    <text x="48" y="57" font-family="monospace" font-size="4" fill="#7a7a7a">Attendees: Kabir, Sarah…</text>
+    <rect x="41" y="62" width="82" height="1" fill="#1e1e1e"/>
+    <text x="48" y="73" font-family="monospace" font-size="5.5" fill="#ebebeb">LLM Architecture Notes</text>
+    <text x="48" y="80" font-family="monospace" font-size="4" fill="#7a7a7a">KV cache, attention…</text>
+    <rect x="124" y="0" width="36" height="112" fill="#101010"/>
+    <rect x="123" y="0" width="1" height="112" fill="#1e1e1e"/>
+    <text x="127" y="13" font-family="monospace" font-size="4" fill="#3e3e3e" letter-spacing="1">✦ AI</text>
+    <rect x="127" y="18" width="26" height="55" fill="#161616" stroke="#1e1e1e" stroke-width="0.5"/>
+    <rect x="130" y="58" width="20" height="8" fill="#1e1e1e"/>
+    <text x="131" y="63.5" font-family="monospace" font-size="3.5" fill="#7a7a7a">Ask…</text>
+  </svg>
+</template>
+</body>
+</html>

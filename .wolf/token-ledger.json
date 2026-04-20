@@ -1,0 +1,275 @@
+{
+  "version": 1,
+  "created_at": "2026-04-20T00:51:14.976Z",
+  "lifetime": {
+    "total_tokens_estimated": 45602,
+    "total_reads": 26,
+    "total_writes": 6,
+    "total_sessions": 2,
+    "anatomy_hits": 21,
+    "anatomy_misses": 5,
+    "repeated_reads_blocked": 3,
+    "estimated_savings_vs_bare_cli": 17481
+  },
+  "sessions": [
+    {
+      "id": "session-2026-04-20-0622",
+      "started": "2026-04-20T00:52:36.684Z",
+      "ended": "2026-04-20T00:58:26.786Z",
+      "reads": [
+        {
+          "file": "C:/Users/kabir/.claude/CLAUDE.md",
+          "tokens_estimated": 4427,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [],
+      "totals": {
+        "input_tokens_estimated": 4427,
+        "output_tokens_estimated": 0,
+        "reads_count": 1,
+        "writes_count": 0,
+        "repeated_reads_blocked": 0,
+        "anatomy_lookups": 1
+      }
+    },
+    {
+      "id": "session-2026-04-20-0622",
+      "started": "2026-04-20T00:52:36.684Z",
+      "ended": "2026-04-20T01:08:49.135Z",
+      "reads": [
+        {
+          "file": "C:/Users/kabir/.claude/CLAUDE.md",
+          "tokens_estimated": 4427,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "C:/Users/kabir/.claude/CLAUDE.md",
+          "tokens_estimated": 943,
+          "action": "create"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 4427,
+        "output_tokens_estimated": 943,
+        "reads_count": 1,
+        "writes_count": 1,
+        "repeated_reads_blocked": 1,
+        "anatomy_lookups": 1
+      }
+    },
+    {
+      "id": "session-2026-04-20-0622",
+      "started": "2026-04-20T00:52:36.684Z",
+      "ended": "2026-04-20T01:14:45.470Z",
+      "reads": [
+        {
+          "file": "C:/Users/kabir/.claude/CLAUDE.md",
+          "tokens_estimated": 4427,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/run.bat",
+          "tokens_estimated": 857,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "C:/Users/kabir/.claude/CLAUDE.md",
+          "tokens_estimated": 943,
+          "action": "create"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/run.bat",
+          "tokens_estimated": 165,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 5284,
+        "output_tokens_estimated": 1108,
+        "reads_count": 2,
+        "writes_count": 2,
+        "repeated_reads_blocked": 1,
+        "anatomy_lookups": 2
+      }
+    },
+    {
+      "id": "session-2026-04-20-0622",
+      "started": "2026-04-20T00:52:36.684Z",
+      "ended": "2026-04-20T01:28:20.281Z",
+      "reads": [
+        {
+          "file": "C:/Users/kabir/.claude/CLAUDE.md",
+          "tokens_estimated": 4427,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/run.bat",
+          "tokens_estimated": 857,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/backend/requirements.txt",
+          "tokens_estimated": 30,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/backend/main.py",
+          "tokens_estimated": 361,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/backend/models/note.py",
+          "tokens_estimated": 341,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/backend/models/task.py",
+          "tokens_estimated": 332,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/backend/models/ai.py",
+          "tokens_estimated": 162,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/backend/models/folder.py",
+          "tokens_estimated": 115,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/backend/routes/notes.py",
+          "tokens_estimated": 265,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/backend/routes/tasks.py",
+          "tokens_estimated": 265,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/backend/routes/folders.py",
+          "tokens_estimated": 418,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/backend/routes/ai.py",
+          "tokens_estimated": 610,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/backend/routes/vault.py",
+          "tokens_estimated": 154,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/backend/routes/attachments.py",
+          "tokens_estimated": 157,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/backend/services/note_service.py",
+          "tokens_estimated": 525,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/backend/services/task_service.py",
+          "tokens_estimated": 466,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/backend/storage/store.py",
+          "tokens_estimated": 2608,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/package.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/NoteEditor.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/lib/api.js",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/store/aiStore.js",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/.gitignore",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "C:/Users/kabir/.claude/CLAUDE.md",
+          "tokens_estimated": 943,
+          "action": "create"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/run.bat",
+          "tokens_estimated": 165,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/docs/superpowers/plans/2026-04-20-ink-code-review-fixes.md",
+          "tokens_estimated": 16212,
+          "action": "create"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 12093,
+        "output_tokens_estimated": 17320,
+        "reads_count": 22,
+        "writes_count": 3,
+        "repeated_reads_blocked": 1,
+        "anatomy_lookups": 17
+      }
+    }
+  ],
+  "daemon_usage": [],
+  "waste_flags": [],
+  "optimization_report": {
+    "last_generated": null,
+    "patterns": []
+  }
+}

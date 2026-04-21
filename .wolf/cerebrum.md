@@ -17,6 +17,8 @@
 <!-- Mistakes made and corrected. Each entry prevents the same mistake recurring. -->
 <!-- Format: [YYYY-MM-DD] Description of what went wrong and what to do instead. -->
 
+[2026-04-21] TipTap Table extension needs TableRow, TableHeader, TableCell imported and added to extensions array separately — `@tiptap/extension-table` alone is not enough. All three sub-node packages are in package.json already; just import and register them.
+
 ## Decision Log
 
 <!-- Significant technical decisions with rationale. Why X was chosen over Y. -->

@@ -1,4 +1,17 @@
 {
   "version": 1,
-  "bugs": []
+  "bugs": [
+    {
+      "id": "bug-001",
+      "timestamp": "2026-04-21T00:00:00.000Z",
+      "error_message": "Page goes blank when clicking New Note button. React error: 'The above error occurred in the <NoteEditor> component'",
+      "file": "frontend/src/components/editor/NoteEditor.jsx",
+      "root_cause": "TipTap Table extension requires TableRow, TableHeader, TableCell sub-nodes to be registered separately. They were installed in package.json but not imported or added to the extensions array, causing TipTap to crash during editor initialization.",
+      "fix": "Added imports for TableRow, TableHeader, TableCell from their respective @tiptap packages and added them to the extensions array in useEditor.",
+      "tags": ["tiptap", "editor", "blank-page", "react-crash", "table"],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-21T00:00:00.000Z"
+    }
+  ]
 }

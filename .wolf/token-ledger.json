@@ -2,12 +2,12 @@
   "version": 1,
   "created_at": "2026-04-20T00:51:14.976Z",
   "lifetime": {
-    "total_tokens_estimated": 45602,
-    "total_reads": 26,
-    "total_writes": 6,
-    "total_sessions": 2,
+    "total_tokens_estimated": 45689,
+    "total_reads": 41,
+    "total_writes": 8,
+    "total_sessions": 3,
     "anatomy_hits": 21,
-    "anatomy_misses": 5,
+    "anatomy_misses": 20,
     "repeated_reads_blocked": 3,
     "estimated_savings_vs_bare_cli": 17481
   },
@@ -263,6 +263,123 @@
         "writes_count": 3,
         "repeated_reads_blocked": 1,
         "anatomy_lookups": 17
+      }
+    },
+    {
+      "id": "session-2026-04-21-0542",
+      "started": "2026-04-21T00:12:47.261Z",
+      "ended": "2026-04-21T00:17:21.590Z",
+      "reads": [
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/.claude/worktrees/nostalgic-diffie-ea68df/frontend/src/components/sidebar/Sidebar.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/.claude/worktrees/nostalgic-diffie-ea68df/frontend/src/store/notesStore.js",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/.claude/worktrees/nostalgic-diffie-ea68df/frontend/src/App.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/.claude/worktrees/nostalgic-diffie-ea68df/frontend/src/pages/Notes.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/.claude/worktrees/nostalgic-diffie-ea68df/frontend/src/components/editor/NoteEditor.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/.claude/worktrees/nostalgic-diffie-ea68df/backend/services/note_service.py",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/.claude/worktrees/nostalgic-diffie-ea68df/frontend/src/components/notes/TagChips.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/.claude/worktrees/nostalgic-diffie-ea68df/backend/models/note.py",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/.claude/worktrees/nostalgic-diffie-ea68df/backend/storage/store.py",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/.claude/worktrees/nostalgic-diffie-ea68df/frontend/src/components/editor/EditorToolbar.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/.claude/worktrees/nostalgic-diffie-ea68df/frontend/src/components/editor/FloatingToolbar.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/.claude/worktrees/nostalgic-diffie-ea68df/frontend/src/store/aiStore.js",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/.claude/worktrees/nostalgic-diffie-ea68df/frontend/package.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/.claude/worktrees/nostalgic-diffie-ea68df/.claude/launch.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/.claude/worktrees/nostalgic-diffie-ea68df/frontend/src/components/notes/NoteCard.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/.claude/worktrees/nostalgic-diffie-ea68df/frontend/src/components/editor/NoteEditor.jsx",
+          "tokens_estimated": 59,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/.claude/worktrees/nostalgic-diffie-ea68df/frontend/src/components/editor/NoteEditor.jsx",
+          "tokens_estimated": 28,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 0,
+        "output_tokens_estimated": 87,
+        "reads_count": 15,
+        "writes_count": 2,
+        "repeated_reads_blocked": 0,
+        "anatomy_lookups": 0
       }
     }
   ],

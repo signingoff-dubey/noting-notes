@@ -6,65 +6,6 @@ import StarterKit from '@tiptap/starter-kit'
 import Highlight from '@tiptap/extension-highlight'
 import TaskList from '@tiptap/extension-task-list'
 import TaskItemBase from '@tiptap/extension-task-item'
-
-/* Custom TaskItem: preserves cursor position when checkbox is clicked */
-const TaskItem = TaskItemBase.extend({
-  addProseMirrorPlugins() {
-    return [
-      new Plugin({
-        key: new PluginKey('customTaskItemPlugin'),
-        props: {
-          handleClick(view, pos, event) {
-            if (!(event.target instanceof HTMLInputElement) || event.target.type !== 'checkbox') return false
-            if (!view.editable) return false
-
-            const { state } = view
-            const savedSelection = state.selection
-
-            // Walk up from click pos to find the taskItem node
-            const safePos = Math.min(Math.max(pos, 0), state.doc.content.size - 1)
-            const $pos = state.doc.resolve(safePos)
-            let taskItemPos = -1
-            let taskItemNode = null
-            for (let d = $pos.depth; d >= 0; d--) {
-              const n = $pos.node(d)
-              if (n.type.name === 'taskItem') {
-                taskItemPos = $pos.before(d)
-                taskItemNode = n
-                break
-              }
-            }
-
-            // Fallback: check via DOM container
-            if (taskItemPos === -1) {
-              const container = event.target.closest?.('[data-type="taskItem"]')
-              if (container) {
-                const isChecked = container.getAttribute('data-checked') === 'true'
-                const resolvedPos = state.doc.resolve(Math.min(pos, state.doc.content.size - 1))
-                const nodeAtBefore = state.doc.nodeAt(resolvedPos.before())
-                if (nodeAtBefore?.type.name === 'taskItem') {
-                  taskItemPos = resolvedPos.before()
-                  taskItemNode = nodeAtBefore
-                }
-              }
-            }
-
-            if (taskItemPos === -1 || !taskItemNode) return false
-
-            const tr = state.tr.setNodeMarkup(taskItemPos, undefined, {
-              ...taskItemNode.attrs,
-              checked: !taskItemNode.attrs.checked,
-            })
-            // Restore cursor position
-            try { tr.setSelection(savedSelection.map(tr.doc, tr.mapping)) } catch (_) {}
-            view.dispatch(tr)
-            return true
-          },
-        },
-      }),
-    ]
-  },
-})
 import Table from '@tiptap/extension-table'
 import TableRow from '@tiptap/extension-table-row'
 import TableHeader from '@tiptap/extension-table-header'
@@ -87,6 +28,61 @@ import { TagChips } from '@/components/notes/TagChips'
 import { format } from 'date-fns'
 
 const lowlight = createLowlight(common)
+
+/* Custom TaskItem: preserves cursor position when checkbox is clicked */
+const TaskItem = TaskItemBase.extend({
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        key: new PluginKey('customTaskItemPlugin'),
+        props: {
+          handleClick(view, pos, event) {
+            if (!(event.target instanceof HTMLInputElement) || event.target.type !== 'checkbox') return false
+            if (!view.editable) return false
+
+            const { state } = view
+            const savedSelection = state.selection
+
+            const safePos = Math.min(Math.max(pos, 0), state.doc.content.size - 1)
+            const $pos = state.doc.resolve(safePos)
+            let taskItemPos = -1
+            let taskItemNode = null
+            for (let d = $pos.depth; d >= 0; d--) {
+              const n = $pos.node(d)
+              if (n.type.name === 'taskItem') {
+                taskItemPos = $pos.before(d)
+                taskItemNode = n
+                break
+              }
+            }
+
+            if (taskItemPos === -1) {
+              const container = event.target.closest?.('[data-type="taskItem"]')
+              if (container) {
+                const resolvedPos = state.doc.resolve(Math.min(pos, state.doc.content.size - 1))
+                const nodeAtBefore = state.doc.nodeAt(resolvedPos.before())
+                if (nodeAtBefore?.type.name === 'taskItem') {
+                  taskItemPos = resolvedPos.before()
+                  taskItemNode = nodeAtBefore
+                }
+              }
+            }
+
+            if (taskItemPos === -1 || !taskItemNode) return false
+
+            const tr = state.tr.setNodeMarkup(taskItemPos, undefined, {
+              ...taskItemNode.attrs,
+              checked: !taskItemNode.attrs.checked,
+            })
+            try { tr.setSelection(savedSelection.map(tr.doc, tr.mapping)) } catch (_) {}
+            view.dispatch(tr)
+            return true
+          },
+        },
+      }),
+    ]
+  },
+})
 
 const AutoCapitalize = Extension.create({
   name: 'autoCapitalize',
@@ -158,30 +154,11 @@ export function NoteEditor({ note, onBack }) {
     return () => setContextNote(null)
   }, [note?.id])
 
-  /* Register AI write callback — inserts content at end of note with accent highlight */
-  useEffect(() => {
-    if (!editor) return
-    const writeToNote = (content) => {
-      /* Convert plain text into paragraph nodes, each text node wrapped in highlight */
-      const blocks = content.split(/\n\n+/).filter(p => p.trim())
-      const nodes = blocks.map(block => ({
-        type: 'paragraph',
-        content: block.split('\n').filter(l => l).flatMap((line, i, arr) => [
-          { type: 'text', text: line, marks: [{ type: 'highlight', attrs: { color: null } }] },
-          ...(i < arr.length - 1 ? [{ type: 'hardBreak' }] : []),
-        ]),
-      }))
-      editor.chain().focus().insertContentAt(editor.state.doc.content.size, nodes).run()
-    }
-    const { registerWriteCallback } = useAIStore.getState()
-    registerWriteCallback(writeToNote)
-    return () => registerWriteCallback(null)
-  }, [editor])
-
+  /* editor must be declared before any useEffect that lists it as a dependency */
   const editor = useEditor({
     extensions: [
       StarterKit.configure({ codeBlock: false }),
-      Highlight,
+      Highlight.configure({ multicolor: true }),
       Underline,
       TaskList,
       TaskItem.configure({ nested: true }),
@@ -204,6 +181,25 @@ export function NoteEditor({ note, onBack }) {
       triggerAutosave(editor.getJSON())
     },
   }, [note?.id])
+
+  /* Register AI write callback — inserts content at end of note with accent highlight */
+  useEffect(() => {
+    if (!editor) return
+    const writeToNote = (content) => {
+      const blocks = content.split(/\n\n+/).filter(b => b.trim())
+      const nodes = blocks.map(block => ({
+        type: 'paragraph',
+        content: block.split('\n').filter(l => l).flatMap((line, i, arr) => [
+          { type: 'text', text: line, marks: [{ type: 'highlight', attrs: { color: null } }] },
+          ...(i < arr.length - 1 ? [{ type: 'hardBreak' }] : []),
+        ]),
+      }))
+      editor.chain().focus().insertContentAt(editor.state.doc.content.size, nodes).run()
+    }
+    const { registerWriteCallback } = useAIStore.getState()
+    registerWriteCallback(writeToNote)
+    return () => registerWriteCallback(null)
+  }, [editor])
 
   const triggerAutosave = useCallback((content) => {
     if (autosaveTimer.current) clearTimeout(autosaveTimer.current)

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import {
   X, ChevronLeft, ChevronRight, Send, Sparkles, Trash2,
   FileText, ChevronDown, AlertTriangle, Download, Check,
-  KeyRound, Server, Plus,
+  KeyRound, Server, Plus, ImagePlus,
 } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { useAIStore } from '@/store/aiStore'
@@ -468,8 +468,16 @@ function ModelDropdown({ models, activeModel, apiConfig, onSelectModel, onCustom
 /* ── Chat bubble ── */
 function ChatBubble({ msg, streaming }) {
   const isUser = msg.role === 'user'
+  const textContent = msg.displayContent || (typeof msg.content === 'string' ? msg.content : '')
   return (
     <div className={cn('flex flex-col gap-1', isUser ? 'items-end' : 'items-start')}>
+      {isUser && msg.images?.length > 0 && (
+        <div className="flex flex-wrap gap-1.5 justify-end max-w-[85%]">
+          {msg.images.map((url, i) => (
+            <img key={i} src={url} alt="" className="h-20 w-auto rounded-sm object-cover" style={{ maxWidth: 120 }} />
+          ))}
+        </div>
+      )}
       <div
         className={cn(
           'max-w-[85%] px-3 py-2 rounded-sm font-body text-sm leading-relaxed',
@@ -477,7 +485,7 @@ function ChatBubble({ msg, streaming }) {
           streaming && !isUser && 'streaming-cursor',
         )}
       >
-        <p className="whitespace-pre-wrap">{msg.content}</p>
+        <p className="whitespace-pre-wrap">{textContent}</p>
       </div>
       {msg.timestamp && (
         <span className="font-mono text-xs text-text-muted px-1">
@@ -524,9 +532,11 @@ export function AISidebar() {
   const notes = useNotesStore(s => s.notes)
   const setContextNote = useAIStore(s => s.setContextNote)
   const [input, setInput] = useState('')
+  const [attachedImages, setAttachedImages] = useState([])
   const [customAPIOpen, setCustomAPIOpen] = useState(false)
   const [installOpen, setInstallOpen] = useState(false)
   const messagesEndRef = useRef(null)
+  const imageInputRef = useRef(null)
 
   useEffect(() => { if (isOpen) fetchModels() }, [isOpen])
 
@@ -538,15 +548,33 @@ export function AISidebar() {
     if (error) { toast.error(error); clearError() }
   }, [error])
 
+  const handleImageAttach = (e) => {
+    const files = Array.from(e.target.files || [])
+    files.forEach(file => {
+      const reader = new FileReader()
+      reader.onload = (ev) => {
+        setAttachedImages(prev => [...prev, ev.target.result])
+      }
+      reader.readAsDataURL(file)
+    })
+    e.target.value = ''
+  }
+
+  const removeImage = (index) => {
+    setAttachedImages(prev => prev.filter((_, i) => i !== index))
+  }
+
   const handleSend = () => {
     const msg = input.trim()
-    if (!msg || isStreaming) return
+    if ((!msg && attachedImages.length === 0) || isStreaming) return
     setInput('')
+    const images = [...attachedImages]
+    setAttachedImages([])
     const note = notes.find(n => n.id === contextNoteId)
     const noteContent = note
       ? `Note title: ${note.title}\n\nNote content: ${typeof note.content === 'string' ? note.content : JSON.stringify(note.content)}`
       : ''
-    sendMessage(msg, noteContent)
+    sendMessage(msg || 'What do you see in this image?', noteContent, images)
   }
 
   const handleKeyDown = (e) => {
@@ -689,8 +717,47 @@ export function AISidebar() {
           </div>
         )}
 
+        {/* Image previews */}
+        {attachedImages.length > 0 && (
+          <div className="flex flex-wrap gap-1.5 px-3 pt-2 border-t border-border shrink-0">
+            {attachedImages.map((url, i) => (
+              <div key={i} className="relative group">
+                <img src={url} alt="" className="h-14 w-auto rounded-sm object-cover" style={{ maxWidth: 80 }} />
+                <button
+                  onClick={() => removeImage(i)}
+                  className="absolute -top-1 -right-1 w-4 h-4 bg-surface border border-border rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                  style={{ color: 'var(--color-text-muted)' }}
+                >
+                  <X size={8} strokeWidth={2} />
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+
         {/* Input */}
         <div className="flex items-end gap-2 px-3 py-3 border-t border-border shrink-0">
+          <input
+            ref={imageInputRef}
+            type="file"
+            accept="image/*"
+            multiple
+            className="hidden"
+            onChange={handleImageAttach}
+          />
+          <button
+            onClick={() => imageInputRef.current?.click()}
+            disabled={isStreaming}
+            title="Attach image"
+            className={cn(
+              'flex items-center justify-center w-7 h-7 rounded-sm transition-colors',
+              'hover:bg-[var(--color-surface-hover)]',
+              isStreaming && 'opacity-40 cursor-not-allowed',
+            )}
+            style={{ color: 'var(--color-text-muted)', flexShrink: 0 }}
+          >
+            <ImagePlus size={13} strokeWidth={1.5} />
+          </button>
           <textarea
             value={input}
             onChange={e => setInput(e.target.value)}
@@ -709,11 +776,11 @@ export function AISidebar() {
           />
           <button
             onClick={handleSend}
-            disabled={!input.trim() || isStreaming}
+            disabled={(!input.trim() && attachedImages.length === 0) || isStreaming}
             className={cn(
               'flex items-center justify-center w-7 h-7 bg-accent text-bg rounded-sm',
               'transition-all duration-[150ms]',
-              (!input.trim() || isStreaming) ? 'opacity-40 cursor-not-allowed' : 'hover:opacity-85',
+              ((!input.trim() && attachedImages.length === 0) || isStreaming) ? 'opacity-40 cursor-not-allowed' : 'hover:opacity-85',
             )}
           >
             {isStreaming ? <Spinner size="sm" /> : <Send size={13} strokeWidth={1.5} />}

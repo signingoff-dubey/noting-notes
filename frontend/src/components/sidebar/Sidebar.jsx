@@ -3,12 +3,15 @@ import {
   FileText, CheckSquare, Calendar, Settings, Lock, Unlock,
   Star, Tag, Clock, Sparkles,
   LayoutDashboard, Archive, ChevronDown, ChevronRight, User, ChevronsLeft, ChevronsRight,
+  LogIn, LogOut,
 } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { useUIStore } from '@/store/uiStore'
 import { useNotesStore } from '@/store/notesStore'
 import { useAIStore } from '@/store/aiStore'
 import { useVaultStore } from '@/store/vaultStore'
+import { useAuthStore } from '@/store/authStore'
+import { firebaseConfigured } from '@/lib/firebase'
 import { FolderTree } from './FolderTree'
 import { Modal } from '@/components/ui/Modal'
 import { Button } from '@/components/ui/Button'
@@ -197,6 +200,7 @@ export function Sidebar() {
   const notes = useNotesStore(s => s.notes)
   const toggleAI = useAIStore(s => s.toggle)
   const { isUnlocked, hasPIN, lock, checkStatus } = useVaultStore()
+  const { user, signIn, signOut: authSignOut } = useAuthStore()
 
   const [vaultModal, setVaultModal] = useState(false)
   const [libraryCollapsed, setLibraryCollapsed] = useState(false)
@@ -304,18 +308,27 @@ export function Sidebar() {
         className="flex items-center gap-2.5 px-4 py-3 border-b shrink-0"
         style={{ borderColor: 'var(--color-border)' }}
       >
-        <div
-          className="w-7 h-7 rounded-full flex items-center justify-center shrink-0"
-          style={{ background: 'var(--color-accent-dim)', border: '1px solid var(--color-accent)44' }}
-        >
-          <User size={13} strokeWidth={1.5} style={{ color: 'var(--color-accent)' }} />
-        </div>
+        {user?.photoURL ? (
+          <img
+            src={user.photoURL}
+            alt={user.displayName || 'User'}
+            className="w-7 h-7 rounded-full shrink-0 object-cover"
+            style={{ border: '1px solid var(--color-accent)44' }}
+          />
+        ) : (
+          <div
+            className="w-7 h-7 rounded-full flex items-center justify-center shrink-0"
+            style={{ background: 'var(--color-accent-dim)', border: '1px solid var(--color-accent)44' }}
+          >
+            <User size={13} strokeWidth={1.5} style={{ color: 'var(--color-accent)' }} />
+          </div>
+        )}
         <div className="flex flex-col min-w-0">
           <span
             className="font-medium truncate"
             style={{ fontSize: 13, color: 'var(--color-text-primary)', lineHeight: 1.3 }}
           >
-            {greeting}
+            {user ? `Welcome, ${user.displayName?.split(' ')[0] || 'User'}` : greeting}
           </span>
           <span
             className="font-mono truncate"
@@ -425,6 +438,17 @@ export function Sidebar() {
           active={activePanel === 'settings'}
           onClick={() => setActivePanel('settings')}
         />
+        {firebaseConfigured && (
+          <NavItem
+            icon={user
+              ? <LogOut size={14} strokeWidth={1.5} />
+              : <LogIn size={14} strokeWidth={1.5} />
+            }
+            label={user ? 'Sign out' : 'Sign in with Google'}
+            active={false}
+            onClick={user ? authSignOut : signIn}
+          />
+        )}
       </div>
 
       <VaultModal

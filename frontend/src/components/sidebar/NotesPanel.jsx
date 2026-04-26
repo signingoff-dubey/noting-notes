@@ -1,0 +1,321 @@
+import { useState, useEffect } from 'react'
+import { Search, Plus, X, PanelLeftClose, ChevronsRight, Pin, Star, Lock, Trash2 } from 'lucide-react'
+import { formatDistanceToNow } from 'date-fns'
+import { cn } from '@/lib/cn'
+import { useNotesStore } from '@/store/notesStore'
+import { toast } from '@/store/uiStore'
+
+function extractText(content) {
+  if (!content) return ''
+  if (typeof content === 'string') return content.slice(0, 100)
+  if (content?.content) {
+    const texts = []
+    const walk = (node) => {
+      if (node.type === 'text') texts.push(node.text)
+      if (node.content) node.content.forEach(walk)
+    }
+    walk(content)
+    return texts.join(' ').slice(0, 100)
+  }
+  return ''
+}
+
+function NoteRow({ note, active, onClick }) {
+  const timeAgo = note.updated_at
+    ? formatDistanceToNow(new Date(note.updated_at), { addSuffix: true })
+        .replace(' ago', '')
+        .replace('about ', '~')
+    : ''
+  const preview = extractText(note.content)
+
+  return (
+    <button
+      onClick={onClick}
+      className={cn(
+        'flex flex-col gap-0.5 w-full px-3 py-2.5 text-left border-b transition-colors group',
+        active
+          ? 'border-l-2 border-l-[var(--color-accent)]'
+          : 'hover:bg-[var(--color-surface-hover)]',
+      )}
+      style={{
+        borderColor: 'var(--color-border)',
+        background: active ? 'var(--color-surface-active)' : 'transparent',
+        borderLeftColor: active ? 'var(--color-accent)' : 'transparent',
+        borderLeftWidth: 2,
+      }}
+    >
+      {/* Title row */}
+      <div className="flex items-center gap-1.5 min-w-0">
+        {note.pinned && <Pin size={9} strokeWidth={1.5} style={{ color: 'var(--color-accent)', flexShrink: 0 }} />}
+        {note.starred && <Star size={9} strokeWidth={1.5} fill="currentColor" style={{ color: 'var(--color-warning)', flexShrink: 0 }} />}
+        {note.is_vault && <Lock size={9} strokeWidth={1.5} style={{ color: 'var(--color-text-muted)', flexShrink: 0 }} />}
+        <span
+          className="font-medium truncate flex-1"
+          style={{
+            fontFamily: 'var(--font-body)',
+            fontSize: 'var(--text-sm)',
+            color: active ? 'var(--color-text-primary)' : 'var(--color-text-secondary)',
+          }}
+        >
+          {note.title || 'Untitled'}
+        </span>
+        <span
+          className="font-mono shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+          style={{ fontSize: 9, color: 'var(--color-text-muted)' }}
+        >
+          {timeAgo}
+        </span>
+      </div>
+      {/* Preview */}
+      <span
+        className="truncate block"
+        style={{
+          fontFamily: 'var(--font-body)',
+          fontSize: 'var(--text-xs)',
+          color: 'var(--color-text-muted)',
+          paddingLeft: (note.pinned || note.starred || note.is_vault) ? 14 : 0,
+        }}
+      >
+        {preview || 'Empty note'}
+      </span>
+      {/* Tags */}
+      {(note.tags || []).length > 0 && (
+        <div className="flex gap-1 mt-0.5" style={{ paddingLeft: (note.pinned || note.starred || note.is_vault) ? 14 : 0 }}>
+          {note.tags.slice(0, 2).map(tag => (
+            <span key={tag} className="ink-tag" style={{ fontSize: 9, height: 14 }}>
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </button>
+  )
+}
+
+export function NotesPanel({ collapsed, onToggle }) {
+  const [search, setSearch] = useState('')
+  const [confirmDelete, setConfirmDelete] = useState(false)
+  const notes = useNotesStore(s => s.notes)
+  const activeNote = useNotesStore(s => s.activeNote)
+  const setActiveNote = useNotesStore(s => s.setActiveNote)
+  const createNote = useNotesStore(s => s.createNote)
+  const fetchNotes = useNotesStore(s => s.fetchNotes)
+  const deleteNote = useNotesStore(s => s.deleteNote)
+
+  useEffect(() => { fetchNotes() }, [])
+
+  const filtered = notes
+    .filter(n => !n.archived)
+    .filter(n => {
+      if (!search) return true
+      const q = search.toLowerCase()
+      return (n.title || '').toLowerCase().includes(q) ||
+        extractText(n.content).toLowerCase().includes(q)
+    })
+    .sort((a, b) => {
+      if (a.pinned && !b.pinned) return -1
+      if (!a.pinned && b.pinned) return 1
+      return new Date(b.updated_at || b.created_at) - new Date(a.updated_at || a.created_at)
+    })
+
+  const handleNewNote = async () => {
+    try { await createNote() }
+    catch { toast.error('Failed to create note') }
+  }
+
+  const handleDeleteAll = async () => {
+    const toDelete = notes.filter(n => !n.archived)
+    try {
+      await Promise.all(toDelete.map(n => deleteNote(n.id)))
+      setActiveNote(null)
+      toast.success(`Deleted ${toDelete.length} note${toDelete.length !== 1 ? 's' : ''}`)
+    } catch {
+      toast.error('Failed to delete all notes')
+    }
+    setConfirmDelete(false)
+  }
+
+  const handleSelect = async (id) => {
+    try { await setActiveNote(id) }
+    catch { toast.error('Failed to open note') }
+  }
+
+  /* ── Collapsed strip ── */
+  if (collapsed) {
+    return (
+      <div
+        className="flex flex-col items-center pt-3 border-r shrink-0"
+        style={{
+          width: 36,
+          borderColor: 'var(--color-border)',
+          background: 'var(--color-sidebar-bg)',
+        }}
+      >
+        <button
+          onClick={onToggle}
+          title="Expand notes panel"
+          className="w-7 h-7 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
+          style={{ color: 'var(--color-text-muted)' }}
+        >
+          <ChevronsRight size={13} strokeWidth={1.5} />
+        </button>
+      </div>
+    )
+  }
+
+  /* ── Expanded panel ── */
+  return (
+    <div
+      className="flex flex-col shrink-0 border-r"
+      style={{
+        width: 260,
+        borderColor: 'var(--color-border)',
+        background: 'var(--color-sidebar-bg)',
+      }}
+    >
+      {/* Header */}
+      <div
+        className="flex items-center gap-1.5 px-3 shrink-0 border-b"
+        style={{ height: 48, borderColor: 'var(--color-border)' }}
+      >
+        <span
+          className="flex-1 font-mono uppercase tracking-widest"
+          style={{ fontSize: 10, color: 'var(--color-text-muted)' }}
+        >
+          Notes
+        </span>
+        <span
+          className="font-mono px-1.5 py-0.5 rounded"
+          style={{ fontSize: 10, background: 'var(--color-surface-2)', color: 'var(--color-text-muted)' }}
+        >
+          {filtered.length}
+        </span>
+        {notes.filter(n => !n.archived).length > 0 && (
+          <button
+            onClick={() => setConfirmDelete(true)}
+            title="Delete all notes"
+            className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
+            style={{ color: 'var(--color-error, #ef4444)' }}
+          >
+            <Trash2 size={12} strokeWidth={1.5} />
+          </button>
+        )}
+        <button
+          onClick={handleNewNote}
+          title="New note (Ctrl+N)"
+          className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
+          style={{ color: 'var(--color-text-muted)' }}
+        >
+          <Plus size={13} strokeWidth={1.5} />
+        </button>
+        <button
+          onClick={onToggle}
+          title="Collapse notes panel"
+          className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
+          style={{ color: 'var(--color-text-muted)' }}
+        >
+          <PanelLeftClose size={13} strokeWidth={1.5} />
+        </button>
+      </div>
+
+      {/* Search */}
+      <div className="px-3 py-2 border-b shrink-0" style={{ borderColor: 'var(--color-border)' }}>
+        <div className="relative">
+          <Search
+            size={11}
+            strokeWidth={1.5}
+            className="absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none"
+            style={{ color: 'var(--color-text-muted)' }}
+          />
+          <input
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder="Filter notes..."
+            className="ink-search w-full"
+            style={{ height: 28, paddingLeft: 26, paddingRight: search ? 26 : 8, fontSize: 'var(--text-xs)' }}
+          />
+          {search && (
+            <button
+              onClick={() => setSearch('')}
+              className="absolute right-2 top-1/2 -translate-y-1/2"
+              style={{ color: 'var(--color-text-muted)' }}
+            >
+              <X size={10} strokeWidth={1.5} />
+            </button>
+          )}
+        </div>
+      </div>
+
+      {/* Note rows */}
+      <div className="flex-1 overflow-y-auto min-h-0">
+        {filtered.length === 0 ? (
+          <div className="flex items-center justify-center h-20">
+            <p className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
+              {search ? 'No matches' : 'No notes yet'}
+            </p>
+          </div>
+        ) : (
+          filtered.map(note => (
+            <NoteRow
+              key={note.id}
+              note={note}
+              active={note.id === activeNote?.id}
+              onClick={() => handleSelect(note.id)}
+            />
+          ))
+        )}
+      </div>
+
+      {/* Delete all confirmation */}
+      {confirmDelete && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          style={{ background: 'rgba(0,0,0,0.6)' }}
+          onClick={() => setConfirmDelete(false)}
+        >
+          <div
+            className="flex flex-col gap-4 p-5 rounded-xl"
+            style={{
+              background: 'var(--color-surface)',
+              border: '1px solid var(--color-border)',
+              width: 300,
+              boxShadow: '0 16px 48px rgba(0,0,0,0.6)',
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-2">
+              <Trash2 size={16} strokeWidth={1.5} style={{ color: 'var(--color-error, #ef4444)', flexShrink: 0 }} />
+              <span className="font-mono font-medium" style={{ fontSize: 13, color: 'var(--color-text-primary)' }}>
+                Delete all notes?
+              </span>
+            </div>
+            <p className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+              This will permanently delete {notes.filter(n => !n.archived).length} note{notes.filter(n => !n.archived).length !== 1 ? 's' : ''}. Cannot be undone.
+            </p>
+            <div className="flex gap-2 justify-end">
+              <button
+                onClick={() => setConfirmDelete(false)}
+                className="px-3 h-7 rounded-md font-mono transition-colors hover:bg-[var(--color-surface-hover)]"
+                style={{ fontSize: 12, color: 'var(--color-text-muted)', border: '1px solid var(--color-border)' }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDeleteAll}
+                className="px-3 h-7 rounded-md font-mono transition-colors"
+                style={{
+                  fontSize: 12,
+                  background: 'var(--color-error, #ef4444)',
+                  color: '#fff',
+                  border: 'none',
+                }}
+              >
+                Delete all
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}

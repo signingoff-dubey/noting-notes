@@ -66,6 +66,11 @@
       "count": 1,
       "tokens": 91,
       "first_read": "2026-04-26T12:18:46.588Z"
+    },
+    "C:/Users/kabir/OneDrive/Desktop/INK/data/ai_config.json": {
+      "count": 1,
+      "tokens": 0,
+      "first_read": "2026-04-26T12:20:40.277Z"
     }
   },
   "files_written": [
@@ -170,6 +175,12 @@
       "action": "edit",
       "tokens": 18,
       "at": "2026-04-26T12:19:00.161Z"
+    },
+    {
+      "file": "C:/Users/kabir/OneDrive/Desktop/INK/.gitignore",
+      "action": "edit",
+      "tokens": 19,
+      "at": "2026-04-26T12:25:39.276Z"
     }
   ],
   "edit_counts": {
@@ -181,11 +192,12 @@
     "netlify.toml": 1,
     "README.md": 1,
     "frontend/src/components/editor/FloatingToolbar.jsx": 2,
-    "frontend/src/components/editor/NoteEditor.jsx": 2
+    "frontend/src/components/editor/NoteEditor.jsx": 2,
+    ".gitignore": 1
   },
   "anatomy_hits": 6,
-  "anatomy_misses": 7,
+  "anatomy_misses": 8,
   "repeated_reads_warned": 2,
   "cerebrum_warnings": 0,
-  "stop_count": 3
+  "stop_count": 7
 }

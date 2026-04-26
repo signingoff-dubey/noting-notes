@@ -1,6 +1,6 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-04-26T12:19:00.147Z
+> Auto-maintained by OpenWolf. Last scanned: 2026-04-26T12:25:39.243Z
 > Files: 31 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../../.claude/
@@ -9,7 +9,7 @@
 ## ./
 
 - `.gitattributes` — Line endings (~214 tok)
-- `.gitignore` — Git ignore rules (~91 tok)
+- `.gitignore` — Git ignore rules (~101 tok)
 - `netlify.toml` (~38 tok)
 - `README.md` — Project documentation (~1306 tok)
 - `run.bat` (~1133 tok)

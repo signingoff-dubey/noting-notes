@@ -480,14 +480,37 @@ select:focus-visible {
 .editor-content ol { list-style-type: decimal; }
 .editor-content li { margin: 4px 0; }
 
-.editor-content ul[data-type="taskList"] { list-style: none; padding-left: 0; }
-.editor-content li[data-type="taskItem"] { display: flex; gap: 8px; align-items: flex-start; }
-.editor-content li[data-type="taskItem"] > label { display: flex; align-items: center; margin-top: 4px; }
+.editor-content ul[data-type="taskList"] {
+  list-style: none !important;
+  padding-left: 0 !important;
+  margin: 0 0 12px;
+}
+.editor-content li[data-type="taskItem"] {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  gap: 8px;
+  list-style: none !important;
+  padding-left: 0 !important;
+}
+.editor-content li[data-type="taskItem"] > label {
+  display: flex !important;
+  align-items: center !important;
+  flex: 0 0 auto;
+  margin-top: 3px;
+  cursor: pointer;
+  user-select: none;
+}
+.editor-content li[data-type="taskItem"] > div {
+  flex: 1 1 auto;
+  min-width: 0;
+}
 .editor-content li[data-type="taskItem"] input[type="checkbox"] {
   accent-color: var(--color-accent);
   width: 14px;
   height: 14px;
   cursor: pointer;
+  flex-shrink: 0;
 }
 .editor-content li[data-type="taskItem"][data-checked="true"] > div {
   color: var(--color-text-muted);

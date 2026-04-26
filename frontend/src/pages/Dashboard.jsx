@@ -190,7 +190,6 @@ export function Dashboard() {
   const setActiveNote = useNotesStore(s => s.setActiveNote)
   const tasks = useTasksStore(s => s.tasks)
   const fetchTasks = useTasksStore(s => s.fetchTasks)
-  const getUpcomingTasks = useTasksStore(s => s.getUpcomingTasks)
   const setActivePanel = useUIStore(s => s.setActivePanel)
 
   useEffect(() => {
@@ -200,7 +199,15 @@ export function Dashboard() {
 
   const activeNotes   = notes.filter(n => !n.archived)
   const recentNotes   = getRecentNotes(6)
-  const upcomingTasks = getUpcomingTasks(6)
+  const upcomingTasks = activeTasks
+    .slice()
+    .sort((a, b) => {
+      if (a.due_date && !b.due_date) return -1
+      if (!a.due_date && b.due_date) return 1
+      if (a.due_date && b.due_date) return new Date(a.due_date) - new Date(b.due_date)
+      return new Date(b.created_at) - new Date(a.created_at)
+    })
+    .slice(0, 6)
   const activeTasks   = tasks.filter(t => !t.archived && t.status !== 'done')
   const doneTasks     = tasks.filter(t => t.status === 'done')
   const starredNotes  = getFavouriteNotes()
@@ -300,7 +307,7 @@ export function Dashboard() {
                 >
                   <CheckSquare size={24} strokeWidth={1} style={{ color: 'var(--color-text-muted)' }} />
                   <p className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
-                    {activeTasks.length === 0 ? 'No tasks yet' : 'No tasks with due dates'}
+                    No tasks yet
                   </p>
                 </div>
               ) : (

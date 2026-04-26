@@ -166,9 +166,9 @@ function AddTaskBar({ onSave, folders }) {
             )}
           </div>
 
-          {/* Due date — label wrapping for cross-browser reliability */}
+          {/* Due date */}
           <label
-            className="flex items-center gap-1.5 px-2 h-7 rounded-md cursor-pointer transition-colors hover:bg-[var(--color-surface-hover)]"
+            className="relative flex items-center gap-1.5 px-2 h-7 rounded-md cursor-pointer transition-colors hover:bg-[var(--color-surface-hover)]"
             style={{
               fontFamily: 'var(--font-body)',
               fontSize: 'var(--text-xs)',
@@ -181,7 +181,14 @@ function AddTaskBar({ onSave, folders }) {
               type="date"
               value={dueDate}
               onChange={e => setDueDate(e.target.value)}
-              className="sr-only"
+              style={{
+                position: 'absolute',
+                inset: 0,
+                opacity: 0,
+                cursor: 'pointer',
+                width: '100%',
+                height: '100%',
+              }}
             />
           </label>
 

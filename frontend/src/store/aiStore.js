@@ -4,12 +4,15 @@ const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY || ''
 const GROQ_BASE_URL = 'https://api.groq.com/openai/v1'
 const DEFAULT_MODEL = 'llama-3.3-70b-versatile'
 
+const VISION_MODEL = 'llama-3.2-11b-vision-preview'
+
 const GROQ_MODELS = [
   { id: 'llama-3.3-70b-versatile', name: 'Llama 3.3 70B' },
   { id: 'llama-3.1-8b-instant',    name: 'Llama 3.1 8B (Fast)' },
   { id: 'mixtral-8x7b-32768',      name: 'Mixtral 8x7B' },
   { id: 'gemma2-9b-it',            name: 'Gemma 2 9B' },
   { id: 'deepseek-r1-distill-llama-70b', name: 'DeepSeek R1 70B' },
+  { id: VISION_MODEL,              name: 'Llama 3.2 Vision 11B' },
 ]
 
 function loadMemory(noteId) {
@@ -68,14 +71,26 @@ export const useAIStore = create((set, get) => ({
     return true
   },
 
-  sendMessage: (content, noteContent = '') => {
+  sendMessage: (content, noteContent = '', images = []) => {
     const { activeModel, contextNoteId, messages, apiConfig } = get()
 
     const apiKey = apiConfig.api_key || GROQ_API_KEY
     const baseUrl = apiConfig.base_url || GROQ_BASE_URL
-    const model = apiConfig.model || activeModel
+    const hasImages = images && images.length > 0
+    const model = hasImages ? VISION_MODEL : (apiConfig.model || activeModel)
 
-    const userMsg = { role: 'user', content, timestamp: new Date().toISOString() }
+    const userMsg = {
+      role: 'user',
+      content: hasImages
+        ? [
+            ...images.map(url => ({ type: 'image_url', image_url: { url } })),
+            { type: 'text', text: content },
+          ]
+        : content,
+      displayContent: content,
+      images: hasImages ? images : undefined,
+      timestamp: new Date().toISOString(),
+    }
     const newMessages = [...messages, userMsg]
     set({ messages: newMessages, isStreaming: true, streamingMessage: '' })
 

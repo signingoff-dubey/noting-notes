@@ -2,6 +2,7 @@ import { useEffect, useCallback } from 'react'
 import { useUIStore } from '@/store/uiStore'
 import { useNotesStore } from '@/store/notesStore'
 import { useAIStore } from '@/store/aiStore'
+import { useAuthStore } from '@/store/authStore'
 import { Sidebar } from '@/components/sidebar/Sidebar'
 import { NotesPanel } from '@/components/sidebar/NotesPanel'
 import { NoteEditor } from '@/components/editor/NoteEditor'
@@ -36,8 +37,10 @@ export default function App() {
   const { initTheme, activePanel, setActivePanel, notesPanelCollapsed, toggleNotesPanel } = useUIStore()
   const { createNote, setActiveNote, activeNote } = useNotesStore()
   const { toggle: toggleAI } = useAIStore()
+  const { init: initAuth } = useAuthStore()
 
   useEffect(() => { initTheme() }, [])
+  useEffect(() => { initAuth() }, [])
 
   const handleKeydown = useCallback((e) => {
     const tag = document.activeElement?.tagName

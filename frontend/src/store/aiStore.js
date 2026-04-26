@@ -3,7 +3,6 @@ import { create } from 'zustand'
 const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY || ''
 const GROQ_BASE_URL = 'https://api.groq.com/openai/v1'
 const DEFAULT_MODEL = 'llama-3.3-70b-versatile'
-
 const VISION_MODEL = 'llama-3.2-11b-vision-preview'
 
 const GROQ_MODELS = [
@@ -15,18 +14,49 @@ const GROQ_MODELS = [
   { id: VISION_MODEL,              name: 'Llama 3.2 Vision 11B' },
 ]
 
+/* Sentinel tags — model uses these when it wants to write into the note */
+const WRITE_OPEN = '[NOTEWRITE]'
+const WRITE_CLOSE = '[/NOTEWRITE]'
+const WRITE_RE = /\[NOTEWRITE\]([\s\S]*?)\[\/NOTEWRITE\]/i
+
 function loadMemory(noteId) {
   if (!noteId) return []
-  try {
-    return JSON.parse(localStorage.getItem(`ink_ai_memory_${noteId}`) || '[]')
-  } catch { return [] }
+  try { return JSON.parse(localStorage.getItem(`ink_ai_memory_${noteId}`) || '[]') }
+  catch { return [] }
 }
 
 function saveMemory(noteId, messages) {
   if (!noteId) return
-  try {
-    localStorage.setItem(`ink_ai_memory_${noteId}`, JSON.stringify(messages))
-  } catch {}
+  try { localStorage.setItem(`ink_ai_memory_${noteId}`, JSON.stringify(messages)) }
+  catch {}
+}
+
+/* Strip NOTEWRITE tags from text shown in chat */
+function stripWriteTags(text) {
+  return text.replace(WRITE_RE, '').replace(/\n{3,}/g, '\n\n').trim()
+}
+
+function buildSystemPrompt(noteContent) {
+  const writeInstructions = `
+When the user asks you to add, write, insert, append, or modify content in their note:
+- Reply naturally (1–2 sentences explaining what you're adding)
+- Wrap ONLY the content to insert inside ${WRITE_OPEN}...${WRITE_CLOSE} tags
+- Do NOT output raw JSON, TipTap document format, or code blocks unless the actual content is code
+- Example: "Added a haiku to your note. ${WRITE_OPEN}Silent pond at dusk\nA frog leaps into the water\nRipples fade away${WRITE_CLOSE}"
+- Never show internal document structures to the user`.trim()
+
+  if (noteContent) {
+    return `You are a helpful AI assistant inside a notes app called INK. The user is working on a note:
+
+${noteContent}
+
+${writeInstructions}`
+  }
+  return `You are a helpful AI assistant inside a notes app called INK.
+
+${writeInstructions}
+
+If the user asks to write to a note but no note context is set, tell them to select a note first.`
 }
 
 export const useAIStore = create((set, get) => ({
@@ -47,6 +77,25 @@ export const useAIStore = create((set, get) => ({
   },
   error: null,
 
+  /* ── Note-write permission ── */
+  pendingNoteWrite: null,   // { content: string } | null
+  writeNoteCallback: null,  // (content: string) => void — registered by NoteEditor
+
+  registerWriteCallback: (cb) => set({ writeNoteCallback: cb }),
+
+  requestNoteWrite: (content) => set({ pendingNoteWrite: { content } }),
+
+  confirmNoteWrite: () => {
+    const { pendingNoteWrite, writeNoteCallback } = get()
+    if (pendingNoteWrite && writeNoteCallback) {
+      writeNoteCallback(pendingNoteWrite.content)
+    }
+    set({ pendingNoteWrite: null })
+  },
+
+  denyNoteWrite: () => set({ pendingNoteWrite: null }),
+
+  /* ── Core ── */
   toggle: () => set(state => ({ isOpen: !state.isOpen })),
   open:   () => set({ isOpen: true }),
   close:  () => set({ isOpen: false }),
@@ -94,10 +143,7 @@ export const useAIStore = create((set, get) => ({
     const newMessages = [...messages, userMsg]
     set({ messages: newMessages, isStreaming: true, streamingMessage: '' })
 
-    const systemPrompt = noteContent
-      ? `You are a helpful AI assistant for a notes app. The user is working on a note:\n\n${noteContent}`
-      : 'You are a helpful AI assistant for a notes app called INK.'
-
+    const systemPrompt = buildSystemPrompt(noteContent)
     const chatHistory = newMessages.slice(-20).map(m => ({ role: m.role, content: m.content }))
 
     const ctrl = new AbortController()
@@ -141,16 +187,31 @@ export const useAIStore = create((set, get) => ({
             const token = parsed.choices?.[0]?.delta?.content || ''
             if (token) {
               accumulated += token
-              set({ streamingMessage: accumulated })
+              /* Stream the clean version to avoid showing tags in real-time */
+              set({ streamingMessage: stripWriteTags(accumulated) })
             }
           } catch {}
         }
       }
 
-      const aiMsg = { role: 'assistant', content: accumulated, timestamp: new Date().toISOString() }
+      /* Check for NOTEWRITE marker in final response */
+      const writeMatch = WRITE_RE.exec(accumulated)
+      const displayContent = stripWriteTags(accumulated)
+
+      const aiMsg = {
+        role: 'assistant',
+        content: displayContent,
+        timestamp: new Date().toISOString(),
+      }
       const finalMessages = [...newMessages, aiMsg]
       set({ messages: finalMessages, isStreaming: false, streamingMessage: '' })
       if (contextNoteId) saveMemory(contextNoteId, finalMessages)
+
+      /* Trigger write-permission popup after message is stored */
+      if (writeMatch) {
+        const writeContent = writeMatch[1].trim()
+        if (writeContent) get().requestNoteWrite(writeContent)
+      }
     })
     .catch((err) => {
       if (err.name !== 'AbortError') {

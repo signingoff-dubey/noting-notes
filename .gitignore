@@ -40,3 +40,6 @@ npm-debug.log*
 .idea/
 .vscode/
 *.swp
+
+# Claude Code internal files
+.claude/

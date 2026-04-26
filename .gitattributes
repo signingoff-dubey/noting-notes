@@ -1,0 +1,24 @@
+# Line endings
+run.sh    eol=lf
+*.sh      eol=lf
+
+# Files/dirs excluded from git archive (zip exports)
+# Add export-ignore to anything not needed by end users
+
+frontend/node_modules/    export-ignore
+.wolf/                    export-ignore
+.claude/                  export-ignore
+frontend/.claude/         export-ignore
+graphify-out/             export-ignore
+ink-claude-design-export/ export-ignore
+docs/                     export-ignore
+
+design_dump.txt           export-ignore
+design_files.json         export-ignore
+design_styles.css         export-ignore
+design_template.html      export-ignore
+.graphify_detect.json     export-ignore
+.graphify_python          export-ignore
+.pip_ready                export-ignore
+test-api.ps1              export-ignore
+AGENTS.md                 export-ignore

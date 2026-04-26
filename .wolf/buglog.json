@@ -1,0 +1,325 @@
+{
+  "version": 1,
+  "bugs": [
+    {
+      "id": "bug-001",
+      "timestamp": "2026-04-20T02:24:10.566Z",
+      "error_message": "Significant refactor of ",
+      "file": "backend/routes/folders.py",
+      "root_cause": "23 lines replaced/restructured",
+      "fix": "Rewrote 46→28 lines (23 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "py"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-20T02:24:10.566Z"
+    },
+    {
+      "id": "bug-002",
+      "timestamp": "2026-04-20T02:34:04.832Z",
+      "error_message": "Significant refactor of ",
+      "file": "backend/services/folder_service.py",
+      "root_cause": "6 lines replaced/restructured",
+      "fix": "Rewrote 13→5 lines (6 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "py"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-20T02:34:04.832Z"
+    },
+    {
+      "id": "bug-003",
+      "timestamp": "2026-04-20T02:36:14.393Z",
+      "error_message": "Wrong return value",
+      "file": "backend/main.py",
+      "root_cause": "Was returning: {\"status\": \"ok\", \"service\": \"noted-backend\"}",
+      "fix": "Now returns: {",
+      "tags": [
+        "auto-detected",
+        "return-value",
+        "py"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-20T02:36:14.393Z"
+    },
+    {
+      "id": "bug-004",
+      "timestamp": "2026-04-21T01:46:12.782Z",
+      "error_message": "CSS fix: border-left, padding",
+      "file": "frontend/src/index.css",
+      "root_cause": "border-left: 2px solid color-mix(in oklch, var(--color-accent) 45%, transparent) → 3px solid var(--color-accent); padding: 4px 16px → 6px 16px",
+      "fix": "Changed border-left: 2px solid color-mix(in oklch, var(--color-accent) 45%, transparent) → 3px solid var(--color-accent); padding: 4px 16px → 6px 16px",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "css"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-04-21T01:46:22.063Z"
+    },
+    {
+      "id": "bug-005",
+      "timestamp": "2026-04-21T01:46:51.050Z",
+      "error_message": "CSS fix: color",
+      "file": "frontend/src/components/notes/NoteCard.jsx",
+      "root_cause": "color: 'var(--color-accent)' → 'var(--color-text-muted)'",
+      "fix": "Changed color: 'var(--color-accent)' → 'var(--color-text-muted)'",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-04-21T01:47:20.373Z"
+    },
+    {
+      "id": "bug-006",
+      "timestamp": "2026-04-21T01:47:12.746Z",
+      "error_message": "Significant refactor of ",
+      "file": "frontend/src/components/notes/NoteCard.jsx",
+      "root_cause": "7 lines replaced/restructured",
+      "fix": "Rewrote 19→11 lines (7 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-21T01:47:12.746Z"
+    },
+    {
+      "id": "bug-007",
+      "timestamp": "2026-04-21T01:48:10.158Z",
+      "error_message": "Missing error handling in unknown",
+      "file": "frontend/src/components/editor/NoteEditor.jsx",
+      "root_cause": "Code path had no error handling — exceptions would propagate uncaught",
+      "fix": "Added try/catch block",
+      "tags": [
+        "auto-detected",
+        "error-handling",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-21T01:48:10.158Z"
+    },
+    {
+      "id": "bug-008",
+      "timestamp": "2026-04-21T01:48:55.863Z",
+      "error_message": "Missing guard clause",
+      "file": "frontend/src/components/editor/NoteEditor.jsx",
+      "root_cause": "No early return/throw for edge case: !transactions.some(tr => tr.docChanged",
+      "fix": "Added guard clause: if (!transactions.some(tr => tr.docChanged)",
+      "tags": [
+        "auto-detected",
+        "guard-clause",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-21T01:48:55.863Z"
+    },
+    {
+      "id": "bug-009",
+      "timestamp": "2026-04-21T06:45:04.776Z",
+      "error_message": "Null/undefined access in ",
+      "file": "frontend/src/pages/ArchivedView.jsx",
+      "root_cause": "Property access on potentially null/undefined value",
+      "fix": "Added null safety (optional chaining or null check)",
+      "tags": [
+        "auto-detected",
+        "null-safety",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-21T06:45:04.776Z"
+    },
+    {
+      "id": "bug-010",
+      "timestamp": "2026-04-21T07:07:06.616Z",
+      "error_message": "CSS fix: opacity",
+      "file": "frontend/src/pages/Calendar.jsx",
+      "root_cause": "opacity: isCurrentMonth ? 1 : 0.3, → isCurrentMonth ? 1 : 0.4,",
+      "fix": "Changed opacity: isCurrentMonth ? 1 : 0.3, → isCurrentMonth ? 1 : 0.4,",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-21T07:07:06.616Z"
+    },
+    {
+      "id": "bug-011",
+      "timestamp": "2026-04-21T08:24:28.171Z",
+      "error_message": "CSS fix: fontSize",
+      "file": "frontend/src/pages/Tasks.jsx",
+      "root_cause": "fontSize: 11, color: 'var(--color-text-muted)' → 11, color: 'var(--color-success)'",
+      "fix": "Changed fontSize: 11, color: 'var(--color-text-muted)' → 11, color: 'var(--color-success)'",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-21T08:24:28.171Z"
+    },
+    {
+      "id": "bug-012",
+      "timestamp": "2026-04-21T08:24:36.293Z",
+      "error_message": "Incorrect value in code",
+      "file": "frontend/src/pages/Tasks.jsx",
+      "root_cause": "Had \"flex items-center gap-1.5 px-5 pb-2\"",
+      "fix": "Changed to \"max-w-2xl mx-auto flex items-center gap-1.5 px-5 ",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-21T08:24:36.293Z"
+    },
+    {
+      "id": "bug-013",
+      "timestamp": "2026-04-21T09:01:32.947Z",
+      "error_message": "CSS fix: bg",
+      "file": "frontend/src/pages/Settings.jsx",
+      "root_cause": "bg: '#0d1408', surface: '#111c0c', accent: '#6dcc50',  text: '#d4ebc8' → '#008080', surface: '#c0c0c0', accent: '#000080',  text: '#000000', win95: true",
+      "fix": "Changed bg: '#0d1408', surface: '#111c0c', accent: '#6dcc50',  text: '#d4ebc8' → '#008080', surface: '#c0c0c0', accent: '#000080',  text: '#000000', win95: true",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-21T09:01:32.947Z"
+    },
+    {
+      "id": "bug-014",
+      "timestamp": "2026-04-21T11:14:08.265Z",
+      "error_message": "CSS fix: outline",
+      "file": "frontend/src/index.css",
+      "root_cause": "outline: 2px solid var(--color-accent) → none !important",
+      "fix": "Changed outline: 2px solid var(--color-accent) → none !important",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "css"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-21T11:14:08.265Z"
+    },
+    {
+      "id": "bug-015",
+      "timestamp": "2026-04-21T11:18:47.988Z",
+      "error_message": "Significant refactor of ",
+      "file": "backend/models/ai.py",
+      "root_cause": "2 lines replaced/restructured",
+      "fix": "Rewrote 12→19 lines (2 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "py"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-21T11:18:47.988Z"
+    },
+    {
+      "id": "bug-016",
+      "timestamp": "2026-04-26T11:13:24.831Z",
+      "error_message": "Incorrect value in code",
+      "file": "frontend/src/components/ai/AISidebar.jsx",
+      "root_cause": "Had 'Local Models (Ollama)'",
+      "fix": "Changed to 'Cloud Models (Groq)'",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-26T11:13:24.831Z"
+    },
+    {
+      "id": "bug-017",
+      "timestamp": "2026-04-26T11:13:31.909Z",
+      "error_message": "Significant refactor of ",
+      "file": "frontend/src/components/ai/AISidebar.jsx",
+      "root_cause": "3 lines replaced/restructured",
+      "fix": "Rewrote 6→3 lines (3 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-26T11:13:31.909Z"
+    },
+    {
+      "id": "bug-018",
+      "timestamp": "2026-04-26T12:12:08.962Z",
+      "error_message": "Significant refactor of ",
+      "file": "frontend/src/components/editor/FloatingToolbar.jsx",
+      "root_cause": "8 lines replaced/restructured",
+      "fix": "Rewrote 15→9 lines (8 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-26T12:12:08.962Z"
+    },
+    {
+      "id": "bug-019",
+      "timestamp": "2026-04-26T12:12:32.683Z",
+      "error_message": "Significant refactor of ",
+      "file": "frontend/src/components/editor/NoteEditor.jsx",
+      "root_cause": "8 lines replaced/restructured",
+      "fix": "Rewrote 11→3 lines (8 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-26T12:12:32.683Z"
+    },
+    {
+      "id": "bug-020",
+      "timestamp": "2026-04-26T12:19:00.163Z",
+      "error_message": "Wrong reference: REDACTED_GROQ_KEY should be import",
+      "file": "frontend/src/store/aiStore.js",
+      "root_cause": "Used \"REDACTED_GROQ_KEY\" instead of \"import\"",
+      "fix": "Changed REDACTED_GROQ_KEY → import",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "js"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-26T12:19:00.163Z"
+    }
+  ]
+}

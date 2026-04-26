@@ -5,7 +5,66 @@ import { Plugin, PluginKey } from '@tiptap/pm/state'
 import StarterKit from '@tiptap/starter-kit'
 import Highlight from '@tiptap/extension-highlight'
 import TaskList from '@tiptap/extension-task-list'
-import TaskItem from '@tiptap/extension-task-item'
+import TaskItemBase from '@tiptap/extension-task-item'
+
+/* Custom TaskItem: preserves cursor position when checkbox is clicked */
+const TaskItem = TaskItemBase.extend({
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        key: new PluginKey('customTaskItemPlugin'),
+        props: {
+          handleClick(view, pos, event) {
+            if (!(event.target instanceof HTMLInputElement) || event.target.type !== 'checkbox') return false
+            if (!view.editable) return false
+
+            const { state } = view
+            const savedSelection = state.selection
+
+            // Walk up from click pos to find the taskItem node
+            const safePos = Math.min(Math.max(pos, 0), state.doc.content.size - 1)
+            const $pos = state.doc.resolve(safePos)
+            let taskItemPos = -1
+            let taskItemNode = null
+            for (let d = $pos.depth; d >= 0; d--) {
+              const n = $pos.node(d)
+              if (n.type.name === 'taskItem') {
+                taskItemPos = $pos.before(d)
+                taskItemNode = n
+                break
+              }
+            }
+
+            // Fallback: check via DOM container
+            if (taskItemPos === -1) {
+              const container = event.target.closest?.('[data-type="taskItem"]')
+              if (container) {
+                const isChecked = container.getAttribute('data-checked') === 'true'
+                const resolvedPos = state.doc.resolve(Math.min(pos, state.doc.content.size - 1))
+                const nodeAtBefore = state.doc.nodeAt(resolvedPos.before())
+                if (nodeAtBefore?.type.name === 'taskItem') {
+                  taskItemPos = resolvedPos.before()
+                  taskItemNode = nodeAtBefore
+                }
+              }
+            }
+
+            if (taskItemPos === -1 || !taskItemNode) return false
+
+            const tr = state.tr.setNodeMarkup(taskItemPos, undefined, {
+              ...taskItemNode.attrs,
+              checked: !taskItemNode.attrs.checked,
+            })
+            // Restore cursor position
+            try { tr.setSelection(savedSelection.map(tr.doc, tr.mapping)) } catch (_) {}
+            view.dispatch(tr)
+            return true
+          },
+        },
+      }),
+    ]
+  },
+})
 import Table from '@tiptap/extension-table'
 import TableRow from '@tiptap/extension-table-row'
 import TableHeader from '@tiptap/extension-table-header'

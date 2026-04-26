@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import {
   X, ChevronLeft, ChevronRight, Send, Sparkles, Trash2,
   FileText, ChevronDown, AlertTriangle, Download, Check,
-  KeyRound, Server, Plus, ImagePlus,
+  KeyRound, Server, Plus, ImagePlus, PenLine, ShieldCheck, ShieldX,
 } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { useAIStore } from '@/store/aiStore'
@@ -466,7 +466,7 @@ function ModelDropdown({ models, activeModel, apiConfig, onSelectModel, onCustom
 }
 
 /* ── Chat bubble ── */
-function ChatBubble({ msg, streaming }) {
+function ChatBubble({ msg, streaming, onAddToNote }) {
   const isUser = msg.role === 'user'
   const textContent = msg.displayContent || (typeof msg.content === 'string' ? msg.content : '')
   return (
@@ -487,11 +487,24 @@ function ChatBubble({ msg, streaming }) {
       >
         <p className="whitespace-pre-wrap">{textContent}</p>
       </div>
-      {msg.timestamp && (
-        <span className="font-mono text-xs text-text-muted px-1">
-          {formatDistanceToNow(new Date(msg.timestamp), { addSuffix: true })}
-        </span>
-      )}
+      <div className={cn('flex items-center gap-2 px-1', isUser ? 'flex-row-reverse' : 'flex-row')}>
+        {msg.timestamp && (
+          <span className="font-mono text-xs text-text-muted">
+            {formatDistanceToNow(new Date(msg.timestamp), { addSuffix: true })}
+          </span>
+        )}
+        {!isUser && !streaming && onAddToNote && textContent && (
+          <button
+            onClick={() => onAddToNote(textContent)}
+            title="Add this to current note"
+            className="flex items-center gap-1 font-mono transition-opacity opacity-0 group-hover:opacity-100 hover:opacity-100 focus:opacity-100"
+            style={{ fontSize: 9, color: 'var(--color-text-muted)' }}
+          >
+            <PenLine size={9} strokeWidth={1.5} />
+            add to note
+          </button>
+        )}
+      </div>
     </div>
   )
 }
@@ -528,6 +541,7 @@ export function AISidebar() {
     messages, isStreaming, streamingMessage, models, ollamaAvailable,
     fetchModels, sendMessage, clearMemory, error, clearError,
     apiConfig, saveApiConfig,
+    pendingNoteWrite, confirmNoteWrite, denyNoteWrite, requestNoteWrite,
   } = useAIStore()
   const notes = useNotesStore(s => s.notes)
   const setContextNote = useAIStore(s => s.setContextNote)
@@ -562,6 +576,14 @@ export function AISidebar() {
 
   const removeImage = (index) => {
     setAttachedImages(prev => prev.filter((_, i) => i !== index))
+  }
+
+  const handleAddToNote = (content) => {
+    if (!contextNoteId) {
+      toast.error('Select a note first to add content to it')
+      return
+    }
+    requestNoteWrite(content)
   }
 
   const handleSend = () => {
@@ -695,7 +717,9 @@ export function AISidebar() {
             </div>
           )}
           {messages.map((msg, i) => (
-            <ChatBubble key={i} msg={msg} />
+            <div key={i} className="group">
+              <ChatBubble msg={msg} onAddToNote={handleAddToNote} />
+            </div>
           ))}
           {isStreaming && streamingMessage && (
             <ChatBubble msg={{ role: 'assistant', content: streamingMessage }} streaming />
@@ -714,6 +738,76 @@ export function AISidebar() {
           <div className="flex items-center gap-2 px-3 py-1.5 border-t border-border bg-surface-2 shrink-0">
             <FileText size={11} strokeWidth={1.5} className="text-text-muted shrink-0" />
             <span className="font-mono text-xs text-text-muted truncate">{contextNote.title || 'Untitled'}</span>
+          </div>
+        )}
+
+        {/* ── Write-permission popup ── */}
+        {pendingNoteWrite && (
+          <div
+            className="mx-3 mb-2 rounded-lg overflow-hidden shrink-0"
+            style={{
+              border: '1px solid var(--color-accent)',
+              background: 'var(--color-accent-dim)',
+            }}
+          >
+            {/* Header */}
+            <div
+              className="flex items-center gap-2 px-3 py-2"
+              style={{ borderBottom: '1px solid var(--color-accent)33' }}
+            >
+              <PenLine size={12} strokeWidth={1.5} style={{ color: 'var(--color-accent)', flexShrink: 0 }} />
+              <span
+                className="font-mono font-medium flex-1"
+                style={{ fontSize: 11, color: 'var(--color-accent)' }}
+              >
+                AI wants to write to your note
+              </span>
+            </div>
+            {/* Preview */}
+            <div className="px-3 py-2">
+              <p
+                className="font-mono line-clamp-4 whitespace-pre-wrap"
+                style={{
+                  fontSize: 10,
+                  color: 'var(--color-text-secondary)',
+                  lineHeight: 1.6,
+                  maxHeight: 80,
+                  overflow: 'hidden',
+                }}
+              >
+                {pendingNoteWrite.content}
+              </p>
+            </div>
+            {/* Actions */}
+            <div
+              className="flex items-center gap-2 px-3 pb-2.5"
+            >
+              <button
+                onClick={() => { denyNoteWrite(); toast.info('Write denied') }}
+                className="flex items-center gap-1.5 px-3 h-7 rounded-md font-mono transition-colors hover:opacity-80"
+                style={{
+                  fontSize: 11,
+                  color: 'var(--color-text-muted)',
+                  border: '1px solid var(--color-border)',
+                  background: 'var(--color-surface)',
+                }}
+              >
+                <ShieldX size={11} strokeWidth={1.5} />
+                Deny
+              </button>
+              <button
+                onClick={() => { confirmNoteWrite(); toast.success('Added to note') }}
+                className="flex items-center gap-1.5 px-3 h-7 rounded-md font-mono font-medium transition-colors hover:opacity-90"
+                style={{
+                  fontSize: 11,
+                  background: 'var(--color-accent)',
+                  color: 'var(--color-bg)',
+                }}
+              >
+                <ShieldCheck size={11} strokeWidth={1.5} />
+                Allow
+              </button>
+            </div>
           </div>
         )}
 

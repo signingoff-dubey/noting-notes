@@ -158,6 +158,26 @@ export function NoteEditor({ note, onBack }) {
     return () => setContextNote(null)
   }, [note?.id])
 
+  /* Register AI write callback — inserts content at end of note with accent highlight */
+  useEffect(() => {
+    if (!editor) return
+    const writeToNote = (content) => {
+      /* Convert plain text into paragraph nodes, each text node wrapped in highlight */
+      const blocks = content.split(/\n\n+/).filter(p => p.trim())
+      const nodes = blocks.map(block => ({
+        type: 'paragraph',
+        content: block.split('\n').filter(l => l).flatMap((line, i, arr) => [
+          { type: 'text', text: line, marks: [{ type: 'highlight', attrs: { color: null } }] },
+          ...(i < arr.length - 1 ? [{ type: 'hardBreak' }] : []),
+        ]),
+      }))
+      editor.chain().focus().insertContentAt(editor.state.doc.content.size, nodes).run()
+    }
+    const { registerWriteCallback } = useAIStore.getState()
+    registerWriteCallback(writeToNote)
+    return () => registerWriteCallback(null)
+  }, [editor])
+
   const editor = useEditor({
     extensions: [
       StarterKit.configure({ codeBlock: false }),

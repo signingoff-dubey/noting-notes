@@ -1,203 +1,32 @@
 {
-  "session_id": "session-2026-04-26-1637",
-  "started": "2026-04-26T11:07:16.051Z",
+  "session_id": "session-2026-04-26-2338",
+  "started": "2026-04-26T18:08:27.369Z",
   "files_read": {
-    "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/ai/AISidebar.jsx": {
-      "count": 1,
-      "tokens": 8399,
-      "first_read": "2026-04-26T11:07:35.297Z"
-    },
-    "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/lib/api.js": {
-      "count": 1,
-      "tokens": 1407,
-      "first_read": "2026-04-26T11:07:35.530Z"
-    },
-    "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/store/aiStore.js": {
-      "count": 1,
-      "tokens": 964,
-      "first_read": "2026-04-26T11:07:41.654Z"
-    },
-    "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/store/notesStore.js": {
-      "count": 1,
-      "tokens": 0,
-      "first_read": "2026-04-26T11:08:04.169Z"
-    },
-    "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/store/tasksStore.js": {
-      "count": 1,
-      "tokens": 0,
-      "first_read": "2026-04-26T11:08:04.413Z"
-    },
-    "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/store/vaultStore.js": {
-      "count": 1,
-      "tokens": 0,
-      "first_read": "2026-04-26T11:09:22.735Z"
-    },
-    "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/pages/Settings.jsx": {
-      "count": 3,
-      "tokens": 5219,
-      "first_read": "2026-04-26T11:09:23.198Z"
-    },
-    "C:/Users/kabir/OneDrive/Desktop/INK/backend/requirements.txt": {
-      "count": 1,
-      "tokens": 0,
-      "first_read": "2026-04-26T11:09:47.977Z"
-    },
-    "C:/Users/kabir/OneDrive/Desktop/INK/PRD.md": {
-      "count": 1,
-      "tokens": 0,
-      "first_read": "2026-04-26T12:06:19.939Z"
-    },
-    "C:/Users/kabir/OneDrive/Desktop/INK/README.md": {
-      "count": 1,
-      "tokens": 0,
-      "first_read": "2026-04-26T12:06:55.205Z"
-    },
-    "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/FloatingToolbar.jsx": {
-      "count": 1,
-      "tokens": 0,
-      "first_read": "2026-04-26T12:11:35.458Z"
-    },
     "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/NoteEditor.jsx": {
       "count": 1,
-      "tokens": 3277,
-      "first_read": "2026-04-26T12:12:19.886Z"
+      "tokens": 4091,
+      "first_read": "2026-04-26T18:09:05.087Z"
     },
-    "C:/Users/kabir/OneDrive/Desktop/INK/.gitignore": {
-      "count": 1,
-      "tokens": 91,
-      "first_read": "2026-04-26T12:18:46.588Z"
-    },
-    "C:/Users/kabir/OneDrive/Desktop/INK/data/ai_config.json": {
+    "C:/Users/kabir/OneDrive/Desktop/INK/.claude/launch.json": {
       "count": 1,
       "tokens": 0,
-      "first_read": "2026-04-26T12:20:40.277Z"
+      "first_read": "2026-04-26T23:53:51.167Z"
     }
   },
   "files_written": [
     {
-      "file": "C:/Users/kabir/OneDrive/Desktop/INK/backend/requirements.txt",
-      "action": "create",
-      "tokens": 128,
-      "at": "2026-04-26T11:11:06.066Z"
-    },
-    {
-      "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/store/aiStore.js",
-      "action": "create",
-      "tokens": 1405,
-      "at": "2026-04-26T11:12:09.984Z"
-    },
-    {
-      "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/store/notesStore.js",
-      "action": "create",
-      "tokens": 1539,
-      "at": "2026-04-26T11:12:37.355Z"
-    },
-    {
-      "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/store/tasksStore.js",
-      "action": "create",
-      "tokens": 772,
-      "at": "2026-04-26T11:12:56.214Z"
-    },
-    {
-      "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/ai/AISidebar.jsx",
-      "action": "edit",
-      "tokens": 26,
-      "at": "2026-04-26T11:13:13.163Z"
-    },
-    {
-      "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/ai/AISidebar.jsx",
-      "action": "edit",
-      "tokens": 103,
-      "at": "2026-04-26T11:13:20.198Z"
-    },
-    {
-      "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/ai/AISidebar.jsx",
-      "action": "edit",
-      "tokens": 21,
-      "at": "2026-04-26T11:13:24.827Z"
-    },
-    {
-      "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/ai/AISidebar.jsx",
-      "action": "edit",
-      "tokens": 22,
-      "at": "2026-04-26T11:13:31.905Z"
-    },
-    {
-      "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/ai/AISidebar.jsx",
-      "action": "edit",
-      "tokens": 18,
-      "at": "2026-04-26T11:13:38.842Z"
-    },
-    {
-      "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/ai/AISidebar.jsx",
-      "action": "edit",
-      "tokens": 42,
-      "at": "2026-04-26T11:13:46.209Z"
-    },
-    {
-      "file": "C:/Users/kabir/OneDrive/Desktop/INK/netlify.toml",
-      "action": "create",
-      "tokens": 40,
-      "at": "2026-04-26T11:13:57.253Z"
-    },
-    {
-      "file": "C:/Users/kabir/OneDrive/Desktop/INK/README.md",
-      "action": "create",
-      "tokens": 1492,
-      "at": "2026-04-26T12:07:21.940Z"
-    },
-    {
-      "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/FloatingToolbar.jsx",
-      "action": "edit",
-      "tokens": 1,
-      "at": "2026-04-26T12:12:00.653Z"
-    },
-    {
-      "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/FloatingToolbar.jsx",
-      "action": "edit",
-      "tokens": 77,
-      "at": "2026-04-26T12:12:08.960Z"
-    },
-    {
       "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/NoteEditor.jsx",
-      "action": "edit",
-      "tokens": 0,
-      "at": "2026-04-26T12:12:26.773Z"
-    },
-    {
-      "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/NoteEditor.jsx",
-      "action": "edit",
-      "tokens": 33,
-      "at": "2026-04-26T12:12:32.680Z"
-    },
-    {
-      "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/store/aiStore.js",
-      "action": "edit",
-      "tokens": 18,
-      "at": "2026-04-26T12:19:00.161Z"
-    },
-    {
-      "file": "C:/Users/kabir/OneDrive/Desktop/INK/.gitignore",
-      "action": "edit",
-      "tokens": 19,
-      "at": "2026-04-26T12:25:39.276Z"
+      "action": "create",
+      "tokens": 3921,
+      "at": "2026-04-26T23:53:36.624Z"
     }
   ],
   "edit_counts": {
-    "backend/requirements.txt": 1,
-    "frontend/src/store/aiStore.js": 2,
-    "frontend/src/store/notesStore.js": 1,
-    "frontend/src/store/tasksStore.js": 1,
-    "frontend/src/components/ai/AISidebar.jsx": 6,
-    "netlify.toml": 1,
-    "README.md": 1,
-    "frontend/src/components/editor/FloatingToolbar.jsx": 2,
-    "frontend/src/components/editor/NoteEditor.jsx": 2,
-    ".gitignore": 1
+    "frontend/src/components/editor/NoteEditor.jsx": 1
   },
-  "anatomy_hits": 6,
-  "anatomy_misses": 8,
-  "repeated_reads_warned": 2,
+  "anatomy_hits": 1,
+  "anatomy_misses": 1,
+  "repeated_reads_warned": 0,
   "cerebrum_warnings": 0,
-  "stop_count": 7
+  "stop_count": 2
 }

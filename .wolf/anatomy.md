@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-04-26T12:25:39.243Z
-> Files: 31 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-04-26T23:53:36.610Z
+> Files: 35 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../../.claude/
 
@@ -288,22 +288,23 @@
 
 ## frontend/
 
+- `package.json` — Node.js package manifest (~457 tok)
 - `vite.config.js` (~85 tok)
 
 ## frontend/src/
 
-- `App.jsx` — CenterPanel (~956 tok)
-- `index.css` — Styles: 4 rules, 224 vars (~6942 tok)
+- `App.jsx` — CenterPanel (~994 tok)
+- `index.css` — Styles: 4 rules, 224 vars (~7122 tok)
 
 ## frontend/src/components/ai/
 
-- `AISidebar.jsx` — POPULAR_CATALOG (~8171 tok)
+- `AISidebar.jsx` — POPULAR_CATALOG (~10014 tok)
 
 ## frontend/src/components/editor/
 
-- `EditorToolbar.jsx` — ToolBtn — renders table (~1613 tok)
+- `EditorToolbar.jsx` — ToolBtn (~4076 tok)
 - `FloatingToolbar.jsx` — FloatBtn (~1254 tok)
-- `NoteEditor.jsx` — lowlight (~3176 tok)
+- `NoteEditor.jsx` — lowlight (~3921 tok)
 
 ## frontend/src/components/notes/
 
@@ -312,24 +313,27 @@
 ## frontend/src/components/sidebar/
 
 - `NotesPanel.jsx` — extractText (~3276 tok)
-- `Sidebar.jsx` — NavItem — renders form, modal (~4157 tok)
+- `Sidebar.jsx` — NavItem — renders form, modal (~4418 tok)
 
 ## frontend/src/lib/
 
 - `api.js` — Exports api (~1407 tok)
+- `firebase.js` — Exports firebaseApp, auth, firebaseConfigured (~151 tok)
 
 ## frontend/src/pages/
 
 - `ArchivedView.jsx` — TabButton (~2620 tok)
 - `Calendar.jsx` — WEEKDAYS (~3708 tok)
+- `Dashboard.jsx` — getGreeting (~3099 tok)
 - `Notes.jsx` — SORT_OPTIONS (~1873 tok)
 - `Settings.jsx` — THEME_LABELS (~5219 tok)
 - `TagsView.jsx` — TagsView (~1668 tok)
-- `Tasks.jsx` — PRIORITY_COLORS (~8942 tok)
+- `Tasks.jsx` — PRIORITY_COLORS (~8987 tok)
 
 ## frontend/src/store/
 
-- `aiStore.js` — Exports useAIStore (~1399 tok)
+- `aiStore.js` — Exports useAIStore (~2195 tok)
+- `authStore.js` — Exports useAuthStore (~196 tok)
 - `notesStore.js` — Exports useNotesStore (~1539 tok)
 - `tasksStore.js` — Exports useTasksStore (~772 tok)
 - `uiStore.js` — Exports ACCENT_MAP, useUIStore, toast (~1144 tok)

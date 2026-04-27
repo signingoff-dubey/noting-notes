@@ -272,35 +272,21 @@ function EditorTab() {
 }
 
 function AITab() {
-  const [model, setModel] = useState('mistral:7b-instruct-q4_K_M')
   const [streaming, setStreaming] = useState(true)
   const [memory, setMemory] = useState(true)
-  const [temperature, setTemperature] = useState(7)
 
   return (
     <div className="flex flex-col gap-6">
-      <Section title="Model">
-        <SettingRow label="Active model" description="Ollama model used for AI responses">
-          <select
-            value={model}
-            onChange={e => setModel(e.target.value)}
-            className="font-mono border outline-none transition-colors"
-            style={{
-              fontSize: 'var(--text-xs)',
-              color: 'var(--color-text-primary)',
-              background: 'var(--color-surface-2)',
-              borderColor: 'var(--color-border)',
-              borderRadius: 6,
-              padding: '4px 8px',
-            }}
-          >
-            <option value="mistral:7b-instruct-q4_K_M">mistral:7b-instruct-q4_K_M</option>
-            <option value="llama3:8b">llama3:8b</option>
-            <option value="phi3:mini">phi3:mini</option>
-          </select>
+      <Section title="Provider">
+        <SettingRow label="AI engine" description="Cloud inference via Groq API">
+          <span className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-accent)' }}>
+            Groq
+          </span>
         </SettingRow>
-        <SettingRow label="Temperature" description="Higher = more creative, lower = more precise">
-          <RangeSlider value={temperature} onChange={setTemperature} min={0} max={10} step={1} label="" />
+        <SettingRow label="Model" description="Change model via the AI sidebar dropdown">
+          <span className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
+            llama-3.3-70b-versatile
+          </span>
         </SettingRow>
       </Section>
 
@@ -367,9 +353,9 @@ function DataTab() {
         <div className="flex flex-col gap-2">
           {[
             ['Version', 'v0.1.0'],
-            ['AI Engine', 'Ollama (local)'],
-            ['Storage', 'Local JSON'],
-            ['Built with', 'React + FastAPI'],
+            ['AI Engine', 'Groq (cloud)'],
+            ['Storage', 'localStorage'],
+            ['Built with', 'React + Vite'],
           ].map(([label, val]) => (
             <div key={label} className="flex items-center justify-between py-1.5 border-b last:border-0" style={{ borderColor: 'var(--color-border)' }}>
               <span className="font-body text-sm" style={{ color: 'var(--color-text-secondary)' }}>{label}</span>

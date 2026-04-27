@@ -551,6 +551,7 @@ export function AISidebar() {
   const [installOpen, setInstallOpen] = useState(false)
   const messagesEndRef = useRef(null)
   const imageInputRef = useRef(null)
+  const textareaRef = useRef(null)
 
   useEffect(() => { if (isOpen) fetchModels() }, [isOpen])
 
@@ -597,6 +598,7 @@ export function AISidebar() {
       ? `Note title: ${note.title}\n\nNote content: ${typeof note.content === 'string' ? note.content : JSON.stringify(note.content)}`
       : ''
     sendMessage(msg || 'What do you see in this image?', noteContent, images)
+    setTimeout(() => textareaRef.current?.focus(), 0)
   }
 
   const handleKeyDown = (e) => {
@@ -853,6 +855,7 @@ export function AISidebar() {
             <ImagePlus size={13} strokeWidth={1.5} />
           </button>
           <textarea
+            ref={textareaRef}
             value={input}
             onChange={e => setInput(e.target.value)}
             onKeyDown={handleKeyDown}

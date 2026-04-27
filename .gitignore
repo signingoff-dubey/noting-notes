@@ -43,3 +43,10 @@ npm-debug.log*
 
 # Claude Code internal files
 .claude/
+
+# OpenWolf context files
+.wolf/
+
+# Markdown docs (except README)
+*.md
+!README.md

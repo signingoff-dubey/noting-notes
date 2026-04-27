@@ -199,6 +199,7 @@ export function Dashboard() {
 
   const activeNotes   = notes.filter(n => !n.archived)
   const recentNotes   = getRecentNotes(6)
+  const activeTasks   = tasks.filter(t => !t.archived && t.status !== 'done')
   const upcomingTasks = activeTasks
     .slice()
     .sort((a, b) => {
@@ -208,7 +209,6 @@ export function Dashboard() {
       return new Date(b.created_at) - new Date(a.created_at)
     })
     .slice(0, 6)
-  const activeTasks   = tasks.filter(t => !t.archived && t.status !== 'done')
   const doneTasks     = tasks.filter(t => t.status === 'done')
   const starredNotes  = getFavouriteNotes()
   const archivedNotes = getArchivedNotes()

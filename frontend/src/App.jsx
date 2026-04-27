@@ -84,7 +84,7 @@ export default function App() {
 
       {/* Main content */}
       <main className="flex-1 flex flex-col min-w-0 bg-bg">
-        <ErrorBoundary>
+        <ErrorBoundary key={activePanel}>
           {activeNote
             ? <NoteEditor note={activeNote} onBack={() => setActiveNote(null)} />
             : <CenterPanel panel={activePanel} />

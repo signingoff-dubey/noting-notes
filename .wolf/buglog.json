@@ -320,6 +320,182 @@
       "related_bugs": [],
       "occurrences": 1,
       "last_seen": "2026-04-26T12:19:00.163Z"
+    },
+    {
+      "id": "bug-021",
+      "timestamp": "2026-04-26T17:26:11.733Z",
+      "error_message": "Null/undefined access in ",
+      "file": "frontend/src/components/sidebar/Sidebar.jsx",
+      "root_cause": "Property access on potentially null/undefined value",
+      "fix": "Added null safety (optional chaining or null check)",
+      "tags": [
+        "auto-detected",
+        "null-safety",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-26T17:26:11.733Z"
+    },
+    {
+      "id": "bug-022",
+      "timestamp": "2026-04-26T17:26:52.577Z",
+      "error_message": "Significant refactor of ",
+      "file": "frontend/src/store/aiStore.js",
+      "root_cause": "3 lines replaced/restructured",
+      "fix": "Rewrote 16→28 lines (3 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "js"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-26T17:26:52.577Z"
+    },
+    {
+      "id": "bug-023",
+      "timestamp": "2026-04-26T17:27:12.054Z",
+      "error_message": "Null/undefined access in ",
+      "file": "frontend/src/components/ai/AISidebar.jsx",
+      "root_cause": "Property access on potentially null/undefined value",
+      "fix": "Added null safety (optional chaining or null check) | Also: {/* Image previews */}; {attachedImages.length > 0 && (",
+      "tags": [
+        "auto-detected",
+        "null-safety",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-04-26T17:27:36.690Z"
+    },
+    {
+      "id": "bug-024",
+      "timestamp": "2026-04-26T17:27:23.115Z",
+      "error_message": "Significant refactor of ",
+      "file": "frontend/src/components/ai/AISidebar.jsx",
+      "root_cause": "2 lines replaced/restructured",
+      "fix": "Rewrote 10→28 lines (2 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-26T17:27:23.115Z"
+    },
+    {
+      "id": "bug-025",
+      "timestamp": "2026-04-26T17:37:37.356Z",
+      "error_message": "Missing guard clause",
+      "file": "frontend/src/pages/Dashboard.jsx",
+      "root_cause": "No early return/throw for edge case: a.due_date && !b.due_date",
+      "fix": "Added guard clause: if (a.due_date && !b.due_date)",
+      "tags": [
+        "auto-detected",
+        "guard-clause",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-26T17:37:37.356Z"
+    },
+    {
+      "id": "bug-026",
+      "timestamp": "2026-04-26T17:50:01.610Z",
+      "error_message": "Missing error handling in unknown",
+      "file": "frontend/src/components/editor/NoteEditor.jsx",
+      "root_cause": "Code path had no error handling — exceptions would propagate uncaught",
+      "fix": "Added try/catch block",
+      "tags": [
+        "auto-detected",
+        "error-handling",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-26T17:50:01.610Z"
+    },
+    {
+      "id": "bug-027",
+      "timestamp": "2026-04-26T17:50:13.236Z",
+      "error_message": "Significant refactor of ",
+      "file": "frontend/src/index.css",
+      "root_cause": "3 lines replaced/restructured",
+      "fix": "Rewrote 13→36 lines (3 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "css"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-26T17:50:13.236Z"
+    },
+    {
+      "id": "bug-028",
+      "timestamp": "2026-04-26T17:58:04.657Z",
+      "error_message": "Missing guard clause",
+      "file": "frontend/src/components/editor/NoteEditor.jsx",
+      "root_cause": "No early return/throw for edge case: note",
+      "fix": "Added guard clause: if (note)",
+      "tags": [
+        "auto-detected",
+        "guard-clause",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-26T17:58:04.657Z"
+    },
+    {
+      "id": "bug-029",
+      "timestamp": "2026-04-26T17:58:30.052Z",
+      "error_message": "Significant refactor of ",
+      "file": "frontend/src/components/ai/AISidebar.jsx",
+      "root_cause": "2 lines replaced/restructured",
+      "fix": "Rewrote 30→43 lines (2 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-26T17:58:30.052Z"
+    },
+    {
+      "id": "bug-030",
+      "timestamp": "2026-04-26T17:58:41.038Z",
+      "error_message": "Wrong condition in logic",
+      "file": "frontend/src/components/ai/AISidebar.jsx",
+      "root_cause": "Condition was: if ((!msg && attachedImages.length === 0)",
+      "fix": "Changed to: if (!contextNoteId)",
+      "tags": [
+        "auto-detected",
+        "logic-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-26T17:58:41.038Z"
+    },
+    {
+      "id": "bug-031",
+      "timestamp": "2026-04-26T17:59:28.969Z",
+      "error_message": "CSS fix: background, color, border-radius",
+      "file": "frontend/src/index.css",
+      "root_cause": "background: rgba(255, 230, 0, 0.15) → var(--color-accent-dim); color: inherit → var(--color-accent); border-radius: 1px → 2px",
+      "fix": "Changed background: rgba(255, 230, 0, 0.15) → var(--color-accent-dim); color: inherit → var(--color-accent); border-radius: 1px → 2px",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "css"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-26T17:59:28.969Z"
     }
   ]
 }

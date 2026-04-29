@@ -47,6 +47,3 @@ npm-debug.log*
 # OpenWolf context files
 .wolf/
 
-# Markdown docs (except README)
-*.md
-!README.md

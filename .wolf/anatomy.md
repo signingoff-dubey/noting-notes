@@ -1,17 +1,21 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-04-26T23:53:36.610Z
-> Files: 35 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-04-29T05:08:17.848Z
+> Files: 38 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../../.claude/
 
 
+## ../../../.claude/skills/impeccable/
+
+- `SKILL.md` — Context Gathering Protocol (~5367 tok)
+
 ## ./
 
 - `.gitattributes` — Line endings (~214 tok)
-- `.gitignore` — Git ignore rules (~101 tok)
+- `.gitignore` — Git ignore rules (~110 tok)
 - `netlify.toml` (~38 tok)
-- `README.md` — Project documentation (~1306 tok)
+- `README.md` — Project documentation (~1538 tok)
 - `run.bat` (~1133 tok)
 - `run.sh` (~1446 tok)
 
@@ -293,18 +297,18 @@
 
 ## frontend/src/
 
-- `App.jsx` — CenterPanel (~994 tok)
-- `index.css` — Styles: 4 rules, 224 vars (~7122 tok)
+- `App.jsx` — CenterPanel (~1342 tok)
+- `index.css` — Styles: 4 rules, 224 vars (~7201 tok)
 
 ## frontend/src/components/ai/
 
-- `AISidebar.jsx` — POPULAR_CATALOG (~10014 tok)
+- `AISidebar.jsx` — POPULAR_CATALOG (~10156 tok)
 
 ## frontend/src/components/editor/
 
 - `EditorToolbar.jsx` — ToolBtn (~4076 tok)
-- `FloatingToolbar.jsx` — FloatBtn (~1254 tok)
-- `NoteEditor.jsx` — lowlight (~3921 tok)
+- `FloatingToolbar.jsx` — GROQ_BASE_URL (~3435 tok)
+- `NoteEditor.jsx` — lowlight (~8853 tok)
 
 ## frontend/src/components/notes/
 
@@ -312,8 +316,16 @@
 
 ## frontend/src/components/sidebar/
 
-- `NotesPanel.jsx` — extractText (~3276 tok)
-- `Sidebar.jsx` — NavItem — renders form, modal (~4418 tok)
+- `NotesPanel.jsx` — extractText (~3516 tok)
+- `Sidebar.jsx` — NavItem — renders form, modal (~4640 tok)
+
+## frontend/src/components/ui/
+
+- `Dropdown.jsx` — Dropdown (~1021 tok)
+
+## frontend/src/components/viewer/
+
+- `FileViewer.jsx` — PdfViewer — renders table (~4268 tok)
 
 ## frontend/src/lib/
 
@@ -323,17 +335,17 @@
 ## frontend/src/pages/
 
 - `ArchivedView.jsx` — TabButton (~2620 tok)
-- `Calendar.jsx` — WEEKDAYS (~3708 tok)
-- `Dashboard.jsx` — getGreeting (~3099 tok)
+- `Calendar.jsx` — WEEKDAYS (~4723 tok)
+- `Dashboard.jsx` — getGreeting (~2898 tok)
 - `Notes.jsx` — SORT_OPTIONS (~1873 tok)
-- `Settings.jsx` — THEME_LABELS (~5219 tok)
+- `Settings.jsx` — useEditorSettings (~5280 tok)
 - `TagsView.jsx` — TagsView (~1668 tok)
 - `Tasks.jsx` — PRIORITY_COLORS (~8987 tok)
 
 ## frontend/src/store/
 
-- `aiStore.js` — Exports useAIStore (~2195 tok)
+- `aiStore.js` — Exports useAIStore (~2213 tok)
 - `authStore.js` — Exports useAuthStore (~196 tok)
-- `notesStore.js` — Exports useNotesStore (~1539 tok)
+- `notesStore.js` — Exports useNotesStore (~1866 tok)
 - `tasksStore.js` — Exports useTasksStore (~772 tok)
-- `uiStore.js` — Exports ACCENT_MAP, useUIStore, toast (~1144 tok)
+- `uiStore.js` — Exports ACCENT_MAP, useUIStore, toast (~1609 tok)

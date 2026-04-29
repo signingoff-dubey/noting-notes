@@ -496,6 +496,550 @@
       "related_bugs": [],
       "occurrences": 1,
       "last_seen": "2026-04-26T17:59:28.969Z"
+    },
+    {
+      "id": "bug-032",
+      "timestamp": "2026-04-27T00:13:22.022Z",
+      "error_message": "Null/undefined access in ",
+      "file": "frontend/src/components/ai/AISidebar.jsx",
+      "root_cause": "Property access on potentially null/undefined value",
+      "fix": "Added null safety (optional chaining or null check)",
+      "tags": [
+        "auto-detected",
+        "null-safety",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T00:13:22.022Z"
+    },
+    {
+      "id": "bug-033",
+      "timestamp": "2026-04-27T00:23:50.580Z",
+      "error_message": "CSS fix: fontSize",
+      "file": "frontend/src/pages/Settings.jsx",
+      "root_cause": "fontSize: 'var(--text-xs)', → 'var(--text-xs)', color: 'var(--color-text-muted)'",
+      "fix": "Changed fontSize: 'var(--text-xs)', → 'var(--text-xs)', color: 'var(--color-text-muted)'",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T00:23:50.580Z"
+    },
+    {
+      "id": "bug-034",
+      "timestamp": "2026-04-27T00:26:32.661Z",
+      "error_message": "CSS fix: attributes",
+      "file": "frontend/src/components/editor/NoteEditor.jsx",
+      "root_cause": "attributes: { class: 'editor-content focus:outline-none' → {",
+      "fix": "Changed attributes: { class: 'editor-content focus:outline-none' → {",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T00:26:32.661Z"
+    },
+    {
+      "id": "bug-035",
+      "timestamp": "2026-04-27T00:26:42.804Z",
+      "error_message": "Significant refactor of ",
+      "file": "frontend/src/components/editor/NoteEditor.jsx",
+      "root_cause": "2 lines replaced/restructured",
+      "fix": "Rewrote 12→51 lines (2 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T00:26:42.804Z"
+    },
+    {
+      "id": "bug-036",
+      "timestamp": "2026-04-27T00:31:21.968Z",
+      "error_message": "CSS fix: font-size, line-height",
+      "file": "frontend/src/index.css",
+      "root_cause": "font-size: var(--text-md) → var(--editor-font-size, var(--text-md)); line-height: 1.8 → var(--editor-line-height, 1.8)",
+      "fix": "Changed font-size: var(--text-md) → var(--editor-font-size, var(--text-md)); line-height: 1.8 → var(--editor-line-height, 1.8)",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "css"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T00:31:21.968Z"
+    },
+    {
+      "id": "bug-037",
+      "timestamp": "2026-04-27T00:32:47.110Z",
+      "error_message": "CSS fix: word_count",
+      "file": "frontend/src/components/editor/NoteEditor.jsx",
+      "root_cause": "word_count: editor?.storage?.characterCount?.words() ?? 0 → editorRef.current?.storage?.characterCount?.words() ?? 0",
+      "fix": "Changed word_count: editor?.storage?.characterCount?.words() ?? 0 → editorRef.current?.storage?.characterCount?.words() ?? 0",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T00:32:47.110Z"
+    },
+    {
+      "id": "bug-038",
+      "timestamp": "2026-04-27T00:54:34.991Z",
+      "error_message": "CSS fix: duration, background",
+      "file": "frontend/src/components/editor/FloatingToolbar.jsx",
+      "root_cause": "duration: 100, placement: 'top' → 100, placement: 'top', maxWidth: 'none'; background: 'var(--color-surface)', borderColor: 'var(--color-border-strong)', borderRadius: 8 → 'var(--color-surface)', borderColor: 'var(--color-border-strong)', borderRadius: 8, overflow: 'visible'",
+      "fix": "Changed duration: 100, placement: 'top' → 100, placement: 'top', maxWidth: 'none'; background: 'var(--color-surface)', borderColor: 'var(--color-border-strong)', borderRadius: 8 → 'var(--color-surface)', borderColor: 'var(--color-border-strong)', borderRadius: 8, overflow: 'visible'",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T00:54:34.991Z"
+    },
+    {
+      "id": "bug-039",
+      "timestamp": "2026-04-27T01:02:44.989Z",
+      "error_message": "Incorrect value in code",
+      "file": "frontend/src/components/editor/FloatingToolbar.jsx",
+      "root_cause": "Had \"flex items-center h-[34px] border shadow-2xl whit",
+      "fix": "Changed to \"flex items-center h-[34px] border shadow-2xl whit",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T01:02:44.989Z"
+    },
+    {
+      "id": "bug-040",
+      "timestamp": "2026-04-27T01:03:54.107Z",
+      "error_message": "CSS fix: duration",
+      "file": "frontend/src/components/editor/FloatingToolbar.jsx",
+      "root_cause": "duration: 100, placement: 'top', maxWidth: 'none' → 100,",
+      "fix": "Changed duration: 100, placement: 'top', maxWidth: 'none' → 100,",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T01:03:54.107Z"
+    },
+    {
+      "id": "bug-041",
+      "timestamp": "2026-04-27T10:02:13.437Z",
+      "error_message": "CSS fix: Bottom",
+      "file": "frontend/src/components/sidebar/Sidebar.jsx",
+      "root_cause": "Bottom: Vault + Settings ── */ → Upgrade + Auth + Vault + Settings ── */",
+      "fix": "Changed Bottom: Vault + Settings ── */ → Upgrade + Auth + Vault + Settings ── */",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T10:02:13.437Z"
+    },
+    {
+      "id": "bug-042",
+      "timestamp": "2026-04-27T10:12:21.273Z",
+      "error_message": "Significant refactor of ",
+      "file": "frontend/src/components/sidebar/NotesPanel.jsx",
+      "root_cause": "3 lines replaced/restructured",
+      "fix": "Rewrote 14→29 lines (3 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T10:12:21.273Z"
+    },
+    {
+      "id": "bug-043",
+      "timestamp": "2026-04-27T10:12:34.776Z",
+      "error_message": "Null/undefined access in ",
+      "file": "frontend/src/components/sidebar/NotesPanel.jsx",
+      "root_cause": "Property access on potentially null/undefined value",
+      "fix": "Added null safety (optional chaining or null check)",
+      "tags": [
+        "auto-detected",
+        "null-safety",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T10:12:34.776Z"
+    },
+    {
+      "id": "bug-044",
+      "timestamp": "2026-04-27T10:15:23.256Z",
+      "error_message": "Missing error handling in unknown",
+      "file": "frontend/src/components/editor/NoteEditor.jsx",
+      "root_cause": "Code path had no error handling — exceptions would propagate uncaught",
+      "fix": "Added try/catch block",
+      "tags": [
+        "auto-detected",
+        "error-handling",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T10:15:23.256Z"
+    },
+    {
+      "id": "bug-045",
+      "timestamp": "2026-04-27T10:17:58.608Z",
+      "error_message": "Missing error handling in saveFolders",
+      "file": "frontend/src/store/notesStore.js",
+      "root_cause": "Code path had no error handling — exceptions would propagate uncaught",
+      "fix": "Added try/catch block",
+      "tags": [
+        "auto-detected",
+        "error-handling",
+        "js"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T10:17:58.608Z"
+    },
+    {
+      "id": "bug-046",
+      "timestamp": "2026-04-27T10:18:06.849Z",
+      "error_message": "Null/undefined access in ",
+      "file": "frontend/src/store/notesStore.js",
+      "root_cause": "Property access on potentially null/undefined value",
+      "fix": "Added null safety (optional chaining or null check)",
+      "tags": [
+        "auto-detected",
+        "null-safety",
+        "js"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T10:18:06.849Z"
+    },
+    {
+      "id": "bug-047",
+      "timestamp": "2026-04-27T10:18:41.110Z",
+      "error_message": "Null/undefined access in ",
+      "file": "frontend/src/components/editor/NoteEditor.jsx",
+      "root_cause": "Property access on potentially null/undefined value",
+      "fix": "Added null safety (optional chaining or null check) | Also: {/* Import button */}; onClick={() => importRef.current?.click()}",
+      "tags": [
+        "auto-detected",
+        "null-safety",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-04-27T10:19:43.203Z"
+    },
+    {
+      "id": "bug-048",
+      "timestamp": "2026-04-27T10:18:46.167Z",
+      "error_message": "Wrong reference: MAX_VERSIONS should be 10",
+      "file": "frontend/src/components/editor/NoteEditor.jsx",
+      "root_cause": "Used \"MAX_VERSIONS\" instead of \"10\"",
+      "fix": "Changed MAX_VERSIONS → 10",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T10:18:46.167Z"
+    },
+    {
+      "id": "bug-049",
+      "timestamp": "2026-04-27T10:19:31.445Z",
+      "error_message": "Missing guard clause",
+      "file": "frontend/src/components/editor/NoteEditor.jsx",
+      "root_cause": "No early return/throw for edge case: !editor",
+      "fix": "Added guard clause: if (!editor)",
+      "tags": [
+        "auto-detected",
+        "guard-clause",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T10:19:31.445Z"
+    },
+    {
+      "id": "bug-050",
+      "timestamp": "2026-04-27T10:21:43.110Z",
+      "error_message": "Missing await",
+      "file": "frontend/src/pages/Calendar.jsx",
+      "root_cause": "Async call without await — returned Promise instead of value",
+      "fix": "Added await to async call",
+      "tags": [
+        "auto-detected",
+        "async-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T10:21:43.110Z"
+    },
+    {
+      "id": "bug-051",
+      "timestamp": "2026-04-27T10:21:55.141Z",
+      "error_message": "CSS fix: fontSize",
+      "file": "frontend/src/pages/Calendar.jsx",
+      "root_cause": "fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' → 11, background: 'var(--color-accent)', color: 'var(--color-bg)'",
+      "fix": "Changed fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' → 11, background: 'var(--color-accent)', color: 'var(--color-bg)'",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T10:21:55.141Z"
+    },
+    {
+      "id": "bug-052",
+      "timestamp": "2026-04-27T10:22:33.922Z",
+      "error_message": "Missing guard clause",
+      "file": "frontend/src/App.jsx",
+      "root_cause": "No early return/throw for edge case: !('Notification' in window",
+      "fix": "Added guard clause: if (!('Notification' in window)",
+      "tags": [
+        "auto-detected",
+        "guard-clause",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T10:22:33.922Z"
+    },
+    {
+      "id": "bug-053",
+      "timestamp": "2026-04-27T10:27:10.934Z",
+      "error_message": "Missing await",
+      "file": "frontend/src/components/editor/NoteEditor.jsx",
+      "root_cause": "Async call without await — returned Promise instead of value",
+      "fix": "Added await to async call",
+      "tags": [
+        "auto-detected",
+        "async-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T10:27:10.934Z"
+    },
+    {
+      "id": "bug-054",
+      "timestamp": "2026-04-27T10:27:27.007Z",
+      "error_message": "Null/undefined access in ",
+      "file": "frontend/src/components/editor/NoteEditor.jsx",
+      "root_cause": "Property access on potentially null/undefined value",
+      "fix": "Added null safety (optional chaining or null check)",
+      "tags": [
+        "auto-detected",
+        "null-safety",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T10:27:27.007Z"
+    },
+    {
+      "id": "bug-055",
+      "timestamp": "2026-04-27T10:30:11.955Z",
+      "error_message": "Wrong condition in logic",
+      "file": "frontend/src/store/aiStore.js",
+      "root_cause": "Condition was: if (writeMatch)",
+      "fix": "Changed to: if (writeMatch && userRequestedWrite)",
+      "tags": [
+        "auto-detected",
+        "logic-fix",
+        "js"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T10:30:11.955Z"
+    },
+    {
+      "id": "bug-056",
+      "timestamp": "2026-04-27T10:30:43.351Z",
+      "error_message": "CSS fix: hover",
+      "file": "frontend/src/components/ui/Dropdown.jsx",
+      "root_cause": "hover: bg-surface-hover', → bg-surface-hover truncate block',",
+      "fix": "Changed hover: bg-surface-hover', → bg-surface-hover truncate block',",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T10:30:43.351Z"
+    },
+    {
+      "id": "bug-057",
+      "timestamp": "2026-04-27T10:30:47.793Z",
+      "error_message": "Incorrect value in code",
+      "file": "frontend/src/components/ai/AISidebar.jsx",
+      "root_cause": "Had \"relative flex-1\"",
+      "fix": "Changed to \"relative w-full min-w-0\"",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T10:30:47.793Z"
+    },
+    {
+      "id": "bug-058",
+      "timestamp": "2026-04-27T10:31:01.431Z",
+      "error_message": "Incorrect value in code",
+      "file": "frontend/src/components/viewer/FileViewer.jsx",
+      "root_cause": "Had 'react-pdf/dist/Page/AnnotationLayer.css'",
+      "fix": "Changed to 'react-pdf/dist/esm/Page/AnnotationLayer.css'",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T10:31:01.431Z"
+    },
+    {
+      "id": "bug-059",
+      "timestamp": "2026-04-27T10:32:19.849Z",
+      "error_message": "Missing error handling in PptxViewer",
+      "file": "frontend/src/components/viewer/FileViewer.jsx",
+      "root_cause": "Code path had no error handling — exceptions would propagate uncaught",
+      "fix": "Added try/catch block",
+      "tags": [
+        "auto-detected",
+        "error-handling",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T10:32:19.849Z"
+    },
+    {
+      "id": "bug-060",
+      "timestamp": "2026-04-27T10:39:57.201Z",
+      "error_message": "Wrong reference: useUIStore should be deepContrast",
+      "file": "frontend/src/pages/Settings.jsx",
+      "root_cause": "Used \"useUIStore\" instead of \"deepContrast\"",
+      "fix": "Changed useUIStore → deepContrast",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-27T10:39:57.201Z"
+    },
+    {
+      "id": "bug-061",
+      "timestamp": "2026-04-29T04:06:56.546Z",
+      "error_message": "CSS fix: outline, box-shadow",
+      "file": "frontend/src/index.css",
+      "root_cause": "outline: none !important → none; box-shadow: none !important → none",
+      "fix": "Changed outline: none !important → none; box-shadow: none !important → none",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "css"
+      ],
+      "related_bugs": [],
+      "occurrences": 3,
+      "last_seen": "2026-04-29T04:07:09.655Z"
+    },
+    {
+      "id": "bug-062",
+      "timestamp": "2026-04-29T04:07:17.427Z",
+      "error_message": "Wrong reference: 999999 should be 767676",
+      "file": "frontend/src/index.css",
+      "root_cause": "Used \"999999\" instead of \"767676\"",
+      "fix": "Changed 999999 → 767676",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "css"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-29T04:07:17.427Z"
+    },
+    {
+      "id": "bug-063",
+      "timestamp": "2026-04-29T04:07:26.121Z",
+      "error_message": "Significant refactor of ",
+      "file": "frontend/src/components/sidebar/Sidebar.jsx",
+      "root_cause": "3 lines replaced/restructured",
+      "fix": "Rewrote 10→8 lines (3 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-29T04:07:26.121Z"
+    },
+    {
+      "id": "bug-064",
+      "timestamp": "2026-04-29T04:07:41.623Z",
+      "error_message": "CSS fix: background, border",
+      "file": "frontend/src/components/ai/AISidebar.jsx",
+      "root_cause": "background: 'oklch(72% 0.17 65 / 0.08)', → 'var(--color-accent-dim)',; border: '1px solid oklch(72% 0.17 65 / 0.25)', → '1px solid color-mix(in oklch, var(--color-accent) 25%, transparent)',",
+      "fix": "Changed background: 'oklch(72% 0.17 65 / 0.08)', → 'var(--color-accent-dim)',; border: '1px solid oklch(72% 0.17 65 / 0.25)', → '1px solid color-mix(in oklch, var(--color-accent) 25%, transparent)',",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-29T04:07:41.623Z"
+    },
+    {
+      "id": "bug-065",
+      "timestamp": "2026-04-29T04:07:53.151Z",
+      "error_message": "CSS fix: fontFamily, fontWeight, letterSpacing",
+      "file": "frontend/src/pages/Dashboard.jsx",
+      "root_cause": "fontFamily: 'var(--font-body)', → 'var(--font-display)',; fontWeight: 500, → 700,; letterSpacing: '-0.02em', → '-0.03em',",
+      "fix": "Changed fontFamily: 'var(--font-body)', → 'var(--font-display)',; fontWeight: 500, → 700,; letterSpacing: '-0.02em', → '-0.03em',",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-29T04:07:53.151Z"
     }
   ]
 }

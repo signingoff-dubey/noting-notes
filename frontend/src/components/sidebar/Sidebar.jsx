@@ -21,6 +21,7 @@ function NavItem({ icon, label, active, onClick, badge }) {
   return (
     <button
       onClick={onClick}
+      aria-current={active ? 'page' : undefined}
       className={cn('ink-nav-item', active && 'active')}
     >
       <span className="shrink-0" style={{ color: active ? 'var(--color-text-primary)' : 'var(--color-text-muted)' }}>
@@ -40,6 +41,7 @@ function SectionLabel({ label, collapsible, collapsed, onToggle }) {
   return (
     <button
       onClick={collapsible ? onToggle : undefined}
+      aria-expanded={collapsible ? !collapsed : undefined}
       className="flex items-center gap-1 w-full px-3 py-2 group"
       style={{ cursor: collapsible ? 'pointer' : 'default', background: 'none', border: 'none' }}
     >
@@ -421,8 +423,40 @@ export function Sidebar() {
         )}
       </div>
 
-      {/* ── Bottom: Vault + Settings ── */}
+      {/* ── Bottom: Upgrade + Auth + Vault + Settings ── */}
       <div className="flex flex-col gap-0.5 px-2 py-2 shrink-0">
+        {/* Upgrade to Pro */}
+        <button
+          className="w-full flex items-center gap-2 px-3 py-2 rounded-lg transition-opacity hover:opacity-75"
+          style={{
+            background: 'var(--color-accent-dim)',
+            border: '1px solid var(--color-accent)33',
+          }}
+        >
+          <Sparkles size={13} strokeWidth={1.5} style={{ color: 'var(--color-accent)', flexShrink: 0 }} />
+          <span
+            style={{
+              fontSize: 12,
+              fontWeight: 700,
+              color: 'var(--color-accent)',
+              letterSpacing: '0.02em',
+            }}
+          >
+            Upgrade to Pro
+          </span>
+        </button>
+
+        {/* Sign in / Sign out */}
+        <NavItem
+          icon={user
+            ? <LogOut size={14} strokeWidth={1.5} />
+            : <LogIn size={14} strokeWidth={1.5} />
+          }
+          label={user ? 'Sign out' : 'Sign in / Sign up'}
+          active={false}
+          onClick={user ? authSignOut : signIn}
+        />
+
         <NavItem
           icon={isUnlocked
             ? <Unlock size={14} strokeWidth={1.5} />
@@ -438,17 +472,6 @@ export function Sidebar() {
           active={activePanel === 'settings'}
           onClick={() => setActivePanel('settings')}
         />
-        {firebaseConfigured && (
-          <NavItem
-            icon={user
-              ? <LogOut size={14} strokeWidth={1.5} />
-              : <LogIn size={14} strokeWidth={1.5} />
-            }
-            label={user ? 'Sign out' : 'Sign in with Google'}
-            active={false}
-            onClick={user ? authSignOut : signIn}
-          />
-        )}
       </div>
 
       <VaultModal

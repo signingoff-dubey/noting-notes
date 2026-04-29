@@ -3,6 +3,8 @@ import { nanoid } from 'nanoid'
 
 const NOTES_KEY = 'ink_notes'
 const FOLDERS_KEY = 'ink_folders'
+const VERSIONS_KEY = 'ink_versions'
+const MAX_VERSIONS = 10
 
 function extractText(content) {
   if (!content) return ''
@@ -31,6 +33,31 @@ function loadFolders() {
 
 function saveFolders(folders) {
   localStorage.setItem(FOLDERS_KEY, JSON.stringify(folders))
+}
+
+function loadVersions(noteId) {
+  try {
+    const all = JSON.parse(localStorage.getItem(VERSIONS_KEY) || '{}')
+    return all[noteId] || []
+  } catch { return [] }
+}
+
+function saveVersion(noteId, content, title) {
+  try {
+    const all = JSON.parse(localStorage.getItem(VERSIONS_KEY) || '{}')
+    const versions = all[noteId] || []
+    versions.unshift({ ts: new Date().toISOString(), content, title })
+    all[noteId] = versions.slice(0, MAX_VERSIONS)
+    localStorage.setItem(VERSIONS_KEY, JSON.stringify(all))
+  } catch {}
+}
+
+function deleteVersions(noteId) {
+  try {
+    const all = JSON.parse(localStorage.getItem(VERSIONS_KEY) || '{}')
+    delete all[noteId]
+    localStorage.setItem(VERSIONS_KEY, JSON.stringify(all))
+  } catch {}
 }
 
 export const useNotesStore = create((set, get) => ({
@@ -86,6 +113,10 @@ export const useNotesStore = create((set, get) => ({
 
   updateNote: async (id, data) => {
     set({ isSaving: true })
+    const existing = get().notes.find(n => n.id === id)
+    if (data.content !== undefined && existing) {
+      saveVersion(id, existing.content, existing.title)
+    }
     const updated = { ...data, updated_at: new Date().toISOString() }
     const notes = get().notes.map(n => n.id === id ? { ...n, ...updated } : n)
     saveNotes(notes)
@@ -99,12 +130,19 @@ export const useNotesStore = create((set, get) => ({
   },
 
   deleteNote: async (id) => {
+    deleteVersions(id)
     const notes = get().notes.filter(n => n.id !== id)
     saveNotes(notes)
     set(state => ({
       notes,
       activeNote: state.activeNote?.id === id ? null : state.activeNote,
     }))
+  },
+
+  getVersions: (noteId) => loadVersions(noteId),
+
+  restoreVersion: async (noteId, content) => {
+    await get().updateNote(noteId, { content })
   },
 
   createFolder: async (name, parentId = null) => {

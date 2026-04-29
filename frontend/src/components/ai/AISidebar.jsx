@@ -21,8 +21,8 @@ function NoLLMBanner({ onInstall, onAddKey }) {
     <div
       className="mx-3 mt-3 mb-1 flex items-center gap-3 px-3 py-2.5 rounded-lg"
       style={{
-        background: 'oklch(72% 0.17 65 / 0.08)',
-        border: '1px solid oklch(72% 0.17 65 / 0.25)',
+        background: 'var(--color-accent-dim)',
+        border: '1px solid color-mix(in oklch, var(--color-accent) 25%, transparent)',
       }}
     >
       <AlertTriangle size={14} strokeWidth={1.5} style={{ color: 'var(--color-accent)', flexShrink: 0 }} />
@@ -298,7 +298,7 @@ function ModelDropdown({ models, activeModel, apiConfig, onSelectModel, onCustom
   const displayLabel = apiConfig.model || activeModel || 'Select model'
 
   return (
-    <div ref={ref} className="relative flex-1">
+    <div ref={ref} className="relative w-full min-w-0">
       <button
         onClick={() => setOpen(o => !o)}
         className="flex items-center gap-1.5 w-full px-2.5 h-7 rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
@@ -587,6 +587,8 @@ export function AISidebar() {
     requestNoteWrite(content)
   }
 
+  const WRITE_INTENT_RE = /\b(add|write|insert|append|put)\b.{0,30}\b(to|into|in|on)\b.{0,20}\bnote\b|\badd this\b|\bsave (this|it) to/i
+
   const handleSend = () => {
     const msg = input.trim()
     if ((!msg && attachedImages.length === 0) || isStreaming) return
@@ -597,7 +599,8 @@ export function AISidebar() {
     const noteContent = note
       ? `Note title: ${note.title}\n\nNote content: ${typeof note.content === 'string' ? note.content : JSON.stringify(note.content)}`
       : ''
-    sendMessage(msg || 'What do you see in this image?', noteContent, images)
+    const userRequestedWrite = WRITE_INTENT_RE.test(msg)
+    sendMessage(msg || 'What do you see in this image?', noteContent, images, userRequestedWrite)
     setTimeout(() => textareaRef.current?.focus(), 0)
   }
 
@@ -685,22 +688,24 @@ export function AISidebar() {
 
         {/* Model + Context selectors */}
         <div className="flex items-center gap-2 px-3 py-2 border-b border-border shrink-0">
-          <ModelDropdown
-            models={models}
-            activeModel={activeModel}
-            apiConfig={apiConfig}
-            onSelectModel={(id) => {
-              setModel(id)
-            }}
-            onCustomAPI={() => setCustomAPIOpen(true)}
-          />
-          <Select
-            value={contextNoteId || ''}
-            onChange={(v) => setContextNote(v || null)}
-            options={noteOptions}
-            placeholder="No context"
-            className="flex-1"
-          />
+          <div className="flex-1 min-w-0">
+            <ModelDropdown
+              models={models}
+              activeModel={activeModel}
+              apiConfig={apiConfig}
+              onSelectModel={(id) => { setModel(id) }}
+              onCustomAPI={() => setCustomAPIOpen(true)}
+            />
+          </div>
+          <div className="flex-1 min-w-0">
+            <Select
+              value={contextNoteId || ''}
+              onChange={(v) => setContextNote(v || null)}
+              options={noteOptions}
+              placeholder="No context"
+              className="w-full"
+            />
+          </div>
         </div>
 
         {/* Quick actions */}

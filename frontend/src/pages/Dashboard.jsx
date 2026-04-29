@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { FileText, CheckSquare, Star, TrendingUp, ArrowRight, Clock } from 'lucide-react'
+import { FileText, CheckSquare, Star, ArrowRight, Clock } from 'lucide-react'
 import { format, isToday, isTomorrow, isPast, formatDistanceToNow } from 'date-fns'
 import { useNotesStore } from '@/store/notesStore'
 import { useTasksStore } from '@/store/tasksStore'
@@ -13,52 +13,34 @@ function getGreeting() {
   return 'Good evening'
 }
 
-function StatCard({ icon, label, value, sub, accent }) {
+function StatCard({ label, value, sub, accent }) {
   return (
     <div
-      className="ink-stat-card flex flex-col gap-3"
-      style={{
-        borderColor: accent ? 'var(--color-accent)' : 'var(--color-border)',
-        background: accent ? 'var(--color-accent-dim)' : 'var(--color-surface)',
-      }}
+      className="flex-1 flex flex-col justify-between py-4 px-5 [&:not(:last-child)]:border-r"
+      style={{ borderColor: 'var(--color-border)' }}
     >
-      <div className="flex items-center justify-between">
-        <span
-          className="w-8 h-8 flex items-center justify-center rounded-lg"
-          style={{
-            background: accent ? 'var(--color-accent-dim)' : 'var(--color-surface-2)',
-            color: accent ? 'var(--color-accent)' : 'var(--color-text-secondary)',
-          }}
-        >
-          {icon}
-        </span>
+      <span
+        className="font-mono uppercase tracking-widest"
+        style={{ fontSize: 9, color: accent ? 'var(--color-accent)' : 'var(--color-text-muted)' }}
+      >
+        {label}
+      </span>
+      <div className="mt-2">
         <span
           style={{
             fontFamily: 'var(--font-display)',
-            fontSize: 32,
+            fontSize: 36,
             fontWeight: 700,
             color: accent ? 'var(--color-accent)' : 'var(--color-text-primary)',
             lineHeight: 1,
-            letterSpacing: '-0.02em',
+            letterSpacing: '-0.03em',
           }}
         >
           {value}
         </span>
-      </div>
-      <div>
-        <p
-          style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: 'var(--text-sm)',
-            fontWeight: 500,
-            color: accent ? 'var(--color-accent)' : 'var(--color-text-primary)',
-          }}
-        >
-          {label}
-        </p>
         {sub && (
           <p
-            className="font-mono mt-0.5"
+            className="font-mono mt-1"
             style={{ fontSize: 10, color: accent ? 'var(--color-accent)' : 'var(--color-text-muted)' }}
           >
             {sub}
@@ -235,28 +217,27 @@ export function Dashboard() {
       <div className="ink-content-area">
         <div className="ink-content-inner">
 
-          {/* Stats row */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+          {/* Stats strip */}
+          <div
+            className="flex mb-8 overflow-hidden rounded-xl"
+            style={{ border: '1px solid var(--color-border)', background: 'var(--color-surface)' }}
+          >
             <StatCard
-              icon={<FileText size={15} strokeWidth={1.5} />}
               label="Notes"
               value={activeNotes.length}
               sub={`${archivedNotes.length} archived`}
             />
             <StatCard
-              icon={<CheckSquare size={15} strokeWidth={1.5} />}
               label="Open Tasks"
               value={activeTasks.length}
               sub={`${doneTasks.length} done`}
             />
             <StatCard
-              icon={<Star size={15} strokeWidth={1.5} />}
               label="Favourites"
               value={starredNotes.length}
-              sub="starred notes"
+              sub="starred"
             />
             <StatCard
-              icon={<TrendingUp size={15} strokeWidth={1.5} />}
               label="Words"
               value={totalWords > 999 ? `${(totalWords / 1000).toFixed(1)}k` : totalWords}
               sub="total written"

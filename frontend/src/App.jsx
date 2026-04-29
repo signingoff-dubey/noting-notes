@@ -1,8 +1,9 @@
-import { useEffect, useCallback } from 'react'
+import { useEffect, useCallback, useRef } from 'react'
 import { useUIStore } from '@/store/uiStore'
 import { useNotesStore } from '@/store/notesStore'
 import { useAIStore } from '@/store/aiStore'
 import { useAuthStore } from '@/store/authStore'
+import { useTasksStore } from '@/store/tasksStore'
 import { Sidebar } from '@/components/sidebar/Sidebar'
 import { NotesPanel } from '@/components/sidebar/NotesPanel'
 import { NoteEditor } from '@/components/editor/NoteEditor'
@@ -38,9 +39,41 @@ export default function App() {
   const { createNote, setActiveNote, activeNote } = useNotesStore()
   const { toggle: toggleAI } = useAIStore()
   const { init: initAuth } = useAuthStore()
+  const tasks = useTasksStore(s => s.tasks)
+  const notifiedRef = useRef(new Set())
 
   useEffect(() => { initTheme() }, [])
   useEffect(() => { initAuth() }, [])
+
+  /* Browser notifications for tasks due within the next minute */
+  useEffect(() => {
+    if (!('Notification' in window)) return
+    if (Notification.permission === 'default') Notification.requestPermission()
+
+    const check = () => {
+      if (Notification.permission !== 'granted') return
+      const now = Date.now()
+      tasks.forEach(task => {
+        if (!task.due_date || task.status === 'done' || task.archived) return
+        const due = new Date(task.due_date).getTime()
+        const diff = due - now
+        if (diff > 0 && diff <= 60_000 && !notifiedRef.current.has(task.id)) {
+          notifiedRef.current.add(task.id)
+          new Notification('Task due soon', {
+            body: task.title,
+            icon: '/favicon.ico',
+            tag: task.id,
+          })
+        }
+        /* Clean up expired task IDs once overdue by > 5 min */
+        if (diff < -300_000) notifiedRef.current.delete(task.id)
+      })
+    }
+
+    check()
+    const interval = setInterval(check, 60_000)
+    return () => clearInterval(interval)
+  }, [tasks])
 
   const handleKeydown = useCallback((e) => {
     const tag = document.activeElement?.tagName

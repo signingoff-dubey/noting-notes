@@ -1040,6 +1040,38 @@
       "related_bugs": [],
       "occurrences": 1,
       "last_seen": "2026-04-29T04:07:53.151Z"
+    },
+    {
+      "id": "bug-066",
+      "timestamp": "2026-04-29T05:21:46.059Z",
+      "error_message": "Wrong reference: Sum should be Summary",
+      "file": "frontend/src/components/editor/FloatingToolbar.jsx",
+      "root_cause": "Used \"Sum\" instead of \"Summary\"",
+      "fix": "Changed Sum → Summary",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-29T05:21:46.059Z"
+    },
+    {
+      "id": "bug-067",
+      "timestamp": "2026-04-29T05:21:51.564Z",
+      "error_message": "Incorrect value in code",
+      "file": "frontend/src/components/editor/FloatingToolbar.jsx",
+      "root_cause": "Had \"px-3 pt-2 pb-1\"",
+      "fix": "Changed to \"px-3 pt-2 pb-1 whitespace-normal\"",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-29T05:21:51.564Z"
     }
   ]
 }

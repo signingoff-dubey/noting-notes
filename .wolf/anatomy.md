@@ -1,6 +1,6 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-04-29T05:08:17.848Z
+> Auto-maintained by OpenWolf. Last scanned: 2026-04-29T05:21:51.547Z
 > Files: 38 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../../.claude/
@@ -307,7 +307,7 @@
 ## frontend/src/components/editor/
 
 - `EditorToolbar.jsx` — ToolBtn (~4076 tok)
-- `FloatingToolbar.jsx` — GROQ_BASE_URL (~3435 tok)
+- `FloatingToolbar.jsx` — GROQ_BASE_URL (~3459 tok)
 - `NoteEditor.jsx` — lowlight (~8853 tok)
 
 ## frontend/src/components/notes/

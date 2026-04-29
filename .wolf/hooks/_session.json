@@ -28,7 +28,7 @@
       "first_read": "2026-04-29T03:31:36.788Z"
     },
     "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/FloatingToolbar.jsx": {
-      "count": 1,
+      "count": 2,
       "tokens": 3435,
       "first_read": "2026-04-29T03:31:45.862Z"
     },
@@ -184,6 +184,24 @@
       "action": "edit",
       "tokens": 0,
       "at": "2026-04-29T05:08:17.895Z"
+    },
+    {
+      "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/FloatingToolbar.jsx",
+      "action": "edit",
+      "tokens": 169,
+      "at": "2026-04-29T05:21:42.474Z"
+    },
+    {
+      "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/FloatingToolbar.jsx",
+      "action": "edit",
+      "tokens": 10,
+      "at": "2026-04-29T05:21:46.055Z"
+    },
+    {
+      "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/FloatingToolbar.jsx",
+      "action": "edit",
+      "tokens": 38,
+      "at": "2026-04-29T05:21:51.560Z"
     }
   ],
   "edit_counts": {
@@ -194,11 +212,12 @@
     "frontend/src/components/ai/AISidebar.jsx": 1,
     "frontend/src/pages/Dashboard.jsx": 4,
     "README.md": 3,
-    ".gitignore": 1
+    ".gitignore": 1,
+    "frontend/src/components/editor/FloatingToolbar.jsx": 3
   },
   "anatomy_hits": 10,
   "anatomy_misses": 1,
-  "repeated_reads_warned": 4,
+  "repeated_reads_warned": 5,
   "cerebrum_warnings": 0,
-  "stop_count": 4
+  "stop_count": 5
 }

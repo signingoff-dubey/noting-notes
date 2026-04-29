@@ -2,6 +2,23 @@ import { useState } from 'react'
 import { useUIStore, ACCENT_MAP } from '@/store/uiStore'
 import { cn } from '@/lib/cn'
 
+function useEditorSettings() {
+  return useUIStore(s => ({
+    fontSize:        s.editorFontSize,
+    setFontSize:     s.setEditorFontSize,
+    lineHeight:      s.editorLineHeight,
+    setLineHeight:   s.setEditorLineHeight,
+    autosave:        s.autosaveDelay,
+    setAutosave:     s.setAutosaveDelay,
+    spellcheck:      s.spellcheck,
+    setSpellcheck:   s.setSpellcheck,
+    typewriterMode:  s.typewriterMode,
+    setTypewriter:   s.setTypewriterMode,
+    focusMode:       s.focusMode,
+    setFocusMode:    s.setFocusMode,
+  }))
+}
+
 const THEME_LABELS = {
   'nothing-dark':  'Nothing Dark',
   'nothing-light': 'Nothing Light',
@@ -209,7 +226,7 @@ function RangeSlider({ value, onChange, min, max, step, label }) {
 
 // ── Tab content ────────────────────────────────────
 
-function AppearanceTab({ theme, setTheme, themes, accent, setAccent }) {
+function AppearanceTab({ theme, setTheme, themes, accent, setAccent, deepContrast, setDeepContrast }) {
   return (
     <div className="flex flex-col gap-6">
       <Section title="Theme">
@@ -230,17 +247,25 @@ function AppearanceTab({ theme, setTheme, themes, accent, setAccent }) {
           ))}
         </div>
       </Section>
+
+      <Section title="Display">
+        <SettingRow label="Deep contrast dividers" description="Show borders in high-contrast white for clearer visual separation">
+          <Toggle checked={deepContrast} onChange={setDeepContrast} />
+        </SettingRow>
+      </Section>
     </div>
   )
 }
 
 function EditorTab() {
-  const [fontSize, setFontSize] = useState(16)
-  const [lineHeight, setLineHeight] = useState(18)
-  const [autosave, setAutosave] = useState(2)
-  const [spellcheck, setSpellcheck] = useState(true)
-  const [typewriterMode, setTypewriterMode] = useState(false)
-  const [focusMode, setFocusMode] = useState(false)
+  const {
+    fontSize, setFontSize,
+    lineHeight, setLineHeight,
+    autosave, setAutosave,
+    spellcheck, setSpellcheck,
+    typewriterMode, setTypewriter,
+    focusMode, setFocusMode,
+  } = useEditorSettings()
 
   return (
     <div className="flex flex-col gap-6">
@@ -249,7 +274,7 @@ function EditorTab() {
           <RangeSlider value={fontSize} onChange={setFontSize} min={12} max={24} step={1} label="px" />
         </SettingRow>
         <SettingRow label="Line height" description="Line spacing multiplier">
-          <RangeSlider value={lineHeight} onChange={setLineHeight} min={14} max={24} step={1} label="px" />
+          <RangeSlider value={lineHeight} onChange={setLineHeight} min={1.2} max={2.4} step={0.1} label="×" />
         </SettingRow>
       </Section>
 
@@ -260,10 +285,10 @@ function EditorTab() {
         <SettingRow label="Spellcheck" description="Underline misspelled words">
           <Toggle checked={spellcheck} onChange={setSpellcheck} />
         </SettingRow>
-        <SettingRow label="Typewriter mode" description="Keep cursor centred on screen">
-          <Toggle checked={typewriterMode} onChange={setTypewriterMode} />
+        <SettingRow label="Typewriter mode" description="Keep cursor centred vertically while typing">
+          <Toggle checked={typewriterMode} onChange={setTypewriter} />
         </SettingRow>
-        <SettingRow label="Focus mode" description="Fade out everything except current paragraph">
+        <SettingRow label="Focus mode" description="Dim all text except the current paragraph">
           <Toggle checked={focusMode} onChange={setFocusMode} />
         </SettingRow>
       </Section>
@@ -421,7 +446,7 @@ function ShortcutsTab() {
 // ── Main Settings page ────────────────────────────
 
 export function Settings() {
-  const { theme, setTheme, themes, accent, setAccent } = useUIStore()
+  const { theme, setTheme, themes, accent, setAccent, deepContrast, setDeepContrast } = useUIStore()
   const [activeTab, setActiveTab] = useState('Appearance')
 
   return (
@@ -466,7 +491,7 @@ export function Settings() {
       <div className="flex-1 overflow-y-auto p-6 min-h-0">
         <div className="max-w-2xl mx-auto">
           {activeTab === 'Appearance' && (
-            <AppearanceTab theme={theme} setTheme={setTheme} themes={themes} accent={accent} setAccent={setAccent} />
+            <AppearanceTab theme={theme} setTheme={setTheme} themes={themes} accent={accent} setAccent={setAccent} deepContrast={deepContrast} setDeepContrast={setDeepContrast} />
           )}
           {activeTab === 'Editor'     && <EditorTab />}
           {activeTab === 'AI'         && <AITab />}

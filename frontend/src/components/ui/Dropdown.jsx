@@ -59,24 +59,25 @@ export function Select({ value, onChange, options, placeholder, className }) {
   }, [])
 
   return (
-    <div ref={ref} className={cn('relative', className)}>
+    <div ref={ref} className={cn('relative min-w-0', className)}>
       <button
         onClick={() => setOpen(o => !o)}
-        className="flex items-center justify-between gap-2 w-full px-2 py-1 bg-surface-2 border border-border rounded-sm text-xs font-mono text-text-secondary hover:border-border-strong hover:text-text-primary transition-colors"
+        className="flex items-center justify-between gap-1.5 w-full px-2 py-1 bg-surface-2 border border-border rounded-sm text-xs font-mono text-text-secondary hover:border-border-strong hover:text-text-primary transition-colors min-w-0"
       >
-        <span className="truncate">{selected?.label || placeholder || 'Select...'}</span>
+        <span className="truncate min-w-0 flex-1">{selected?.label || placeholder || 'Select...'}</span>
         <ChevronDown size={12} strokeWidth={1.5} className={cn('shrink-0 transition-transform', open && 'rotate-180')} />
       </button>
       {open && (
-        <div className="absolute z-50 mt-1 w-full bg-surface border border-border-strong rounded-sm shadow-2xl py-1 max-h-48 overflow-y-auto">
+        <div className="absolute z-50 mt-1 w-full min-w-[140px] bg-surface border border-border-strong rounded-sm shadow-2xl py-1 max-h-48 overflow-y-auto">
           {options.map(opt => (
             <button
               key={opt.value}
               onClick={() => { onChange(opt.value); setOpen(false) }}
               className={cn(
-                'w-full text-left px-3 py-1.5 text-xs font-mono transition-colors hover:bg-surface-hover',
+                'w-full text-left px-3 py-1.5 text-xs font-mono transition-colors hover:bg-surface-hover truncate block',
                 opt.value === value ? 'text-text-primary bg-surface-active' : 'text-text-secondary',
               )}
+              title={opt.label}
             >
               {opt.label}
             </button>

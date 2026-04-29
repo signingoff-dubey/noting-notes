@@ -17,11 +17,13 @@ import CharacterCount from '@tiptap/extension-character-count'
 import Placeholder from '@tiptap/extension-placeholder'
 import Underline from '@tiptap/extension-underline'
 import { common, createLowlight } from 'lowlight'
-import { ArrowLeft, Lock, Unlock } from 'lucide-react'
+import { ArrowLeft, Lock, Unlock, Trash2, History, RotateCcw, Download, Upload, FileText, FileDown, Paperclip, X as XIcon } from 'lucide-react'
+import { FileViewer } from '@/components/viewer/FileViewer'
+import { nanoid } from 'nanoid'
 import { useNotesStore } from '@/store/notesStore'
 import { useAIStore } from '@/store/aiStore'
 import { useVaultStore } from '@/store/vaultStore'
-import { toast } from '@/store/uiStore'
+import { useUIStore, toast } from '@/store/uiStore'
 import { EditorToolbar } from './EditorToolbar'
 import { FloatingToolbar } from './FloatingToolbar'
 import { TagChips } from '@/components/notes/TagChips'
@@ -138,13 +140,36 @@ function SaveStatus({ saving, lastSaved }) {
 
 export function NoteEditor({ note, onBack }) {
   const updateNote = useNotesStore(s => s.updateNote)
+  const deleteNote = useNotesStore(s => s.deleteNote)
+  const getVersions = useNotesStore(s => s.getVersions)
+  const restoreVersion = useNotesStore(s => s.restoreVersion)
+  const createNote = useNotesStore(s => s.createNote)
   const isSaving = useNotesStore(s => s.isSaving)
   const setContextNote = useAIStore(s => s.setContextNote)
   const { isUnlocked: vaultUnlocked } = useVaultStore()
+  const {
+    editorFontSize, editorLineHeight, autosaveDelay,
+    spellcheck, typewriterMode, focusMode,
+  } = useUIStore(s => ({
+    editorFontSize:   s.editorFontSize,
+    editorLineHeight: s.editorLineHeight,
+    autosaveDelay:    s.autosaveDelay,
+    spellcheck:       s.spellcheck,
+    typewriterMode:   s.typewriterMode,
+    focusMode:        s.focusMode,
+  }))
   const [title, setTitle] = useState(note?.title || '')
   const [lastSaved, setLastSaved] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+  const [showHistory, setShowHistory] = useState(false)
+  const [historyVersions, setHistoryVersions] = useState([])
+  const [showExportMenu, setShowExportMenu] = useState(false)
+  const [activeFileViewer, setActiveFileViewer] = useState(null)
+  const importRef = useRef(null)
   const autosaveTimer = useRef(null)
   const fileInputRef = useRef(null)
+  const scrollContainerRef = useRef(null)
+  const editorRef = useRef(null)
 
   useEffect(() => {
     if (note) {
@@ -175,12 +200,18 @@ export function NoteEditor({ note, onBack }) {
     ],
     content: note?.content || '',
     editorProps: {
-      attributes: { class: 'editor-content focus:outline-none' },
+      attributes: {
+        class: 'editor-content focus:outline-none',
+        spellcheck: spellcheck ? 'true' : 'false',
+      },
     },
     onUpdate: ({ editor }) => {
       triggerAutosave(editor.getJSON())
     },
   }, [note?.id])
+
+  /* Keep editorRef current so autosave timer always has the live editor instance */
+  useEffect(() => { editorRef.current = editor }, [editor])
 
   /* Register AI write callback — inserts content at end of note with accent highlight */
   useEffect(() => {
@@ -201,18 +232,57 @@ export function NoteEditor({ note, onBack }) {
     return () => registerWriteCallback(null)
   }, [editor])
 
+  /* Typewriter mode: keep cursor vertically centred */
+  useEffect(() => {
+    if (!editor || !typewriterMode) return
+    const handler = () => {
+      const { from } = editor.state.selection
+      const coords = editor.view.coordsAtPos(from)
+      const container = scrollContainerRef.current
+      if (!container) return
+      const rect = container.getBoundingClientRect()
+      const cursorY = coords.top - rect.top
+      const target = rect.height / 2
+      container.scrollTop += cursorY - target
+    }
+    editor.on('selectionUpdate', handler)
+    return () => editor.off('selectionUpdate', handler)
+  }, [editor, typewriterMode])
+
+  /* Focus mode: dim all blocks except the one with the cursor */
+  useEffect(() => {
+    if (!editor) return
+    const handler = () => {
+      const dom = editor.view.dom
+      dom.querySelectorAll('[data-is-focused]').forEach(el => el.removeAttribute('data-is-focused'))
+      if (!focusMode) return
+      const { from } = editor.state.selection
+      try {
+        const nodeDOM = editor.view.nodeDOM(editor.state.doc.resolve(from).before(1))
+        if (nodeDOM instanceof HTMLElement) nodeDOM.setAttribute('data-is-focused', 'true')
+      } catch {}
+    }
+    editor.on('selectionUpdate', handler)
+    editor.on('focus', handler)
+    return () => {
+      editor.off('selectionUpdate', handler)
+      editor.off('focus', handler)
+      editor.view.dom.querySelectorAll('[data-is-focused]').forEach(el => el.removeAttribute('data-is-focused'))
+    }
+  }, [editor, focusMode])
+
   const triggerAutosave = useCallback((content) => {
     if (autosaveTimer.current) clearTimeout(autosaveTimer.current)
     autosaveTimer.current = setTimeout(async () => {
       if (!note?.id) return
       try {
-        await updateNote(note.id, { content, word_count: editor?.storage?.characterCount?.words() ?? 0 })
+        await updateNote(note.id, { content, word_count: editorRef.current?.storage?.characterCount?.words() ?? 0 })
         setLastSaved(true)
       } catch {
         toast.error('Autosave failed')
       }
-    }, AUTOSAVE_DELAY)
-  }, [note?.id, updateNote])
+    }, autosaveDelay * 1000)
+  }, [note?.id, updateNote, autosaveDelay])
 
   const handleTitleChange = (e) => {
     const val = e.target.value
@@ -230,6 +300,63 @@ export function NoteEditor({ note, onBack }) {
   }
 
   useEffect(() => () => { if (autosaveTimer.current) clearTimeout(autosaveTimer.current) }, [])
+
+  const exportMarkdown = () => {
+    if (!editor) return
+    const lines = []
+    const doc = editor.getJSON()
+    const nodeToMd = (node) => {
+      if (!node) return ''
+      if (node.type === 'text') {
+        let t = node.text || ''
+        if (node.marks) {
+          const ms = node.marks.map(m => m.type)
+          if (ms.includes('bold')) t = `**${t}**`
+          if (ms.includes('italic')) t = `*${t}*`
+          if (ms.includes('code')) t = `\`${t}\``
+          if (ms.includes('strike')) t = `~~${t}~~`
+        }
+        return t
+      }
+      const children = () => (node.content || []).map(nodeToMd).join('')
+      switch (node.type) {
+        case 'heading': return `${'#'.repeat(node.attrs?.level || 1)} ${children()}\n`
+        case 'paragraph': return `${children()}\n`
+        case 'bulletList': return (node.content || []).map(li => `- ${(li.content || []).map(nodeToMd).join('')}`).join('\n') + '\n'
+        case 'orderedList': return (node.content || []).map((li, i) => `${i+1}. ${(li.content || []).map(nodeToMd).join('')}`).join('\n') + '\n'
+        case 'blockquote': return `> ${children()}\n`
+        case 'codeBlock': return `\`\`\`\n${children()}\`\`\`\n`
+        case 'horizontalRule': return `---\n`
+        case 'hardBreak': return '\n'
+        default: return children()
+      }
+    }
+    const md = `# ${title || 'Untitled'}\n\n` + (doc.content || []).map(nodeToMd).join('\n')
+    const blob = new Blob([md], { type: 'text/markdown' })
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob)
+    a.download = `${title || 'untitled'}.md`; a.click()
+  }
+
+  const exportPlainText = () => {
+    if (!editor) return
+    const text = editor.state.doc.textContent
+    const blob = new Blob([`${title || 'Untitled'}\n\n${text}`], { type: 'text/plain' })
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob)
+    a.download = `${title || 'untitled'}.txt`; a.click()
+  }
+
+  const exportPDF = () => {
+    window.print()
+  }
+
+  const handleImport = async (e) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    const text = await file.text()
+    const imported = await createNote({ title: file.name.replace(/\.(md|txt)$/, ''), content: text })
+    toast.success(`Imported "${imported.title}"`)
+    e.target.value = ''
+  }
 
   const wordCount = editor?.storage?.characterCount?.words() ?? 0
   const readingTime = Math.max(1, Math.ceil(wordCount / 200))
@@ -271,6 +398,85 @@ export function NoteEditor({ note, onBack }) {
         />
         <SaveStatus saving={isSaving} lastSaved={lastSaved} />
 
+        {/* Import button */}
+        <button
+          onClick={() => importRef.current?.click()}
+          title="Import .md or .txt file"
+          className="w-7 h-7 flex items-center justify-center rounded-lg transition-all"
+          style={{ color: 'var(--color-text-muted)' }}
+          onMouseEnter={e => e.currentTarget.style.color = 'var(--color-text-secondary)'}
+          onMouseLeave={e => e.currentTarget.style.color = 'var(--color-text-muted)'}
+        >
+          <Upload size={14} strokeWidth={1.5} />
+        </button>
+        <input ref={importRef} type="file" accept=".md,.txt" className="hidden" onChange={handleImport} />
+
+        {/* Export button */}
+        <div className="relative">
+          <button
+            onClick={() => setShowExportMenu(v => !v)}
+            title="Export note"
+            className="w-7 h-7 flex items-center justify-center rounded-lg transition-all"
+            style={{ color: 'var(--color-text-muted)' }}
+            onMouseEnter={e => e.currentTarget.style.color = 'var(--color-text-secondary)'}
+            onMouseLeave={e => e.currentTarget.style.color = 'var(--color-text-muted)'}
+          >
+            <Download size={14} strokeWidth={1.5} />
+          </button>
+          {showExportMenu && (
+            <div
+              className="absolute right-0 top-full mt-1 z-50 flex flex-col overflow-hidden rounded-lg"
+              style={{
+                background: 'var(--color-surface)',
+                border: '1px solid var(--color-border)',
+                boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+                minWidth: 160,
+              }}
+              onMouseLeave={() => setShowExportMenu(false)}
+            >
+              {[
+                { label: 'Markdown (.md)', icon: <FileText size={12} strokeWidth={1.5} />, action: exportMarkdown },
+                { label: 'Plain text (.txt)', icon: <FileText size={12} strokeWidth={1.5} />, action: exportPlainText },
+                { label: 'Print / PDF', icon: <FileDown size={12} strokeWidth={1.5} />, action: exportPDF },
+              ].map(item => (
+                <button
+                  key={item.label}
+                  onClick={() => { item.action(); setShowExportMenu(false) }}
+                  className="flex items-center gap-2 px-3 py-2 text-left transition-colors hover:bg-[var(--color-surface-hover)]"
+                  style={{ fontSize: 12, color: 'var(--color-text-secondary)', fontFamily: 'var(--font-body)' }}
+                >
+                  {item.icon}
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Version history button */}
+        <button
+          onClick={() => { setHistoryVersions(getVersions(note.id)); setShowHistory(true) }}
+          title="Version history"
+          className="w-7 h-7 flex items-center justify-center rounded-lg transition-all"
+          style={{ color: 'var(--color-text-muted)' }}
+          onMouseEnter={e => e.currentTarget.style.color = 'var(--color-text-secondary)'}
+          onMouseLeave={e => e.currentTarget.style.color = 'var(--color-text-muted)'}
+        >
+          <History size={14} strokeWidth={1.5} />
+        </button>
+
+        {/* Delete note button */}
+        <button
+          onClick={() => setShowDeleteConfirm(true)}
+          title="Delete note"
+          className="w-7 h-7 flex items-center justify-center rounded-lg transition-all"
+          style={{ color: 'var(--color-text-muted)' }}
+          onMouseEnter={e => e.currentTarget.style.color = 'var(--color-error, #ef4444)'}
+          onMouseLeave={e => e.currentTarget.style.color = 'var(--color-text-muted)'}
+        >
+          <Trash2 size={14} strokeWidth={1.5} />
+        </button>
+
         {/* Vault lock button */}
         <button
           onClick={async () => {
@@ -300,12 +506,42 @@ export function NoteEditor({ note, onBack }) {
         </button>
       </div>
 
-      {/* ── Tags ── */}
+      {/* ── Tags + Attachments ── */}
       <div
-        className="flex items-center gap-2 px-6 py-2 border-b shrink-0"
-        style={{ borderColor: 'var(--color-border)' }}
+        className="flex items-center gap-2 px-6 py-2 border-b shrink-0 flex-wrap"
+        style={{ borderColor: 'var(--color-border)', minHeight: 40 }}
       >
         <TagChips note={note} />
+        {(note.attachments || []).map(att => (
+          <button
+            key={att.id}
+            onClick={() => setActiveFileViewer(att)}
+            className="flex items-center gap-1.5 px-2 py-0.5 rounded-md transition-colors hover:bg-[var(--color-surface-hover)] group"
+            style={{
+              background: 'var(--color-surface-2)',
+              border: '1px solid var(--color-border)',
+              fontSize: 11,
+              color: 'var(--color-text-secondary)',
+              fontFamily: 'var(--font-body)',
+              maxWidth: 180,
+            }}
+          >
+            <Paperclip size={10} strokeWidth={1.5} style={{ flexShrink: 0 }} />
+            <span className="truncate">{att.name}</span>
+            <span
+              className="opacity-0 group-hover:opacity-100 transition-opacity ml-0.5 flex items-center justify-center rounded-sm hover:bg-[var(--color-surface-hover)]"
+              style={{ flexShrink: 0 }}
+              onClick={async (e) => {
+                e.stopPropagation()
+                const attachments = (note.attachments || []).filter(a => a.id !== att.id)
+                await updateNote(note.id, { attachments })
+                if (activeFileViewer?.id === att.id) setActiveFileViewer(null)
+              }}
+            >
+              <XIcon size={9} strokeWidth={1.5} />
+            </span>
+          </button>
+        ))}
       </div>
 
       {/* ── Toolbar ── */}
@@ -320,34 +556,190 @@ export function NoteEditor({ note, onBack }) {
           const files = Array.from(e.target.files || [])
           if (!files.length) return
           for (const file of files) {
-            if (file.type.startsWith('image/')) {
-              const reader = new FileReader()
-              reader.onload = (ev) => {
-                if (ev.target?.result && editor) {
-                  editor.chain().focus().setImage({ src: ev.target.result }).run()
-                }
+            const reader = new FileReader()
+            reader.onload = async (ev) => {
+              const dataUrl = ev.target?.result
+              if (!dataUrl) return
+              if (file.type.startsWith('image/')) {
+                editor?.chain().focus().setImage({ src: dataUrl }).run()
+              } else {
+                const attachment = { id: nanoid(), name: file.name, type: file.type, dataUrl }
+                const existing = note.attachments || []
+                await updateNote(note.id, { attachments: [...existing, attachment] })
+                toast.success(`Attached: ${file.name}`)
               }
-              reader.readAsDataURL(file)
-            } else {
-              toast.error('File attachments coming soon — images only for now')
             }
+            reader.readAsDataURL(file)
           }
           e.target.value = ''
         }}
       />
 
-      {/* ── Editor ── */}
-      <div className="flex-1 overflow-y-auto min-h-0">
-        {editor && <FloatingToolbar editor={editor} />}
-        <EditorContent
-          editor={editor}
+      {/* ── Editor + File Viewer ── */}
+      <div className="flex flex-1 min-h-0">
+        <div
+          ref={scrollContainerRef}
+          className={`flex-1 overflow-y-auto min-h-0${focusMode ? ' focus-mode' : ''}`}
           style={{
-            maxWidth: 720,
-            margin: '0 auto',
-            padding: '32px 40px 80px',
+            '--editor-font-size': `${editorFontSize}px`,
+            '--editor-line-height': editorLineHeight,
           }}
-        />
+        >
+          {editor && <FloatingToolbar editor={editor} />}
+          <EditorContent
+            editor={editor}
+            style={{
+              maxWidth: 720,
+              margin: '0 auto',
+              padding: '32px 40px 80px',
+            }}
+          />
+        </div>
+        {activeFileViewer && (
+          <FileViewer
+            attachment={activeFileViewer}
+            onClose={() => setActiveFileViewer(null)}
+          />
+        )}
       </div>
+
+      {/* ── Version history drawer ── */}
+      {showHistory && (
+        <div
+          className="fixed inset-0 z-50 flex"
+          style={{ background: 'rgba(0,0,0,0.5)' }}
+          onClick={() => setShowHistory(false)}
+        >
+          <div
+            className="ml-auto flex flex-col"
+            style={{
+              width: 320,
+              height: '100%',
+              background: 'var(--color-surface)',
+              borderLeft: '1px solid var(--color-border)',
+              boxShadow: '-16px 0 48px rgba(0,0,0,0.4)',
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div
+              className="flex items-center gap-2 px-4 border-b shrink-0"
+              style={{ height: 48, borderColor: 'var(--color-border)' }}
+            >
+              <History size={14} strokeWidth={1.5} style={{ color: 'var(--color-text-muted)' }} />
+              <span className="flex-1 font-mono uppercase tracking-widest" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+                Version History
+              </span>
+              <button
+                onClick={() => setShowHistory(false)}
+                className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
+                style={{ color: 'var(--color-text-muted)' }}
+              >
+                ×
+              </button>
+            </div>
+            <div className="flex-1 overflow-y-auto min-h-0 p-3 flex flex-col gap-2">
+              {historyVersions.length === 0 ? (
+                <div className="flex items-center justify-center h-20">
+                  <p className="font-mono text-center" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+                    No snapshots yet.<br />Autosave creates one every 2s.
+                  </p>
+                </div>
+              ) : historyVersions.map((v, i) => (
+                <div
+                  key={i}
+                  className="flex items-center gap-2 px-3 py-2 rounded-lg"
+                  style={{ background: 'var(--color-surface-2)', border: '1px solid var(--color-border)' }}
+                >
+                  <div className="flex-1 min-w-0">
+                    <div className="font-mono truncate" style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>
+                      {v.title || 'Untitled'}
+                    </div>
+                    <div className="font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+                      {format(new Date(v.ts), 'MMM d, h:mm:ss a')}
+                    </div>
+                  </div>
+                  <button
+                    onClick={async () => {
+                      await restoreVersion(note.id, v.content)
+                      editor?.commands.setContent(v.content || '')
+                      toast.success('Version restored')
+                      setShowHistory(false)
+                    }}
+                    title="Restore this version"
+                    className="w-7 h-7 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--color-surface-hover)] shrink-0"
+                    style={{ color: 'var(--color-accent)' }}
+                  >
+                    <RotateCcw size={12} strokeWidth={1.5} />
+                  </button>
+                </div>
+              ))}
+            </div>
+            <div
+              className="px-4 py-3 border-t shrink-0"
+              style={{ borderColor: 'var(--color-border)' }}
+            >
+              <p className="font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+                Last 10 autosave snapshots stored locally.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Delete confirmation modal ── */}
+      {showDeleteConfirm && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          style={{ background: 'rgba(0,0,0,0.6)' }}
+          onClick={() => setShowDeleteConfirm(false)}
+        >
+          <div
+            className="flex flex-col gap-4 p-5 rounded-xl"
+            style={{
+              background: 'var(--color-surface)',
+              border: '1px solid var(--color-border)',
+              width: 300,
+              boxShadow: '0 16px 48px rgba(0,0,0,0.6)',
+            }}
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex items-center gap-2">
+              <Trash2 size={16} strokeWidth={1.5} style={{ color: 'var(--color-error, #ef4444)', flexShrink: 0 }} />
+              <span className="font-mono font-medium" style={{ fontSize: 13, color: 'var(--color-text-primary)' }}>
+                Delete this note?
+              </span>
+            </div>
+            <p className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+              "{title || 'Untitled'}" will be permanently deleted. Cannot be undone.
+            </p>
+            <div className="flex gap-2 justify-end">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="px-3 h-7 rounded-md font-mono transition-colors hover:bg-[var(--color-surface-hover)]"
+                style={{ fontSize: 12, color: 'var(--color-text-muted)', border: '1px solid var(--color-border)' }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={async () => {
+                  try {
+                    await deleteNote(note.id)
+                    toast.success('Note deleted')
+                    onBack()
+                  } catch {
+                    toast.error('Failed to delete note')
+                  }
+                  setShowDeleteConfirm(false)
+                }}
+                className="px-3 h-7 rounded-md font-mono transition-colors"
+                style={{ fontSize: 12, background: 'var(--color-error, #ef4444)', color: '#fff', border: 'none' }}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── Footer ── */}
       <div

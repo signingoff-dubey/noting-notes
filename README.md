@@ -98,17 +98,18 @@ ink/
 │   ├── src/
 │   │   ├── components/
 │   │   │   ├── ai/        ← AI sidebar, model picker
-│   │   │   ├── editor/    ← TipTap editor, toolbars
-│   │   │   ├── notes/     ← NoteCard, note list/grid
-│   │   │   ├── sidebar/   ← Left nav, folder tree
+│   │   │   ├── editor/    ← TipTap editor, floating toolbar
+│   │   │   ├── notes/     ← NoteCard, tag chips
+│   │   │   ├── sidebar/   ← Left nav, notes panel, folder tree
+│   │   │   ├── viewer/    ← FileViewer (PDF, DOCX, XLSX, PPTX)
 │   │   │   └── ui/        ← Button, Modal, Toast, Spinner, Dropdown
-│   │   ├── pages/         ← Notes, Tasks, Calendar, Settings, Archive, Tags
-│   │   ├── store/         ← Zustand stores (notes, tasks, ai, ui, vault)
-│   │   ├── lib/           ← api.js, cn.js utilities
+│   │   ├── pages/         ← Notes, Tasks, Calendar, Settings, Archive, Tags, Dashboard
+│   │   ├── store/         ← Zustand stores (notes, tasks, ai, ui, vault, auth)
+│   │   ├── lib/           ← api.js, cn.js, firebase.js utilities
 │   │   └── index.css      ← All themes + design tokens
 │   └── package.json
 ├── backend/               ← FastAPI (disabled — future use)
-│   └── requirements.txt   ← All deps commented out
+│   └── requirements.txt
 ├── netlify.toml           ← Netlify build config + SPA redirect
 └── PRD.md
 ```
@@ -125,17 +126,30 @@ Data currently lives in `localStorage` — no server, no account, instant setup.
 
 ## Roadmap
 
-- [ ] Firebase / Supabase sync
-- [ ] File attachments (PDF, DOCX viewer + AI extraction)
+- [x] Firebase / Supabase sync (Google OAuth, Firebase auth)
+- [x] File attachments (PDF, DOCX viewer in-app)
+- [x] Vault (PIN-protected encrypted notes)
 - [ ] Semantic search across notes
 - [ ] Export to Markdown / PDF
-- [ ] Vault (PIN-protected encrypted notes)
 - [ ] Mobile-responsive layout
 - [ ] Electron desktop wrapper
 
 ---
 
 ## Changelog
+
+### v0.7.0 — 2026-04-29
+- Accessibility pass: focus rings restored on all interactive elements, ARIA labels added to nav/sidebar
+- Removed global `*` CSS transition override — per-component transitions only
+- Added `prefers-reduced-motion` support
+- Active note indicator: replaced banned left-border stripe with inset box-shadow
+- Editor blockquote: replaced left-border stripe with tinted background
+- Dashboard stats: replaced hero-metric card grid with horizontal strip layout
+- `nothing-light` muted text contrast improved to 4.5:1 (WCAG AA)
+- AI no-LLM banner uses design tokens instead of hard-coded oklch values
+- `aria-current="page"` on sidebar nav items, `aria-expanded` on collapsible sections
+- Delete-confirm dialog: added `role="dialog"` and `aria-modal`
+- Fixed broken hover state on "Upgrade to Pro" button
 
 ### v0.6.0 — 2026-04-26
 - Switched to Groq API — no Ollama or backend required

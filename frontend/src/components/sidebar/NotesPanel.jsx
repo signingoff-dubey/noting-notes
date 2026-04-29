@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Search, Plus, X, PanelLeftClose, ChevronsRight, Pin, Star, Lock, Trash2 } from 'lucide-react'
 import { formatDistanceToNow } from 'date-fns'
 import { cn } from '@/lib/cn'
 import { useNotesStore } from '@/store/notesStore'
 import { toast } from '@/store/uiStore'
 
-function extractText(content) {
+function extractText(content, limit = 120) {
   if (!content) return ''
-  if (typeof content === 'string') return content.slice(0, 100)
+  if (typeof content === 'string') return content.slice(0, limit)
   if (content?.content) {
     const texts = []
     const walk = (node) => {
@@ -15,7 +15,22 @@ function extractText(content) {
       if (node.content) node.content.forEach(walk)
     }
     walk(content)
-    return texts.join(' ').slice(0, 100)
+    return texts.join(' ').slice(0, limit)
+  }
+  return ''
+}
+
+function extractFullText(content) {
+  if (!content) return ''
+  if (typeof content === 'string') return content
+  if (content?.content) {
+    const texts = []
+    const walk = (node) => {
+      if (node.type === 'text') texts.push(node.text)
+      if (node.content) node.content.forEach(walk)
+    }
+    walk(content)
+    return texts.join(' ')
   }
   return ''
 }
@@ -34,14 +49,12 @@ function NoteRow({ note, active, onClick }) {
       className={cn(
         'flex flex-col gap-0.5 w-full px-3 py-2.5 text-left border-b transition-colors group',
         active
-          ? 'border-l-2 border-l-[var(--color-accent)]'
+          ? 'bg-[var(--color-surface-active)]'
           : 'hover:bg-[var(--color-surface-hover)]',
       )}
       style={{
         borderColor: 'var(--color-border)',
-        background: active ? 'var(--color-surface-active)' : 'transparent',
-        borderLeftColor: active ? 'var(--color-accent)' : 'transparent',
-        borderLeftWidth: 2,
+        boxShadow: active ? 'inset 2px 0 0 var(--color-accent)' : 'none',
       }}
     >
       {/* Title row */}
@@ -95,6 +108,7 @@ function NoteRow({ note, active, onClick }) {
 export function NotesPanel({ collapsed, onToggle }) {
   const [search, setSearch] = useState('')
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const searchRef = useRef(null)
   const notes = useNotesStore(s => s.notes)
   const activeNote = useNotesStore(s => s.activeNote)
   const setActiveNote = useNotesStore(s => s.setActiveNote)
@@ -104,13 +118,26 @@ export function NotesPanel({ collapsed, onToggle }) {
 
   useEffect(() => { fetchNotes() }, [])
 
+  /* Ctrl+F focuses search */
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.ctrlKey && e.key === 'f') {
+        e.preventDefault()
+        searchRef.current?.focus()
+        searchRef.current?.select()
+      }
+    }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, [])
+
   const filtered = notes
     .filter(n => !n.archived)
     .filter(n => {
       if (!search) return true
       const q = search.toLowerCase()
       return (n.title || '').toLowerCase().includes(q) ||
-        extractText(n.content).toLowerCase().includes(q)
+        extractFullText(n.content).toLowerCase().includes(q)
     })
     .sort((a, b) => {
       if (a.pinned && !b.pinned) return -1
@@ -228,9 +255,10 @@ export function NotesPanel({ collapsed, onToggle }) {
             style={{ color: 'var(--color-text-muted)' }}
           />
           <input
+            ref={searchRef}
             value={search}
             onChange={e => setSearch(e.target.value)}
-            placeholder="Filter notes..."
+            placeholder="Search notes... (Ctrl+F)"
             className="ink-search w-full"
             style={{ height: 28, paddingLeft: 26, paddingRight: search ? 26 : 8, fontSize: 'var(--text-xs)' }}
           />
@@ -274,6 +302,9 @@ export function NotesPanel({ collapsed, onToggle }) {
           onClick={() => setConfirmDelete(false)}
         >
           <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="delete-confirm-title"
             className="flex flex-col gap-4 p-5 rounded-xl"
             style={{
               background: 'var(--color-surface)',
@@ -285,7 +316,7 @@ export function NotesPanel({ collapsed, onToggle }) {
           >
             <div className="flex items-center gap-2">
               <Trash2 size={16} strokeWidth={1.5} style={{ color: 'var(--color-error, #ef4444)', flexShrink: 0 }} />
-              <span className="font-mono font-medium" style={{ fontSize: 13, color: 'var(--color-text-primary)' }}>
+              <span id="delete-confirm-title" className="font-mono font-medium" style={{ fontSize: 13, color: 'var(--color-text-primary)' }}>
                 Delete all notes?
               </span>
             </div>

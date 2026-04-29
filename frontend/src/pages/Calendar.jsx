@@ -99,10 +99,14 @@ function DayCell({ day, isCurrentMonth, isCurrentDay, isSelected, tasks, notes, 
 export function Calendar() {
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState(null)
+  const [newTaskTitle, setNewTaskTitle] = useState('')
+  const [newTaskPriority, setNewTaskPriority] = useState('none')
+  const [addingTask, setAddingTask] = useState(false)
   const tasks = useTasksStore(s => s.tasks)
   const notes = useNotesStore(s => s.notes)
   const fetchTasks = useTasksStore(s => s.fetchTasks)
   const fetchNotes = useNotesStore(s => s.fetchNotes)
+  const createTask = useTasksStore(s => s.createTask)
 
   useEffect(() => {
     fetchTasks()
@@ -114,6 +118,18 @@ export function Calendar() {
   const calStart   = startOfWeek(monthStart)
   const calEnd     = endOfWeek(monthEnd)
   const days       = eachDayOfInterval({ start: calStart, end: calEnd })
+
+  const handleCreateTask = async () => {
+    if (!newTaskTitle.trim() || !selectedDate) return
+    await createTask({
+      title: newTaskTitle.trim(),
+      priority: newTaskPriority,
+      due_date: selectedDate.toISOString(),
+    })
+    setNewTaskTitle('')
+    setNewTaskPriority('none')
+    setAddingTask(false)
+  }
 
   const getTasksForDay  = (day) => tasks.filter(t => !t.archived && t.due_date && isSameDay(new Date(t.due_date), day))
   const getNotesForDay  = (day) => notes.filter(n => !n.archived && n.created_at && isSameDay(new Date(n.created_at), day))
@@ -203,7 +219,7 @@ export function Calendar() {
                 isSelected={selectedDate ? isSameDay(day, selectedDate) : false}
                 tasks={getTasksForDay(day)}
                 notes={getNotesForDay(day)}
-                onClick={() => setSelectedDate(prev => prev && isSameDay(day, prev) ? null : day)}
+                onClick={() => { setSelectedDate(prev => prev && isSameDay(day, prev) ? null : day); setAddingTask(false); setNewTaskTitle('') }}
               />
             ))}
           </div>
@@ -217,12 +233,74 @@ export function Calendar() {
           >
             {/* Panel header */}
             <div className="px-4 py-3 border-b shrink-0" style={{ borderColor: 'var(--color-border)' }}>
-              <p className="font-mono" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-primary)' }}>
-                {format(selectedDate, 'EEEE')}
-              </p>
-              <p className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
-                {format(selectedDate, 'MMMM d, yyyy')}
-              </p>
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="font-mono" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-primary)' }}>
+                    {format(selectedDate, 'EEEE')}
+                  </p>
+                  <p className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
+                    {format(selectedDate, 'MMMM d, yyyy')}
+                  </p>
+                </div>
+                <button
+                  onClick={() => setAddingTask(v => !v)}
+                  title="New task on this day"
+                  className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
+                  style={{ color: 'var(--color-text-muted)', marginTop: 2 }}
+                >
+                  <Plus size={13} strokeWidth={1.5} />
+                </button>
+              </div>
+              {addingTask && (
+                <div className="flex flex-col gap-2 mt-3">
+                  <input
+                    autoFocus
+                    value={newTaskTitle}
+                    onChange={e => setNewTaskTitle(e.target.value)}
+                    onKeyDown={e => {
+                      if (e.key === 'Enter') handleCreateTask()
+                      if (e.key === 'Escape') { setAddingTask(false); setNewTaskTitle('') }
+                    }}
+                    placeholder="Task title..."
+                    className="w-full px-2 py-1.5 rounded-md font-mono"
+                    style={{
+                      fontSize: 12,
+                      background: 'var(--color-surface-2)',
+                      border: '1px solid var(--color-border)',
+                      color: 'var(--color-text-primary)',
+                      outline: 'none',
+                    }}
+                  />
+                  <div className="flex items-center gap-2">
+                    <select
+                      value={newTaskPriority}
+                      onChange={e => setNewTaskPriority(e.target.value)}
+                      className="flex-1 px-2 py-1 rounded-md font-mono"
+                      style={{
+                        fontSize: 11,
+                        background: 'var(--color-surface-2)',
+                        border: '1px solid var(--color-border)',
+                        color: 'var(--color-text-secondary)',
+                        outline: 'none',
+                      }}
+                    >
+                      <option value="none">No priority</option>
+                      <option value="low">Low</option>
+                      <option value="medium">Medium</option>
+                      <option value="high">High</option>
+                      <option value="urgent">Urgent</option>
+                    </select>
+                    <button
+                      onClick={handleCreateTask}
+                      disabled={!newTaskTitle.trim()}
+                      className="px-3 h-7 rounded-md font-mono transition-opacity disabled:opacity-40"
+                      style={{ fontSize: 11, background: 'var(--color-accent)', color: 'var(--color-bg)' }}
+                    >
+                      Add
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="flex-1 overflow-y-auto min-h-0">

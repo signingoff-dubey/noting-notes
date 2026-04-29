@@ -120,7 +120,7 @@ export const useAIStore = create((set, get) => ({
     return true
   },
 
-  sendMessage: (content, noteContent = '', images = []) => {
+  sendMessage: (content, noteContent = '', images = [], userRequestedWrite = false) => {
     const { activeModel, contextNoteId, messages, apiConfig } = get()
 
     const apiKey = apiConfig.api_key || GROQ_API_KEY
@@ -207,8 +207,8 @@ export const useAIStore = create((set, get) => ({
       set({ messages: finalMessages, isStreaming: false, streamingMessage: '' })
       if (contextNoteId) saveMemory(contextNoteId, finalMessages)
 
-      /* Trigger write-permission popup after message is stored */
-      if (writeMatch) {
+      /* Trigger write-permission popup only if user explicitly requested it */
+      if (writeMatch && userRequestedWrite) {
         const writeContent = writeMatch[1].trim()
         if (writeContent) get().requestNoteWrite(writeContent)
       }

@@ -63,7 +63,7 @@ function ResultPanel({ mode, result, onInsert, onReplace, onClose }) {
         background: 'var(--color-surface)',
       }}
     >
-      <div className="px-3 pt-2 pb-1" style={{ maxHeight: 160, overflowY: 'auto' }}>
+      <div className="px-3 pt-2 pb-1 whitespace-normal" style={{ maxHeight: 200, overflowY: 'auto', minWidth: 280, maxWidth: 400 }}>
         {isRephrase && hasVariants ? (
           <div className="flex flex-col gap-1">
             {variants.map((v, i) => (
@@ -231,15 +231,16 @@ export function FloatingToolbar({ editor }) {
         placement: 'top',
         maxWidth: 'none',
         onMount(instance) { instance.popper.firstChild.style.maxWidth = 'none' },
+        onHide() { resetAI() },
       }}
       className="float-in"
     >
       <div
-        className="flex flex-col border shadow-2xl whitespace-nowrap overflow-hidden"
+        className="flex flex-col border shadow-2xl overflow-hidden"
         style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border-strong)', borderRadius: 8 }}
       >
         {/* Toolbar row */}
-        <div className="flex items-center h-[34px]">
+        <div className="flex items-center h-[34px] whitespace-nowrap">
           {/* Formatting */}
           <FloatBtn title="Bold" onClick={() => editor.chain().focus().toggleBold().run()} active={editor.isActive('bold')}>
             <Bold size={12} strokeWidth={1.5} />
@@ -281,7 +282,7 @@ export function FloatingToolbar({ editor }) {
               ? <Loader2 size={12} strokeWidth={1.5} className="animate-spin" />
               : <AlignLeft size={12} strokeWidth={1.5} />
             }
-            <span>Sum</span>
+            <span>Summary</span>
           </FloatBtn>
           <FloatBtn
             ai

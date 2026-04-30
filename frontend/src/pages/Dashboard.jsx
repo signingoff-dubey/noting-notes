@@ -13,10 +13,15 @@ function getGreeting() {
   return 'Good evening'
 }
 
-function StatCard({ label, value, sub, accent }) {
+function StatCard({ label, value, sub, accent, onClick }) {
+  const Tag = onClick ? 'button' : 'div'
   return (
-    <div
-      className="flex-1 flex flex-col justify-between py-4 px-5 [&:not(:last-child)]:border-r"
+    <Tag
+      onClick={onClick}
+      className={cn(
+        'flex-1 flex flex-col justify-between py-4 px-5 [&:not(:last-child)]:border-r text-left',
+        onClick && 'transition-colors hover:bg-[var(--color-surface-hover)] cursor-pointer',
+      )}
       style={{ borderColor: 'var(--color-border)' }}
     >
       <span
@@ -47,7 +52,7 @@ function StatCard({ label, value, sub, accent }) {
           </p>
         )}
       </div>
-    </div>
+    </Tag>
   )
 }
 
@@ -111,7 +116,7 @@ function RecentNoteCard({ note, onClick }) {
   )
 }
 
-function UpcomingTaskCard({ task }) {
+function UpcomingTaskCard({ task, onClick }) {
   const due = task.due_date ? new Date(task.due_date) : null
   const overdue = due && isPast(due) && task.status !== 'done'
   const dueLabel = due
@@ -129,9 +134,9 @@ function UpcomingTaskCard({ task }) {
   }[task.priority] || 'var(--color-border-strong)'
 
   return (
-    <div
-      className="flex items-center gap-3 py-2.5 px-3 rounded-lg"
-      style={{ borderRadius: 8 }}
+    <button
+      onClick={onClick}
+      className="w-full flex items-center gap-3 py-2.5 px-3 text-left transition-colors hover:bg-[var(--color-surface-hover)] rounded-lg"
     >
       <span
         className="w-1.5 h-1.5 rounded-full shrink-0"
@@ -159,7 +164,7 @@ function UpcomingTaskCard({ task }) {
           {dueLabel}
         </span>
       )}
-    </div>
+    </button>
   )
 }
 
@@ -226,16 +231,19 @@ export function Dashboard() {
               label="Notes"
               value={activeNotes.length}
               sub={`${archivedNotes.length} archived`}
+              onClick={() => setActivePanel('notes')}
             />
             <StatCard
               label="Open Tasks"
               value={activeTasks.length}
               sub={`${doneTasks.length} done`}
+              onClick={() => setActivePanel('tasks')}
             />
             <StatCard
               label="Favourites"
               value={starredNotes.length}
               sub="starred"
+              onClick={() => setActivePanel('favourites')}
             />
             <StatCard
               label="Words"
@@ -297,7 +305,7 @@ export function Dashboard() {
                   style={{ padding: '8px 4px' }}
                 >
                   {upcomingTasks.map(t => (
-                    <UpcomingTaskCard key={t.id} task={t} />
+                    <UpcomingTaskCard key={t.id} task={t} onClick={() => setActivePanel('tasks')} />
                   ))}
                 </div>
               )}

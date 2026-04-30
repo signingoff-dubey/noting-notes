@@ -9,11 +9,11 @@ const icons = {
   info:    <Info size={15} strokeWidth={1.5} />,
 }
 
-const borderColors = {
-  success: 'border-l-success',
-  error:   'border-l-error',
-  warning: 'border-l-warning',
-  info:    'border-l-info',
+const bgTints = {
+  success: 'color-mix(in oklch, var(--color-success) 9%, var(--color-surface))',
+  error:   'color-mix(in oklch, var(--color-error) 9%, var(--color-surface))',
+  warning: 'color-mix(in oklch, var(--color-warning) 9%, var(--color-surface))',
+  info:    'color-mix(in oklch, var(--color-accent) 9%, var(--color-surface))',
 }
 
 const textColors = {
@@ -27,11 +27,8 @@ function ToastItem({ toast }) {
   const removeToast = useUIStore(s => s.removeToast)
   return (
     <div
-      className={cn(
-        'toast-enter flex items-start gap-3 w-80 bg-surface border border-border-strong rounded-sm p-3',
-        'border-l-[3px]',
-        borderColors[toast.type],
-      )}
+      className="toast-enter flex items-start gap-3 w-80 border border-border-strong rounded-sm p-3"
+      style={{ background: bgTints[toast.type] }}
     >
       <span className={cn('mt-0.5 shrink-0', textColors[toast.type])}>
         {icons[toast.type]}

@@ -1072,6 +1072,71 @@
       "related_bugs": [],
       "occurrences": 1,
       "last_seen": "2026-04-29T05:21:51.564Z"
+    },
+    {
+      "id": "bug-069",
+      "timestamp": "2026-04-30T00:00:00.000Z",
+      "error_message": "Due date button not working — clicking does nothing",
+      "file": "frontend/src/pages/Tasks.jsx",
+      "root_cause": "Hidden input[type=date] inside <label> with opacity:0 doesn't reliably trigger native date picker on Windows/Chrome",
+      "fix": "Replaced label+hidden-input pattern with button that calls dateInputRef.current.showPicker(), input rendered outside label with pointerEvents:none",
+      "tags": [
+        "date-picker",
+        "browser-compat",
+        "jsx",
+        "windows"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T00:00:00.000Z"
+    },
+    {
+      "id": "bug-068",
+      "timestamp": "2026-04-30T07:07:45.221Z",
+      "error_message": "Null/undefined access in ",
+      "file": "frontend/src/pages/Tasks.jsx",
+      "root_cause": "Property access on potentially null/undefined value",
+      "fix": "Added null safety (optional chaining or null check)",
+      "tags": [
+        "auto-detected",
+        "null-safety",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T07:07:45.221Z"
+    },
+    {
+      "id": "bug-070",
+      "timestamp": "2026-04-30T13:57:55.062Z",
+      "error_message": "CSS fix: transition",
+      "file": "frontend/src/index.css",
+      "root_cause": "transition: opacity 0.15s ease → opacity 0.2s ease",
+      "fix": "Changed transition: opacity 0.15s ease → opacity 0.2s ease",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "css"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T13:57:55.062Z"
+    },
+    {
+      "id": "bug-071",
+      "timestamp": "2026-04-30T13:58:17.148Z",
+      "error_message": "Missing error handling in unknown",
+      "file": "frontend/src/components/editor/NoteEditor.jsx",
+      "root_cause": "Code path had no error handling — exceptions would propagate uncaught",
+      "fix": "Added try/catch block",
+      "tags": [
+        "auto-detected",
+        "error-handling",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T13:58:17.148Z"
     }
   ]
 }

@@ -53,6 +53,7 @@ function AddTaskBar({ onSave, folders }) {
   const [bubbleFocused, setBubbleFocused] = useState(false)
   const [folderSearch, setFolderSearch] = useState('')
   const bubbleRef = useRef(null)
+  const dateInputRef = useRef(null)
 
   const handleSubmit = () => {
     if (!title.trim()) return
@@ -167,30 +168,27 @@ function AddTaskBar({ onSave, folders }) {
           </div>
 
           {/* Due date */}
-          <label
-            className="relative flex items-center gap-1.5 px-2 h-7 rounded-md cursor-pointer transition-colors hover:bg-[var(--color-surface-hover)]"
+          <button
+            onMouseDown={e => e.preventDefault()}
+            onClick={() => dateInputRef.current?.showPicker()}
+            className="flex items-center gap-1.5 px-2 h-7 rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
             style={{
               fontFamily: 'var(--font-body)',
               fontSize: 'var(--text-xs)',
               color: dueDate ? 'var(--color-text-secondary)' : 'var(--color-text-muted)',
+              outline: 'none',
             }}
           >
             <Calendar size={12} strokeWidth={1.5} />
             {dueDate ? format(new Date(dueDate + 'T00:00:00'), 'MMM d') : 'Due date'}
-            <input
-              type="date"
-              value={dueDate}
-              onChange={e => setDueDate(e.target.value)}
-              style={{
-                position: 'absolute',
-                inset: 0,
-                opacity: 0,
-                cursor: 'pointer',
-                width: '100%',
-                height: '100%',
-              }}
-            />
-          </label>
+          </button>
+          <input
+            ref={dateInputRef}
+            type="date"
+            value={dueDate}
+            onChange={e => setDueDate(e.target.value)}
+            style={{ position: 'absolute', opacity: 0, pointerEvents: 'none', width: 0, height: 0 }}
+          />
 
           {/* Folder selector */}
           <div className="relative">

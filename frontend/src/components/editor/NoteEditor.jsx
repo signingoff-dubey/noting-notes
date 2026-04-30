@@ -236,38 +236,50 @@ export function NoteEditor({ note, onBack }) {
   useEffect(() => {
     if (!editor || !typewriterMode) return
     const handler = () => {
-      const { from } = editor.state.selection
-      const coords = editor.view.coordsAtPos(from)
-      const container = scrollContainerRef.current
-      if (!container) return
-      const rect = container.getBoundingClientRect()
-      const cursorY = coords.top - rect.top
-      const target = rect.height / 2
-      container.scrollTop += cursorY - target
+      requestAnimationFrame(() => {
+        try {
+          const { from } = editor.state.selection
+          const coords = editor.view.coordsAtPos(from)
+          const container = scrollContainerRef.current
+          if (!container) return
+          const rect = container.getBoundingClientRect()
+          const cursorY = coords.top - rect.top
+          const target = rect.height / 2
+          container.scrollTop += cursorY - target
+        } catch {}
+      })
     }
     editor.on('selectionUpdate', handler)
+    // Run once immediately to centre cursor when mode is enabled
+    handler()
     return () => editor.off('selectionUpdate', handler)
   }, [editor, typewriterMode])
 
   /* Focus mode: dim all blocks except the one with the cursor */
   useEffect(() => {
     if (!editor) return
+    const dom = editor.view.dom
     const handler = () => {
-      const dom = editor.view.dom
-      dom.querySelectorAll('[data-is-focused]').forEach(el => el.removeAttribute('data-is-focused'))
+      Array.from(dom.children).forEach(el => el.removeAttribute('data-is-focused'))
       if (!focusMode) return
-      const { from } = editor.state.selection
       try {
-        const nodeDOM = editor.view.nodeDOM(editor.state.doc.resolve(from).before(1))
-        if (nodeDOM instanceof HTMLElement) nodeDOM.setAttribute('data-is-focused', 'true')
+        const { from } = editor.state.selection
+        const $from = editor.state.doc.resolve(from)
+        if ($from.depth < 1) return
+        const el = editor.view.nodeDOM($from.before(1))
+        if (el instanceof HTMLElement && el.parentElement === dom) {
+          el.setAttribute('data-is-focused', 'true')
+        }
       } catch {}
     }
     editor.on('selectionUpdate', handler)
     editor.on('focus', handler)
+    // Apply immediately so mode activates without needing a click
+    handler()
     return () => {
       editor.off('selectionUpdate', handler)
       editor.off('focus', handler)
-      editor.view.dom.querySelectorAll('[data-is-focused]').forEach(el => el.removeAttribute('data-is-focused'))
+      Array.from(dom.children).forEach(el => el.removeAttribute('data-is-focused'))
     }
   }, [editor, focusMode])
 

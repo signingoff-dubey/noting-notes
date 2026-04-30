@@ -54,7 +54,6 @@ function NoteRow({ note, active, onClick }) {
       )}
       style={{
         borderColor: 'var(--color-border)',
-        boxShadow: active ? 'inset 2px 0 0 var(--color-accent)' : 'none',
       }}
     >
       {/* Title row */}

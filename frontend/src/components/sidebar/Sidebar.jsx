@@ -378,34 +378,42 @@ export function Sidebar() {
           collapsed={libraryCollapsed}
           onToggle={() => setLibraryCollapsed(v => !v)}
         />
-        {!libraryCollapsed && (
-          <div className="flex flex-col gap-0.5 px-2 pb-2">
-            <NavItem
-              icon={<Star size={14} strokeWidth={1.5} />}
-              label="Favourites"
-              active={activePanel === 'favourites'}
-              onClick={() => { setActivePanel('favourites'); setActiveNote(null) }}
-            />
-            <NavItem
-              icon={<Clock size={14} strokeWidth={1.5} />}
-              label="Recent"
-              active={activePanel === 'recent'}
-              onClick={() => { setActivePanel('recent'); setActiveFolderId(null); setActiveNote(null) }}
-            />
-            <NavItem
-              icon={<Tag size={14} strokeWidth={1.5} />}
-              label="All Tags"
-              active={activePanel === 'tags'}
-              onClick={() => { setActivePanel('tags'); setActiveNote(null) }}
-            />
-            <NavItem
-              icon={<Archive size={14} strokeWidth={1.5} />}
-              label="Archive"
-              active={activePanel === 'archive'}
-              onClick={() => setActivePanel('archive')}
-            />
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateRows: libraryCollapsed ? '0fr' : '1fr',
+            transition: 'grid-template-rows 200ms cubic-bezier(0.16, 1, 0.3, 1)',
+          }}
+        >
+          <div style={{ overflow: 'hidden' }}>
+            <div className="flex flex-col gap-0.5 px-2 pb-2">
+              <NavItem
+                icon={<Star size={14} strokeWidth={1.5} />}
+                label="Favourites"
+                active={activePanel === 'favourites'}
+                onClick={() => { setActivePanel('favourites'); setActiveNote(null) }}
+              />
+              <NavItem
+                icon={<Clock size={14} strokeWidth={1.5} />}
+                label="Recent"
+                active={activePanel === 'recent'}
+                onClick={() => { setActivePanel('recent'); setActiveFolderId(null); setActiveNote(null) }}
+              />
+              <NavItem
+                icon={<Tag size={14} strokeWidth={1.5} />}
+                label="All Tags"
+                active={activePanel === 'tags'}
+                onClick={() => { setActivePanel('tags'); setActiveNote(null) }}
+              />
+              <NavItem
+                icon={<Archive size={14} strokeWidth={1.5} />}
+                label="Archive"
+                active={activePanel === 'archive'}
+                onClick={() => setActivePanel('archive')}
+              />
+            </div>
           </div>
-        )}
+        </div>
       </div>
 
       {/* ── Folders ── */}
@@ -416,17 +424,28 @@ export function Sidebar() {
           collapsed={foldersCollapsed}
           onToggle={() => setFoldersCollapsed(v => !v)}
         />
-        {!foldersCollapsed && (
-          <div className="px-2 pb-2">
-            <FolderTree onSelect={handleFolderSelect} activeId={activeFolderId} />
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateRows: foldersCollapsed ? '0fr' : '1fr',
+            transition: 'grid-template-rows 200ms cubic-bezier(0.16, 1, 0.3, 1)',
+            flex: foldersCollapsed ? 'none' : '1',
+            minHeight: 0,
+          }}
+        >
+          <div style={{ overflow: 'hidden' }}>
+            <div className="px-2 pb-2">
+              <FolderTree onSelect={handleFolderSelect} activeId={activeFolderId} />
+            </div>
           </div>
-        )}
+        </div>
       </div>
 
       {/* ── Bottom: Upgrade + Auth + Vault + Settings ── */}
       <div className="flex flex-col gap-0.5 px-2 py-2 shrink-0">
         {/* Upgrade to Pro */}
         <button
+          onClick={() => toast.info('Pro features coming soon')}
           className="w-full flex items-center gap-2 px-3 py-2 rounded-lg transition-opacity hover:opacity-75"
           style={{
             background: 'var(--color-accent-dim)',

@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-04-30T13:58:26.424Z
-> Files: 38 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-04-30T23:12:13.336Z
+> Files: 39 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../../.claude/
 
@@ -297,8 +297,8 @@
 
 ## frontend/src/
 
-- `App.jsx` — CenterPanel (~1342 tok)
-- `index.css` — Styles: 4 rules, 224 vars (~7415 tok)
+- `App.jsx` — CenterPanel (~1379 tok)
+- `index.css` — Styles: 4 rules, 224 vars (~7564 tok)
 
 ## frontend/src/components/ai/
 
@@ -316,12 +316,13 @@
 
 ## frontend/src/components/sidebar/
 
-- `NotesPanel.jsx` — extractText (~3516 tok)
-- `Sidebar.jsx` — NavItem — renders form, modal (~4640 tok)
+- `NotesPanel.jsx` — extractText (~3495 tok)
+- `Sidebar.jsx` — NavItem — renders form, modal (~4849 tok)
 
 ## frontend/src/components/ui/
 
-- `Dropdown.jsx` — Dropdown (~1021 tok)
+- `Dropdown.jsx` — Dropdown (~1028 tok)
+- `Toast.jsx` — icons (~531 tok)
 
 ## frontend/src/components/viewer/
 
@@ -336,11 +337,11 @@
 
 - `ArchivedView.jsx` — TabButton (~2620 tok)
 - `Calendar.jsx` — WEEKDAYS (~4723 tok)
-- `Dashboard.jsx` — getGreeting (~2898 tok)
+- `Dashboard.jsx` — getGreeting (~3037 tok)
 - `Notes.jsx` — SORT_OPTIONS (~1873 tok)
 - `Settings.jsx` — useEditorSettings (~5293 tok)
 - `TagsView.jsx` — TagsView (~1668 tok)
-- `Tasks.jsx` — PRIORITY_COLORS (~9002 tok)
+- `Tasks.jsx` — PRIORITY_COLORS (~9048 tok)
 
 ## frontend/src/store/
 

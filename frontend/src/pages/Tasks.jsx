@@ -813,7 +813,8 @@ export function Tasks() {
                             onDragStart={() => handleDragStart(i)}
                             onDragOver={e => handleDragOver(e, i)}
                             onDrop={handleDrop}
-                            style={{ opacity: dragIndex === i ? 0.5 : 1, cursor: 'grab' }}
+                            className="panel-enter"
+                            style={{ opacity: dragIndex === i ? 0.5 : 1, cursor: 'grab', animationDelay: `${i * 30}ms` }}
                           >
                             <TaskRow task={task} showFolder={false} />
                           </div>
@@ -831,7 +832,8 @@ export function Tasks() {
                         onDragStart={() => handleDragStart(i)}
                         onDragOver={e => handleDragOver(e, i)}
                         onDrop={handleDrop}
-                        style={{ opacity: dragIndex === i ? 0.5 : 1, cursor: 'grab' }}
+                        className="panel-enter"
+                        style={{ opacity: dragIndex === i ? 0.5 : 1, cursor: 'grab', animationDelay: `${i * 30}ms` }}
                       >
                         <TaskRow task={task} showFolder={false} />
                       </div>

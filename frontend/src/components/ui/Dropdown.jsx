@@ -18,7 +18,7 @@ export function Dropdown({ trigger, items, align = 'left', className }) {
       {open && (
         <div
           className={cn(
-            'absolute z-50 mt-1 min-w-[140px] bg-surface border border-border-strong rounded-sm shadow-2xl py-1',
+            'dropdown-in absolute z-50 mt-1 min-w-[140px] bg-surface border border-border-strong rounded-sm shadow-2xl py-1',
             align === 'right' ? 'right-0' : 'left-0',
           )}
         >
@@ -68,7 +68,7 @@ export function Select({ value, onChange, options, placeholder, className }) {
         <ChevronDown size={12} strokeWidth={1.5} className={cn('shrink-0 transition-transform', open && 'rotate-180')} />
       </button>
       {open && (
-        <div className="absolute z-50 mt-1 w-full min-w-[140px] bg-surface border border-border-strong rounded-sm shadow-2xl py-1 max-h-48 overflow-y-auto">
+        <div className="dropdown-in absolute z-50 mt-1 w-full min-w-[140px] bg-surface border border-border-strong rounded-sm shadow-2xl py-1 max-h-48 overflow-y-auto">
           {options.map(opt => (
             <button
               key={opt.value}

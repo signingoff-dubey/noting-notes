@@ -1137,6 +1137,118 @@
       "related_bugs": [],
       "occurrences": 1,
       "last_seen": "2026-04-30T13:58:17.148Z"
+    },
+    {
+      "id": "bug-072",
+      "timestamp": "2026-04-30T23:08:54.643Z",
+      "error_message": "Significant refactor of ",
+      "file": "frontend/src/components/ui/Toast.jsx",
+      "root_cause": "5 lines replaced/restructured",
+      "fix": "Rewrote 8→8 lines (5 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T23:08:54.643Z"
+    },
+    {
+      "id": "bug-073",
+      "timestamp": "2026-04-30T23:09:26.247Z",
+      "error_message": "Incorrect value in code",
+      "file": "frontend/src/components/ui/Dropdown.jsx",
+      "root_cause": "Had \"absolute z-50 mt-1 w-full min-w-[140px] bg-surfac",
+      "fix": "Changed to \"dropdown-in absolute z-50 mt-1 w-full min-w-[140p",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T23:09:26.247Z"
+    },
+    {
+      "id": "bug-074",
+      "timestamp": "2026-04-30T23:10:03.854Z",
+      "error_message": "CSS fix: animation",
+      "file": "frontend/src/index.css",
+      "root_cause": "animation: float-in 100ms ease forwards → panel-enter 180ms cubic-bezier(0.16, 1, 0.3, 1) forwards",
+      "fix": "Changed animation: float-in 100ms ease forwards → panel-enter 180ms cubic-bezier(0.16, 1, 0.3, 1) forwards",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "css"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T23:10:03.854Z"
+    },
+    {
+      "id": "bug-075",
+      "timestamp": "2026-04-30T23:10:22.514Z",
+      "error_message": "Significant refactor of ",
+      "file": "frontend/src/components/sidebar/Sidebar.jsx",
+      "root_cause": "4 lines replaced/restructured",
+      "fix": "Rewrote 52→70 lines (4 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T23:10:22.514Z"
+    },
+    {
+      "id": "bug-076",
+      "timestamp": "2026-04-30T23:10:49.708Z",
+      "error_message": "Null/undefined access in ",
+      "file": "frontend/src/App.jsx",
+      "root_cause": "Property access on potentially null/undefined value",
+      "fix": "Added null safety (optional chaining or null check)",
+      "tags": [
+        "auto-detected",
+        "null-safety",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T23:10:49.708Z"
+    },
+    {
+      "id": "bug-077",
+      "timestamp": "2026-04-30T23:11:11.824Z",
+      "error_message": "Significant refactor of ",
+      "file": "frontend/src/pages/Dashboard.jsx",
+      "root_cause": "3 lines replaced/restructured",
+      "fix": "Rewrote 6→11 lines (3 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T23:11:11.824Z"
+    },
+    {
+      "id": "bug-078",
+      "timestamp": "2026-04-30T23:12:02.425Z",
+      "error_message": "CSS fix: opacity",
+      "file": "frontend/src/pages/Tasks.jsx",
+      "root_cause": "opacity: dragIndex === i ? 0.5 : 1, cursor: 'grab' → dragIndex === i ? 0.5 : 1, cursor: 'grab', animationDelay: `${i * 30",
+      "fix": "Changed opacity: dragIndex === i ? 0.5 : 1, cursor: 'grab' → dragIndex === i ? 0.5 : 1, cursor: 'grab', animationDelay: `${i * 30",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-04-30T23:12:13.365Z"
     }
   ]
 }

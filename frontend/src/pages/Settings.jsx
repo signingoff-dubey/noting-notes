@@ -205,6 +205,7 @@ function Toggle({ checked, onChange }) {
 }
 
 function RangeSlider({ value, onChange, min, max, step, label }) {
+  const pct = ((value - min) / (max - min)) * 100
   return (
     <div className="flex items-center gap-3">
       <input
@@ -214,8 +215,8 @@ function RangeSlider({ value, onChange, min, max, step, label }) {
         step={step}
         value={value}
         onChange={e => onChange(Number(e.target.value))}
-        className="w-32"
-        style={{ accentColor: 'var(--color-accent)' }}
+        className="ink-slider w-32"
+        style={{ '--pct': `${pct}%` }}
       />
       <span className="font-mono w-8 text-right" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
         {value}{label}

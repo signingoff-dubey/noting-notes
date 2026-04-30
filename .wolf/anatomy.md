@@ -1,6 +1,6 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-04-29T05:21:51.547Z
+> Auto-maintained by OpenWolf. Last scanned: 2026-04-30T13:58:26.424Z
 > Files: 38 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../../.claude/
@@ -298,7 +298,7 @@
 ## frontend/src/
 
 - `App.jsx` — CenterPanel (~1342 tok)
-- `index.css` — Styles: 4 rules, 224 vars (~7201 tok)
+- `index.css` — Styles: 4 rules, 224 vars (~7415 tok)
 
 ## frontend/src/components/ai/
 
@@ -308,7 +308,7 @@
 
 - `EditorToolbar.jsx` — ToolBtn (~4076 tok)
 - `FloatingToolbar.jsx` — GROQ_BASE_URL (~3459 tok)
-- `NoteEditor.jsx` — lowlight (~8853 tok)
+- `NoteEditor.jsx` — lowlight (~8946 tok)
 
 ## frontend/src/components/notes/
 
@@ -338,9 +338,9 @@
 - `Calendar.jsx` — WEEKDAYS (~4723 tok)
 - `Dashboard.jsx` — getGreeting (~2898 tok)
 - `Notes.jsx` — SORT_OPTIONS (~1873 tok)
-- `Settings.jsx` — useEditorSettings (~5280 tok)
+- `Settings.jsx` — useEditorSettings (~5293 tok)
 - `TagsView.jsx` — TagsView (~1668 tok)
-- `Tasks.jsx` — PRIORITY_COLORS (~8987 tok)
+- `Tasks.jsx` — PRIORITY_COLORS (~9002 tok)
 
 ## frontend/src/store/
 

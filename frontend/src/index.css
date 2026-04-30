@@ -411,6 +411,38 @@ select:focus-visible {
   box-shadow: none;
 }
 
+/* ─── Range Slider ─── */
+.ink-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 3px;
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+  background: linear-gradient(
+    to right,
+    var(--color-accent) var(--pct, 0%),
+    var(--color-border) var(--pct, 0%)
+  );
+}
+.ink-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  cursor: pointer;
+  box-shadow: 0 0 0 2px var(--color-bg);
+}
+.ink-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  border: 2px solid var(--color-bg);
+  cursor: pointer;
+}
+
 /* ─── Editor Content ─── */
 .editor-content {
   font-family: var(--font-editor);
@@ -427,10 +459,11 @@ select:focus-visible {
 /* ─── Focus Mode ─── */
 .focus-mode .editor-content > * {
   opacity: 0.18;
-  transition: opacity 0.15s ease;
+  transition: opacity 0.2s ease;
 }
 .focus-mode .editor-content > *[data-is-focused] {
   opacity: 1;
+  transition: opacity 0.2s ease;
 }
 
 .editor-content h1 { font-size: 2rem; font-weight: 600; margin: 24px 0 12px; line-height: 1.2; }

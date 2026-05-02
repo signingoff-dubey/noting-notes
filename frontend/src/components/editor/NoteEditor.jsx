@@ -17,7 +17,7 @@ import CharacterCount from '@tiptap/extension-character-count'
 import Placeholder from '@tiptap/extension-placeholder'
 import Underline from '@tiptap/extension-underline'
 import { common, createLowlight } from 'lowlight'
-import { ArrowLeft, Lock, Unlock, Trash2, History, RotateCcw, Download, Upload, FileText, FileDown, Paperclip, X as XIcon } from 'lucide-react'
+import { ArrowLeft, Lock, Unlock, Trash2, History, RotateCcw, Download, Upload, FileText, FileDown, Paperclip, X as XIcon, FolderOpen } from 'lucide-react'
 import { FileViewer } from '@/components/viewer/FileViewer'
 import { nanoid } from 'nanoid'
 import { useNotesStore } from '@/store/notesStore'
@@ -26,6 +26,8 @@ import { useVaultStore } from '@/store/vaultStore'
 import { useUIStore, toast } from '@/store/uiStore'
 import { EditorToolbar } from './EditorToolbar'
 import { FloatingToolbar } from './FloatingToolbar'
+import { NoteLinkPreview } from './NoteLinkPreview'
+import { createNoteLinkPlugin } from './NoteLinkExtension'
 import { TagChips } from '@/components/notes/TagChips'
 import { format } from 'date-fns'
 
@@ -138,12 +140,25 @@ function SaveStatus({ saving, lastSaved }) {
   return null
 }
 
+const NoteLinkHighlight = Extension.create({
+  name: 'noteLinkHighlight',
+  addProseMirrorPlugins() {
+    const findNote = (title) => {
+      const notes = useNotesStore.getState().notes
+      const t = title.toLowerCase()
+      return notes.find(n => !n.archived && (n.title || '').toLowerCase() === t)
+    }
+    return [createNoteLinkPlugin(findNote)]
+  },
+})
+
 export function NoteEditor({ note, onBack }) {
   const updateNote = useNotesStore(s => s.updateNote)
   const deleteNote = useNotesStore(s => s.deleteNote)
   const getVersions = useNotesStore(s => s.getVersions)
   const restoreVersion = useNotesStore(s => s.restoreVersion)
   const createNote = useNotesStore(s => s.createNote)
+  const folders = useNotesStore(s => s.folders)
   const isSaving = useNotesStore(s => s.isSaving)
   const setContextNote = useAIStore(s => s.setContextNote)
   const { isUnlocked: vaultUnlocked } = useVaultStore()
@@ -164,6 +179,7 @@ export function NoteEditor({ note, onBack }) {
   const [showHistory, setShowHistory] = useState(false)
   const [historyVersions, setHistoryVersions] = useState([])
   const [showExportMenu, setShowExportMenu] = useState(false)
+  const [showMoveFolder, setShowMoveFolder] = useState(false)
   const [activeFileViewer, setActiveFileViewer] = useState(null)
   const importRef = useRef(null)
   const autosaveTimer = useRef(null)
@@ -197,6 +213,7 @@ export function NoteEditor({ note, onBack }) {
       CharacterCount,
       Placeholder.configure({ placeholder: 'Start writing...' }),
       AutoCapitalize,
+      NoteLinkHighlight,
     ],
     content: note?.content || '',
     editorProps: {
@@ -477,6 +494,58 @@ export function NoteEditor({ note, onBack }) {
           <History size={14} strokeWidth={1.5} />
         </button>
 
+        {/* Move to folder */}
+        <div className="relative">
+          <button
+            onClick={() => setShowMoveFolder(v => !v)}
+            title="Move to folder"
+            className="w-7 h-7 flex items-center justify-center rounded-lg transition-all"
+            style={{
+              color: note.folder_id ? 'var(--color-accent)' : 'var(--color-text-muted)',
+            }}
+            onMouseEnter={e => { if (!note.folder_id) e.currentTarget.style.color = 'var(--color-text-secondary)' }}
+            onMouseLeave={e => { if (!note.folder_id) e.currentTarget.style.color = 'var(--color-text-muted)' }}
+          >
+            <FolderOpen size={14} strokeWidth={1.5} />
+          </button>
+          {showMoveFolder && (
+            <div
+              className="dropdown-in absolute right-0 top-full mt-1 z-50 flex flex-col overflow-hidden rounded-lg py-1"
+              style={{
+                background: 'var(--color-surface)',
+                border: '1px solid var(--color-border)',
+                boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+                minWidth: 160,
+              }}
+              onMouseLeave={() => setShowMoveFolder(false)}
+            >
+              <button
+                onClick={async () => { await updateNote(note.id, { folder_id: null }); setShowMoveFolder(false); toast.info('Removed from folder') }}
+                className="flex items-center gap-2 px-3 py-2 text-left transition-colors hover:bg-[var(--color-surface-hover)]"
+                style={{ fontSize: 12, color: !note.folder_id ? 'var(--color-accent)' : 'var(--color-text-secondary)', fontFamily: 'var(--font-body)' }}
+              >
+                No folder
+              </button>
+              {folders.map(f => (
+                <button
+                  key={f.id}
+                  onClick={async () => { await updateNote(note.id, { folder_id: f.id }); setShowMoveFolder(false); toast.success(`Moved to "${f.name}"`) }}
+                  className="flex items-center gap-2 px-3 py-2 text-left transition-colors hover:bg-[var(--color-surface-hover)]"
+                  style={{ fontSize: 12, color: note.folder_id === f.id ? 'var(--color-accent)' : 'var(--color-text-secondary)', fontFamily: 'var(--font-body)' }}
+                >
+                  <FolderOpen size={11} strokeWidth={1.5} />
+                  {f.name}
+                </button>
+              ))}
+              {folders.length === 0 && (
+                <p className="px-3 py-2 font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+                  Create folders in sidebar first
+                </p>
+              )}
+            </div>
+          )}
+        </div>
+
         {/* Delete note button */}
         <button
           onClick={() => setShowDeleteConfirm(true)}
@@ -606,6 +675,7 @@ export function NoteEditor({ note, onBack }) {
               padding: '32px 40px 80px',
             }}
           />
+          <NoteLinkPreview editorContainer={scrollContainerRef} />
         </div>
         {activeFileViewer && (
           <FileViewer

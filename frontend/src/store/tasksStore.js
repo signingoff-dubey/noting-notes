@@ -31,6 +31,8 @@ export const useTasksStore = create((set, get) => ({
       priority: 'none',
       status: 'todo',
       labels: [],
+      subtasks: [],
+      recurrence: null,
       created_at: now,
       updated_at: now,
       ...data,
@@ -83,6 +85,31 @@ export const useTasksStore = create((set, get) => ({
       if (filter.label !== 'all' && !t.labels?.includes(filter.label)) return false
       return true
     })
+  },
+
+  addSubtask: async (taskId, title) => {
+    const task = get().tasks.find(t => t.id === taskId)
+    if (!task) return
+    const subtask = { id: nanoid(), title, done: false }
+    const subtasks = [...(task.subtasks || []), subtask]
+    await get().updateTask(taskId, { subtasks })
+    return subtask
+  },
+
+  toggleSubtask: async (taskId, subtaskId) => {
+    const task = get().tasks.find(t => t.id === taskId)
+    if (!task) return
+    const subtasks = (task.subtasks || []).map(s =>
+      s.id === subtaskId ? { ...s, done: !s.done } : s
+    )
+    await get().updateTask(taskId, { subtasks })
+  },
+
+  deleteSubtask: async (taskId, subtaskId) => {
+    const task = get().tasks.find(t => t.id === taskId)
+    if (!task) return
+    const subtasks = (task.subtasks || []).filter(s => s.id !== subtaskId)
+    await get().updateTask(taskId, { subtasks })
   },
 
   getArchivedTasks: () => get().tasks.filter(t => t.archived),

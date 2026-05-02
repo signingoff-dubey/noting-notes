@@ -443,6 +443,26 @@ select:focus-visible {
   cursor: pointer;
 }
 
+/* ─── Note Links ─── */
+.ink-note-link {
+  color: var(--color-accent);
+  text-decoration: underline;
+  text-decoration-style: dotted;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+.ink-note-link:hover {
+  opacity: 0.75;
+}
+.ink-note-link-broken {
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-underline-offset: 3px;
+  opacity: 0.6;
+}
+
 /* ─── Editor Content ─── */
 .editor-content {
   font-family: var(--font-editor);

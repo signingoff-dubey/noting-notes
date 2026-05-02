@@ -2,14 +2,14 @@
   "version": 1,
   "created_at": "2026-04-20T00:51:14.976Z",
   "lifetime": {
-    "total_tokens_estimated": 1106256,
-    "total_reads": 416,
-    "total_writes": 620,
-    "total_sessions": 20,
-    "anatomy_hits": 252,
-    "anatomy_misses": 157,
-    "repeated_reads_blocked": 112,
-    "estimated_savings_vs_bare_cli": 648490
+    "total_tokens_estimated": 1207438,
+    "total_reads": 444,
+    "total_writes": 655,
+    "total_sessions": 23,
+    "anatomy_hits": 274,
+    "anatomy_misses": 163,
+    "repeated_reads_blocked": 116,
+    "estimated_savings_vs_bare_cli": 673918
   },
   "sessions": [
     {
@@ -6420,6 +6420,383 @@
         "reads_count": 8,
         "writes_count": 17,
         "repeated_reads_blocked": 1,
+        "anatomy_lookups": 7
+      }
+    },
+    {
+      "id": "session-2026-04-30-0438",
+      "started": "2026-04-30T23:08:38.376Z",
+      "ended": "2026-04-30T23:22:25.875Z",
+      "reads": [
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/ui/Toast.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/sidebar/NotesPanel.jsx",
+          "tokens_estimated": 3516,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/ui/Dropdown.jsx",
+          "tokens_estimated": 1021,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/sidebar/Sidebar.jsx",
+          "tokens_estimated": 4640,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/index.css",
+          "tokens_estimated": 7564,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/App.jsx",
+          "tokens_estimated": 1379,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/pages/Dashboard.jsx",
+          "tokens_estimated": 3037,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/pages/Tasks.jsx",
+          "tokens_estimated": 9048,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/NoteEditor.jsx",
+          "tokens_estimated": 8946,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/EditorToolbar.jsx",
+          "tokens_estimated": 4076,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/store",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/store/aiStore.js",
+          "tokens_estimated": 2213,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/pages/Calendar.jsx",
+          "tokens_estimated": 4723,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/pages/Settings.jsx",
+          "tokens_estimated": 5293,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/backend/models/note.py",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/backend/routes/notes.py",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/notes/NoteCard.jsx",
+          "tokens_estimated": 3043,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/pages/ArchivedView.jsx",
+          "tokens_estimated": 2620,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/ai/AISidebar.jsx",
+          "tokens_estimated": 10156,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/ui/Toast.jsx",
+          "tokens_estimated": 104,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/ui/Toast.jsx",
+          "tokens_estimated": 48,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/sidebar/NotesPanel.jsx",
+          "tokens_estimated": 20,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/ui/Dropdown.jsx",
+          "tokens_estimated": 74,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/ui/Dropdown.jsx",
+          "tokens_estimated": 53,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/index.css",
+          "tokens_estimated": 207,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/sidebar/Sidebar.jsx",
+          "tokens_estimated": 754,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/sidebar/Sidebar.jsx",
+          "tokens_estimated": 106,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/App.jsx",
+          "tokens_estimated": 133,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/pages/Dashboard.jsx",
+          "tokens_estimated": 122,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/pages/Dashboard.jsx",
+          "tokens_estimated": 16,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/pages/Dashboard.jsx",
+          "tokens_estimated": 223,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/pages/Dashboard.jsx",
+          "tokens_estimated": 83,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/pages/Dashboard.jsx",
+          "tokens_estimated": 306,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/pages/Dashboard.jsx",
+          "tokens_estimated": 48,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/pages/Tasks.jsx",
+          "tokens_estimated": 195,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/pages/Tasks.jsx",
+          "tokens_estimated": 181,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/sidebar/Sidebar.jsx",
+          "tokens_estimated": 22,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/sidebar/Sidebar.jsx",
+          "tokens_estimated": 22,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/sidebar/Sidebar.jsx",
+          "tokens_estimated": 24,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/sidebar/Sidebar.jsx",
+          "tokens_estimated": 22,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 71275,
+        "output_tokens_estimated": 2763,
+        "reads_count": 20,
+        "writes_count": 21,
+        "repeated_reads_blocked": 4,
+        "anatomy_lookups": 15
+      }
+    },
+    {
+      "id": "session-2026-05-02-0920",
+      "started": "2026-05-02T03:50:59.293Z",
+      "ended": "2026-05-02T05:08:59.045Z",
+      "reads": [
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/store/vaultStore.js",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/store/uiStore.js",
+          "tokens_estimated": 1609,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/pages/Settings.jsx",
+          "tokens_estimated": 5293,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/sidebar/Sidebar.jsx",
+          "tokens_estimated": 4878,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/App.jsx",
+          "tokens_estimated": 1405,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/lib/api.js",
+          "tokens_estimated": 1407,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/store/notesStore.js",
+          "tokens_estimated": 1866,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/FloatingToolbar.jsx",
+          "tokens_estimated": 3459,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/store/vaultStore.js",
+          "tokens_estimated": 740,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/FloatingToolbar.jsx",
+          "tokens_estimated": 47,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/FloatingToolbar.jsx",
+          "tokens_estimated": 251,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/FloatingToolbar.jsx",
+          "tokens_estimated": 188,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/FloatingToolbar.jsx",
+          "tokens_estimated": 37,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/pages/Settings.jsx",
+          "tokens_estimated": 49,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/pages/Settings.jsx",
+          "tokens_estimated": 22,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/pages/Settings.jsx",
+          "tokens_estimated": 371,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/pages/Settings.jsx",
+          "tokens_estimated": 47,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/pages/Journal.jsx",
+          "tokens_estimated": 5206,
+          "action": "create"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/sidebar/Sidebar.jsx",
+          "tokens_estimated": 68,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/sidebar/Sidebar.jsx",
+          "tokens_estimated": 138,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/App.jsx",
+          "tokens_estimated": 27,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/App.jsx",
+          "tokens_estimated": 36,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 19917,
+        "output_tokens_estimated": 7227,
+        "reads_count": 8,
+        "writes_count": 14,
+        "repeated_reads_blocked": 0,
         "anatomy_lookups": 7
       }
     }

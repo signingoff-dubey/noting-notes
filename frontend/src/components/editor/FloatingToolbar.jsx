@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { BubbleMenu } from '@tiptap/react'
-import { Bold, Italic, Underline, Strikethrough, Highlighter, Code, Link, Zap, AlignLeft, MessageSquare, RefreshCw, Loader2, Check } from 'lucide-react'
+import { Bold, Italic, Underline, Strikethrough, Highlighter, Code, Link, Zap, AlignLeft, MessageSquare, RefreshCw, Loader2, Check, Languages } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { useAIStore } from '@/store/aiStore'
 import { toast } from '@/store/uiStore'
@@ -195,6 +195,27 @@ export function FloatingToolbar({ editor }) {
     }
   }
 
+  const handleTranslate = async (targetLang = null) => {
+    const { from, to, text } = getSelected()
+    if (!text.trim()) return
+    const lang = targetLang || window.prompt('Translate to which language?', 'Spanish')
+    if (!lang) return
+    savedRange.current = { from, to }
+    savedText.current = text
+    setAiMode('translate')
+    setAiLoading(true)
+    setAiResult(null)
+    try {
+      const result = await groqOnce(`Translate the following text to ${lang}. Return ONLY the translated text, no explanations or preamble:\n\n"${text}"`)
+      setAiResult(result)
+    } catch {
+      toast.error('AI unavailable — check API key in Settings')
+      setAiMode(null)
+    } finally {
+      setAiLoading(false)
+    }
+  }
+
   const handleAskAI = () => {
     const { text } = getSelected()
     useAIStore.getState().sendMessage(`About this text: "${text}" — `)
@@ -297,6 +318,19 @@ export function FloatingToolbar({ editor }) {
             }
             <span>Rephrase</span>
           </FloatBtn>
+          <FloatBtn
+            ai
+            title="Translate"
+            onClick={() => handleTranslate()}
+            active={aiMode === 'translate'}
+            loading={aiLoading && aiMode === 'translate'}
+          >
+            {aiLoading && aiMode === 'translate'
+              ? <Loader2 size={12} strokeWidth={1.5} className="animate-spin" />
+              : <Languages size={12} strokeWidth={1.5} />
+            }
+            <span>Translate</span>
+          </FloatBtn>
           <FloatBtn ai title="Ask AI" onClick={handleAskAI}>
             <MessageSquare size={12} strokeWidth={1.5} />
             <span>Ask AI</span>
@@ -317,7 +351,7 @@ export function FloatingToolbar({ editor }) {
           <div className="flex items-center gap-2 px-3 py-2" style={{ borderTop: '1px solid var(--color-border)' }}>
             <Loader2 size={11} strokeWidth={1.5} className="animate-spin" style={{ color: 'var(--color-text-muted)' }} />
             <span className="font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
-              {aiMode === 'summarize' ? 'Summarizing...' : 'Generating variants...'}
+              {aiMode === 'summarize' ? 'Summarizing...' : aiMode === 'translate' ? 'Translating...' : 'Generating variants...'}
             </span>
           </div>
         )}

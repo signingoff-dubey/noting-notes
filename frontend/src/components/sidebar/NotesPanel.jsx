@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
-import { Search, Plus, X, PanelLeftClose, ChevronsRight, Pin, Star, Lock, Trash2 } from 'lucide-react'
+import { Search, Plus, X, PanelLeftClose, ChevronsRight, Pin, Star, Lock, Trash2, Sparkles } from 'lucide-react'
+import { api } from '@/lib/api'
 import { formatDistanceToNow } from 'date-fns'
 import { cn } from '@/lib/cn'
 import { useNotesStore } from '@/store/notesStore'
@@ -107,6 +108,10 @@ function NoteRow({ note, active, onClick }) {
 export function NotesPanel({ collapsed, onToggle }) {
   const [search, setSearch] = useState('')
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [semanticMode, setSemanticMode] = useState(false)
+  const [semanticResults, setSemanticResults] = useState(null)
+  const [semanticLoading, setSemanticLoading] = useState(false)
+  const semanticTimer = useRef(null)
   const searchRef = useRef(null)
   const notes = useNotesStore(s => s.notes)
   const activeNote = useNotesStore(s => s.activeNote)
@@ -130,19 +135,47 @@ export function NotesPanel({ collapsed, onToggle }) {
     return () => document.removeEventListener('keydown', handler)
   }, [])
 
-  const filtered = notes
-    .filter(n => !n.archived)
-    .filter(n => {
-      if (!search) return true
-      const q = search.toLowerCase()
-      return (n.title || '').toLowerCase().includes(q) ||
-        extractFullText(n.content).toLowerCase().includes(q)
-    })
-    .sort((a, b) => {
-      if (a.pinned && !b.pinned) return -1
-      if (!a.pinned && b.pinned) return 1
-      return new Date(b.updated_at || b.created_at) - new Date(a.updated_at || a.created_at)
-    })
+  useEffect(() => {
+    if (!semanticMode || !search.trim()) {
+      setSemanticResults(null)
+      return
+    }
+    if (semanticTimer.current) clearTimeout(semanticTimer.current)
+    semanticTimer.current = setTimeout(async () => {
+      setSemanticLoading(true)
+      try {
+        const res = await api.ai.semanticSearch({ query: search, top_n: 10 })
+        setSemanticResults(res.results?.map(r => r.note_id) || [])
+      } catch {
+        setSemanticResults(null)
+        toast.error('Semantic search unavailable')
+        setSemanticMode(false)
+      } finally {
+        setSemanticLoading(false)
+      }
+    }, 500)
+    return () => { if (semanticTimer.current) clearTimeout(semanticTimer.current) }
+  }, [search, semanticMode])
+
+  const filtered = (() => {
+    let result = notes.filter(n => !n.archived)
+    if (semanticMode && semanticResults) {
+      const order = new Map(semanticResults.map((id, i) => [id, i]))
+      result = result.filter(n => order.has(n.id)).sort((a, b) => order.get(a.id) - order.get(b.id))
+    } else {
+      result = result.filter(n => {
+        if (!search) return true
+        const q = search.toLowerCase()
+        return (n.title || '').toLowerCase().includes(q) ||
+          extractFullText(n.content).toLowerCase().includes(q)
+      }).sort((a, b) => {
+        if (a.pinned && !b.pinned) return -1
+        if (!a.pinned && b.pinned) return 1
+        return new Date(b.updated_at || b.created_at) - new Date(a.updated_at || a.created_at)
+      })
+    }
+    return result
+  })()
 
   const handleNewNote = async () => {
     try { await createNote() }
@@ -246,30 +279,43 @@ export function NotesPanel({ collapsed, onToggle }) {
 
       {/* Search */}
       <div className="px-3 py-2 border-b shrink-0" style={{ borderColor: 'var(--color-border)' }}>
-        <div className="relative">
-          <Search
-            size={11}
-            strokeWidth={1.5}
-            className="absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none"
-            style={{ color: 'var(--color-text-muted)' }}
-          />
-          <input
-            ref={searchRef}
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            placeholder="Search notes... (Ctrl+F)"
-            className="ink-search w-full"
-            style={{ height: 28, paddingLeft: 26, paddingRight: search ? 26 : 8, fontSize: 'var(--text-xs)' }}
-          />
-          {search && (
-            <button
-              onClick={() => setSearch('')}
-              className="absolute right-2 top-1/2 -translate-y-1/2"
-              style={{ color: 'var(--color-text-muted)' }}
-            >
-              <X size={10} strokeWidth={1.5} />
-            </button>
-          )}
+        <div className="flex items-center gap-1.5">
+          <div className="relative flex-1">
+            <Search
+              size={11}
+              strokeWidth={1.5}
+              className="absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none"
+              style={{ color: semanticLoading ? 'var(--color-accent)' : 'var(--color-text-muted)' }}
+            />
+            <input
+              ref={searchRef}
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder={semanticMode ? 'AI search...' : 'Search notes... (Ctrl+F)'}
+              className="ink-search w-full"
+              style={{ height: 28, paddingLeft: 26, paddingRight: search ? 26 : 8, fontSize: 'var(--text-xs)' }}
+            />
+            {search && (
+              <button
+                onClick={() => { setSearch(''); setSemanticResults(null) }}
+                className="absolute right-2 top-1/2 -translate-y-1/2"
+                style={{ color: 'var(--color-text-muted)' }}
+              >
+                <X size={10} strokeWidth={1.5} />
+              </button>
+            )}
+          </div>
+          <button
+            onClick={() => setSemanticMode(v => !v)}
+            title={semanticMode ? 'Switch to text search' : 'Switch to AI semantic search'}
+            className="w-6 h-6 flex items-center justify-center rounded-md transition-colors shrink-0"
+            style={{
+              color: semanticMode ? 'var(--color-accent)' : 'var(--color-text-muted)',
+              background: semanticMode ? 'var(--color-accent-dim)' : 'transparent',
+            }}
+          >
+            <Sparkles size={11} strokeWidth={1.5} />
+          </button>
         </div>
       </div>
 

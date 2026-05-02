@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useUIStore, ACCENT_MAP } from '@/store/uiStore'
+import { useVaultStore } from '@/store/vaultStore'
 import { cn } from '@/lib/cn'
 
 function useEditorSettings() {
@@ -41,7 +42,7 @@ const THEME_PREVIEWS = {
   'win95':         { bg: '#008080', surface: '#c0c0c0', accent: '#000080',  text: '#000000', win95: true },
 }
 
-const TABS = ['Appearance', 'Editor', 'AI', 'Data', 'Shortcuts']
+const TABS = ['Appearance', 'Editor', 'AI', 'Security', 'Data', 'Shortcuts']
 
 function ThemeSwatch({ themeKey, active, onClick }) {
   const p = THEME_PREVIEWS[themeKey]
@@ -397,6 +398,34 @@ function DataTab() {
   )
 }
 
+function SecurityTab() {
+  const autoLockEnabled = useVaultStore(s => s.autoLockEnabled)
+  const autoLockMinutes = useVaultStore(s => s.autoLockMinutes)
+  const setAutoLockEnabled = useVaultStore(s => s.setAutoLockEnabled)
+  const setAutoLockMinutes = useVaultStore(s => s.setAutoLockMinutes)
+  const hasPIN = useVaultStore(s => s.hasPIN)
+
+  return (
+    <div className="flex flex-col gap-6">
+      <Section title="Vault">
+        <SettingRow label="Vault status" description={hasPIN ? 'PIN configured' : 'No PIN set — configure from sidebar'}>
+          <span className="font-mono" style={{ fontSize: 'var(--text-xs)', color: hasPIN ? 'var(--color-accent)' : 'var(--color-text-muted)' }}>
+            {hasPIN ? 'Active' : 'Inactive'}
+          </span>
+        </SettingRow>
+        <SettingRow label="Auto-lock" description="Lock vault after idle timeout">
+          <Toggle checked={autoLockEnabled} onChange={setAutoLockEnabled} />
+        </SettingRow>
+        {autoLockEnabled && (
+          <SettingRow label="Lock after" description="Minutes of inactivity before vault locks">
+            <RangeSlider value={autoLockMinutes} onChange={setAutoLockMinutes} min={1} max={30} step={1} label="m" />
+          </SettingRow>
+        )}
+      </Section>
+    </div>
+  )
+}
+
 function ShortcutsTab() {
   const shortcuts = [
     ['New Note',           'Ctrl+N'],
@@ -496,6 +525,7 @@ export function Settings() {
           )}
           {activeTab === 'Editor'     && <EditorTab />}
           {activeTab === 'AI'         && <AITab />}
+          {activeTab === 'Security'   && <SecurityTab />}
           {activeTab === 'Data'       && <DataTab />}
           {activeTab === 'Shortcuts'  && <ShortcutsTab />}
         </div>

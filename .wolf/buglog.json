@@ -1249,6 +1249,230 @@
       "related_bugs": [],
       "occurrences": 2,
       "last_seen": "2026-04-30T23:12:13.365Z"
+    },
+    {
+      "id": "bug-079",
+      "timestamp": "2026-04-30T23:33:30.053Z",
+      "error_message": "Wrong reference: div should be CommandPalette",
+      "file": "frontend/src/App.jsx",
+      "root_cause": "Used \"div\" instead of \"CommandPalette\"",
+      "fix": "Changed div → CommandPalette",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T23:33:30.053Z"
+    },
+    {
+      "id": "bug-080",
+      "timestamp": "2026-04-30T23:35:58.114Z",
+      "error_message": "Missing guard clause",
+      "file": "frontend/src/store/tasksStore.js",
+      "root_cause": "No early return/throw for edge case: !task",
+      "fix": "Added guard clause: if (!task)",
+      "tags": [
+        "auto-detected",
+        "guard-clause",
+        "js"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T23:35:58.114Z"
+    },
+    {
+      "id": "bug-081",
+      "timestamp": "2026-04-30T23:37:12.766Z",
+      "error_message": "CSS fix: icon, value",
+      "file": "frontend/src/pages/Tasks.jsx",
+      "root_cause": "icon: <LayoutGrid size={14 → <Columns3 size={14; value: 'grid', title: 'Grid view' → 'kanban', title: 'Kanban view'",
+      "fix": "Changed icon: <LayoutGrid size={14 → <Columns3 size={14; value: 'grid', title: 'Grid view' → 'kanban', title: 'Kanban view'",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T23:37:12.766Z"
+    },
+    {
+      "id": "bug-082",
+      "timestamp": "2026-04-30T23:37:17.243Z",
+      "error_message": "Incorrect value in code",
+      "file": "frontend/src/pages/Tasks.jsx",
+      "root_cause": "Had 'list'",
+      "fix": "Changed to 'kanban'",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T23:37:17.243Z"
+    },
+    {
+      "id": "bug-083",
+      "timestamp": "2026-04-30T23:37:45.694Z",
+      "error_message": "Missing error handling in KanbanColumn",
+      "file": "frontend/src/pages/Tasks.jsx",
+      "root_cause": "Code path had no error handling — exceptions would propagate uncaught",
+      "fix": "Added try/catch block",
+      "tags": [
+        "auto-detected",
+        "error-handling",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T23:37:45.694Z"
+    },
+    {
+      "id": "bug-084",
+      "timestamp": "2026-04-30T23:38:39.987Z",
+      "error_message": "Missing error handling in unknown",
+      "file": "frontend/src/components/sidebar/NotesPanel.jsx",
+      "root_cause": "Code path had no error handling — exceptions would propagate uncaught",
+      "fix": "Added try/catch block",
+      "tags": [
+        "auto-detected",
+        "error-handling",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T23:38:39.987Z"
+    },
+    {
+      "id": "bug-085",
+      "timestamp": "2026-04-30T23:39:01.518Z",
+      "error_message": "CSS fix: color",
+      "file": "frontend/src/components/sidebar/NotesPanel.jsx",
+      "root_cause": "color: 'var(--color-text-muted)' → semanticMode ? 'var(--color-accent)' : 'var(--color-text-muted)',",
+      "fix": "Changed color: 'var(--color-text-muted)' → semanticMode ? 'var(--color-accent)' : 'var(--color-text-muted)',",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T23:39:01.518Z"
+    },
+    {
+      "id": "bug-086",
+      "timestamp": "2026-04-30T23:40:16.828Z",
+      "error_message": "Null/undefined access in ",
+      "file": "frontend/src/pages/Tasks.jsx",
+      "root_cause": "Property access on potentially null/undefined value",
+      "fix": "Added null safety (optional chaining or null check)",
+      "tags": [
+        "auto-detected",
+        "null-safety",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T23:40:16.828Z"
+    },
+    {
+      "id": "bug-087",
+      "timestamp": "2026-04-30T23:40:38.330Z",
+      "error_message": "Missing await",
+      "file": "frontend/src/pages/Tasks.jsx",
+      "root_cause": "Async call without await — returned Promise instead of value",
+      "fix": "Added await to async call",
+      "tags": [
+        "auto-detected",
+        "async-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T23:40:38.330Z"
+    },
+    {
+      "id": "bug-088",
+      "timestamp": "2026-04-30T23:41:47.381Z",
+      "error_message": "Missing await",
+      "file": "frontend/src/components/editor/NoteEditor.jsx",
+      "root_cause": "Async call without await — returned Promise instead of value",
+      "fix": "Added await to async call",
+      "tags": [
+        "auto-detected",
+        "async-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-04-30T23:41:47.381Z"
+    },
+    {
+      "id": "bug-089",
+      "timestamp": "2026-05-02T03:51:50.098Z",
+      "error_message": "Missing guard clause",
+      "file": "frontend/src/store/vaultStore.js",
+      "root_cause": "No early return/throw for edge case: _idleTimer",
+      "fix": "Added guard clause: if (_idleTimer)",
+      "tags": [
+        "auto-detected",
+        "guard-clause",
+        "js"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-02T03:51:50.098Z"
+    },
+    {
+      "id": "bug-090",
+      "timestamp": "2026-05-02T03:52:05.705Z",
+      "error_message": "Missing error handling in unknown",
+      "file": "frontend/src/components/editor/FloatingToolbar.jsx",
+      "root_cause": "Code path had no error handling — exceptions would propagate uncaught",
+      "fix": "Added try/catch block",
+      "tags": [
+        "auto-detected",
+        "error-handling",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-02T03:52:05.705Z"
+    },
+    {
+      "id": "bug-091",
+      "timestamp": "2026-05-02T03:52:20.768Z",
+      "error_message": "Incorrect value in code",
+      "file": "frontend/src/components/editor/FloatingToolbar.jsx",
+      "root_cause": "Had 'Generating variants...'",
+      "fix": "Changed to 'translate'",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-02T03:52:20.768Z"
+    },
+    {
+      "id": "bug-092",
+      "timestamp": "2026-05-02T03:52:34.406Z",
+      "error_message": "Incorrect value in code",
+      "file": "frontend/src/pages/Settings.jsx",
+      "root_cause": "Had 'Data'",
+      "fix": "Changed to 'Security'",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-05-02T03:52:51.699Z"
     }
   ]
 }

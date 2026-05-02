@@ -1,8 +1,9 @@
 import { useEffect, useState, useRef } from 'react'
 import {
   Plus, CheckSquare, Square, Trash2, Calendar, Flag,
-  MoreHorizontal, CheckCheck, LayoutList, LayoutGrid,
+  MoreHorizontal, CheckCheck, LayoutList, LayoutGrid, Columns3,
   ChevronDown, ChevronRight, FolderOpen, GripVertical, Pencil,
+  ListTree, X as XIcon, Repeat,
 } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { useTasksStore } from '@/store/tasksStore'
@@ -43,13 +44,34 @@ function PriorityBadge({ priority }) {
 }
 
 /* ── Centered add-task bubble ── */
+function getNextRecurrenceDate(currentDate, recurrence) {
+  const base = currentDate ? new Date(currentDate + 'T00:00:00') : new Date()
+  switch (recurrence) {
+    case 'daily': base.setDate(base.getDate() + 1); break
+    case 'weekly': base.setDate(base.getDate() + 7); break
+    case 'biweekly': base.setDate(base.getDate() + 14); break
+    case 'monthly': base.setMonth(base.getMonth() + 1); break
+  }
+  return base.toISOString().split('T')[0]
+}
+
+const RECURRENCE_OPTIONS = [
+  { value: null, label: 'No repeat' },
+  { value: 'daily', label: 'Daily' },
+  { value: 'weekly', label: 'Weekly' },
+  { value: 'biweekly', label: 'Every 2 weeks' },
+  { value: 'monthly', label: 'Monthly' },
+]
+
 function AddTaskBar({ onSave, folders }) {
   const [title, setTitle] = useState('')
   const [priority, setPriority] = useState('none')
   const [dueDate, setDueDate] = useState('')
   const [folder, setFolder] = useState('')
+  const [recurrence, setRecurrence] = useState(null)
   const [priorityOpen, setPriorityOpen] = useState(false)
   const [folderOpen, setFolderOpen] = useState(false)
+  const [recurrenceOpen, setRecurrenceOpen] = useState(false)
   const [bubbleFocused, setBubbleFocused] = useState(false)
   const [folderSearch, setFolderSearch] = useState('')
   const bubbleRef = useRef(null)
@@ -60,11 +82,13 @@ function AddTaskBar({ onSave, folders }) {
     const task = { title: title.trim(), priority }
     if (dueDate) task.due_date = dueDate
     if (folder.trim()) task.labels = [folder.trim()]
+    if (recurrence) task.recurrence = recurrence
     onSave(task)
     setTitle('')
     setPriority('none')
     setDueDate('')
     setFolder('')
+    setRecurrence(null)
     setFolderSearch('')
   }
 
@@ -315,6 +339,53 @@ function AddTaskBar({ onSave, folders }) {
             )}
           </div>
 
+          {/* Recurrence */}
+          <div className="relative">
+            <button
+              onMouseDown={e => e.preventDefault()}
+              onClick={() => { setRecurrenceOpen(o => !o); setPriorityOpen(false); setFolderOpen(false) }}
+              className="flex items-center gap-1.5 px-2 h-7 rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
+              style={{
+                fontFamily: 'var(--font-body)',
+                fontSize: 'var(--text-xs)',
+                color: recurrence ? 'var(--color-accent)' : 'var(--color-text-muted)',
+                outline: 'none',
+              }}
+            >
+              <Repeat size={12} strokeWidth={1.5} />
+              {recurrence ? RECURRENCE_OPTIONS.find(r => r.value === recurrence)?.label : 'Repeat'}
+            </button>
+            {recurrenceOpen && (
+              <div
+                className="dropdown-in absolute top-full mt-1 left-0 border py-1 z-50"
+                style={{
+                  background: 'var(--color-surface)',
+                  borderColor: 'var(--color-border)',
+                  borderRadius: 8,
+                  minWidth: 140,
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+                }}
+              >
+                {RECURRENCE_OPTIONS.map(r => (
+                  <button
+                    key={r.value || 'none'}
+                    onMouseDown={e => e.preventDefault()}
+                    onClick={() => { setRecurrence(r.value); setRecurrenceOpen(false) }}
+                    className="flex items-center gap-2 w-full px-3 h-7 transition-colors hover:bg-[var(--color-surface-hover)]"
+                    style={{
+                      fontFamily: 'var(--font-body)',
+                      fontSize: 'var(--text-xs)',
+                      color: recurrence === r.value ? 'var(--color-accent)' : 'var(--color-text-secondary)',
+                      outline: 'none',
+                    }}
+                  >
+                    {r.label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
           <div className="flex-1" />
 
           <button
@@ -340,13 +411,117 @@ function AddTaskBar({ onSave, folders }) {
   )
 }
 
+/* ── Subtask list ── */
+function SubtaskList({ task }) {
+  const [newTitle, setNewTitle] = useState('')
+  const [adding, setAdding] = useState(false)
+  const addSubtask = useTasksStore(s => s.addSubtask)
+  const toggleSubtask = useTasksStore(s => s.toggleSubtask)
+  const deleteSubtask = useTasksStore(s => s.deleteSubtask)
+  const subtasks = task.subtasks || []
+
+  const handleAdd = async () => {
+    if (!newTitle.trim()) return
+    await addSubtask(task.id, newTitle.trim())
+    setNewTitle('')
+  }
+
+  const doneCount = subtasks.filter(s => s.done).length
+  const total = subtasks.length
+
+  return (
+    <div className="ml-9 mt-1 mb-1">
+      {total > 0 && (
+        <div className="flex items-center gap-1.5 mb-1">
+          <div
+            className="flex-1 h-1 rounded-full overflow-hidden"
+            style={{ background: 'var(--color-border)', maxWidth: 80 }}
+          >
+            <div
+              className="h-full rounded-full transition-all"
+              style={{
+                width: `${total ? (doneCount / total) * 100 : 0}%`,
+                background: doneCount === total ? 'var(--color-success)' : 'var(--color-accent)',
+              }}
+            />
+          </div>
+          <span className="font-mono" style={{ fontSize: 9, color: 'var(--color-text-muted)' }}>
+            {doneCount}/{total}
+          </span>
+        </div>
+      )}
+      {subtasks.map(s => (
+        <div key={s.id} className="flex items-center gap-1.5 py-0.5 group/sub">
+          <button
+            onClick={() => toggleSubtask(task.id, s.id)}
+            className="shrink-0"
+            style={{ color: s.done ? 'var(--color-success)' : 'var(--color-text-muted)' }}
+          >
+            {s.done
+              ? <CheckSquare size={12} strokeWidth={1.5} />
+              : <Square size={12} strokeWidth={1.5} />}
+          </button>
+          <span
+            className="flex-1 font-mono truncate"
+            style={{
+              fontSize: 11,
+              color: s.done ? 'var(--color-text-muted)' : 'var(--color-text-secondary)',
+              textDecoration: s.done ? 'line-through' : 'none',
+            }}
+          >
+            {s.title}
+          </span>
+          <button
+            onClick={() => deleteSubtask(task.id, s.id)}
+            className="opacity-0 group-hover/sub:opacity-100 transition-opacity shrink-0"
+            style={{ color: 'var(--color-text-muted)' }}
+          >
+            <XIcon size={10} strokeWidth={1.5} />
+          </button>
+        </div>
+      ))}
+      {adding ? (
+        <div className="flex items-center gap-1.5 mt-1">
+          <input
+            autoFocus
+            value={newTitle}
+            onChange={e => setNewTitle(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter') handleAdd(); if (e.key === 'Escape') setAdding(false) }}
+            placeholder="Subtask title..."
+            className="flex-1 bg-transparent outline-none font-mono"
+            style={{ fontSize: 11, color: 'var(--color-text-secondary)', borderBottom: '1px solid var(--color-border)', paddingBottom: 2 }}
+          />
+          <button onClick={handleAdd} style={{ color: 'var(--color-accent)' }}>
+            <Plus size={12} strokeWidth={1.5} />
+          </button>
+          <button onClick={() => setAdding(false)} style={{ color: 'var(--color-text-muted)' }}>
+            <XIcon size={12} strokeWidth={1.5} />
+          </button>
+        </div>
+      ) : (
+        <button
+          onClick={() => setAdding(true)}
+          className="flex items-center gap-1 font-mono mt-0.5 transition-colors hover:opacity-70"
+          style={{ fontSize: 10, color: 'var(--color-text-muted)' }}
+        >
+          <Plus size={10} strokeWidth={1.5} />
+          Add subtask
+        </button>
+      )}
+    </div>
+  )
+}
+
 /* ── Task row (list view) ── */
 function TaskRow({ task, showFolder }) {
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [expanded, setExpanded] = useState(false)
   const updateTask = useTasksStore(s => s.updateTask)
   const deleteTask = useTasksStore(s => s.deleteTask)
   const isDone = task.status === 'done'
   const folderLabel = task.labels?.[0]
+  const subtaskCount = (task.subtasks || []).length
+  const subtaskDone = (task.subtasks || []).filter(s => s.done).length
 
   const toggleDone = async () => {
     try { await updateTask(task.id, { status: isDone ? 'todo' : 'done' }) }
@@ -361,90 +536,113 @@ function TaskRow({ task, showFolder }) {
 
   return (
     <>
-      <div className={cn('ink-task-card group flex items-center gap-2', isDone && 'done')}>
-        <div
-          className="shrink-0 cursor-grab opacity-0 group-hover:opacity-100 transition-opacity"
-          style={{ color: 'var(--color-text-muted)' }}
-        >
-          <GripVertical size={14} strokeWidth={1.5} />
-        </div>
+      <div className="flex flex-col">
+        <div className={cn('ink-task-card group flex items-center gap-2', isDone && 'done')}>
+          <div
+            className="shrink-0 cursor-grab opacity-0 group-hover:opacity-100 transition-opacity"
+            style={{ color: 'var(--color-text-muted)' }}
+          >
+            <GripVertical size={14} strokeWidth={1.5} />
+          </div>
 
-        <button
-          onClick={toggleDone}
-          className="shrink-0 transition-colors"
-          style={{ color: isDone ? 'var(--color-success)' : 'var(--color-text-muted)' }}
-        >
-          {isDone
-            ? <CheckSquare size={16} strokeWidth={1.5} />
-            : <Square size={16} strokeWidth={1.5} />}
-        </button>
+          <button
+            onClick={toggleDone}
+            className="shrink-0 transition-colors"
+            style={{ color: isDone ? 'var(--color-success)' : 'var(--color-text-muted)' }}
+          >
+            {isDone
+              ? <CheckSquare size={16} strokeWidth={1.5} />
+              : <Square size={16} strokeWidth={1.5} />}
+          </button>
 
-        <span
-          className="flex-1 font-medium truncate"
-          style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: 'var(--text-sm)',
-            color: isDone ? 'var(--color-text-muted)' : 'var(--color-text-primary)',
-            textDecoration: isDone ? 'line-through' : 'none',
-          }}
-        >
-          {task.title}
-        </span>
-
-        <div className="flex items-center gap-2 shrink-0">
-          {showFolder && folderLabel && (
+          <button
+            onClick={() => setExpanded(v => !v)}
+            className="flex-1 flex items-center gap-2 min-w-0 text-left"
+          >
             <span
-              className="flex items-center gap-1 font-mono"
+              className="font-medium truncate"
               style={{
-                fontSize: 10,
-                color: 'var(--color-text-muted)',
-                background: 'var(--color-surface-2)',
-                border: '1px solid var(--color-border)',
-                borderRadius: 4,
-                padding: '1px 5px',
+                fontFamily: 'var(--font-body)',
+                fontSize: 'var(--text-sm)',
+                color: isDone ? 'var(--color-text-muted)' : 'var(--color-text-primary)',
+                textDecoration: isDone ? 'line-through' : 'none',
               }}
             >
-              <FolderOpen size={9} strokeWidth={1.5} />
-              {folderLabel}
+              {task.title}
             </span>
-          )}
-          <PriorityBadge priority={task.priority} />
-          {task.due_date && (
-            <span
-              className="flex items-center gap-1 font-mono"
-              style={{ fontSize: 10, color: 'var(--color-text-muted)' }}
-            >
-              <Calendar size={9} strokeWidth={1.5} />
-              {format(new Date(task.due_date + 'T00:00:00'), 'MMM d')}
-            </span>
-          )}
-          <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-            <Dropdown
-              align="right"
-              trigger={
-                <button
-                  className="w-6 h-6 flex items-center justify-center rounded hover:bg-[var(--color-surface-hover)]"
-                  style={{ color: 'var(--color-text-muted)', outline: 'none' }}
-                >
-                  <MoreHorizontal size={13} strokeWidth={1.5} />
-                </button>
-              }
-              items={[
-                ...STATUS_OPTIONS.map(s => ({
-                  label: `Mark as ${s.replace('_', ' ')}`,
-                  onClick: () => updateTask(task.id, { status: s }),
-                })),
-                { separator: true },
-                {
-                  label: 'Delete',
-                  icon: <Trash2 size={12} strokeWidth={1.5} />,
-                  destructive: true,
-                  onClick: () => setConfirmDelete(true),
-                },
-              ]}
-            />
+            {subtaskCount > 0 && (
+              <span className="flex items-center gap-0.5 font-mono shrink-0" style={{ fontSize: 9, color: 'var(--color-text-muted)' }}>
+                <ListTree size={10} strokeWidth={1.5} />
+                {subtaskDone}/{subtaskCount}
+              </span>
+            )}
+            {task.recurrence && (
+              <Repeat size={10} strokeWidth={1.5} style={{ color: 'var(--color-text-muted)', flexShrink: 0 }} />
+            )}
+          </button>
+
+          <div className="flex items-center gap-2 shrink-0">
+            {showFolder && folderLabel && (
+              <span
+                className="flex items-center gap-1 font-mono"
+                style={{
+                  fontSize: 10,
+                  color: 'var(--color-text-muted)',
+                  background: 'var(--color-surface-2)',
+                  border: '1px solid var(--color-border)',
+                  borderRadius: 4,
+                  padding: '1px 5px',
+                }}
+              >
+                <FolderOpen size={9} strokeWidth={1.5} />
+                {folderLabel}
+              </span>
+            )}
+            <PriorityBadge priority={task.priority} />
+            {task.due_date && (
+              <span
+                className="flex items-center gap-1 font-mono"
+                style={{ fontSize: 10, color: 'var(--color-text-muted)' }}
+              >
+                <Calendar size={9} strokeWidth={1.5} />
+                {format(new Date(task.due_date + 'T00:00:00'), 'MMM d')}
+              </span>
+            )}
+            <div className="opacity-0 group-hover:opacity-100 transition-opacity">
+              <Dropdown
+                align="right"
+                trigger={
+                  <button
+                    className="w-6 h-6 flex items-center justify-center rounded hover:bg-[var(--color-surface-hover)]"
+                    style={{ color: 'var(--color-text-muted)', outline: 'none' }}
+                  >
+                    <MoreHorizontal size={13} strokeWidth={1.5} />
+                  </button>
+                }
+                items={[
+                  ...STATUS_OPTIONS.map(s => ({
+                    label: `Mark as ${s.replace('_', ' ')}`,
+                    onClick: () => updateTask(task.id, { status: s }),
+                  })),
+                  { separator: true },
+                  {
+                    label: expanded ? 'Hide subtasks' : 'Show subtasks',
+                    icon: <ListTree size={12} strokeWidth={1.5} />,
+                    onClick: () => setExpanded(v => !v),
+                  },
+                  { separator: true },
+                  {
+                    label: 'Delete',
+                    icon: <Trash2 size={12} strokeWidth={1.5} />,
+                    destructive: true,
+                    onClick: () => setConfirmDelete(true),
+                  },
+                ]}
+              />
+            </div>
           </div>
         </div>
+        {expanded && <SubtaskList task={task} />}
       </div>
 
       <ConfirmModal
@@ -665,6 +863,7 @@ const FILTER_OPTIONS = [
 const VIEW_OPTIONS = [
   { icon: <LayoutList size={14} strokeWidth={1.5} />, value: 'list', title: 'List view' },
   { icon: <LayoutGrid size={14} strokeWidth={1.5} />, value: 'grid', title: 'Grid view' },
+  { icon: <Columns3 size={14} strokeWidth={1.5} />, value: 'kanban', title: 'Kanban view' },
 ]
 
 export function Tasks() {
@@ -672,7 +871,7 @@ export function Tasks() {
 
   const [viewMode, setViewMode] = useState(() => {
     const saved = localStorage.getItem('ink_tasks_view')
-    return (saved === 'list' || saved === 'grid') ? saved : 'list'
+    return ['list', 'grid', 'kanban'].includes(saved) ? saved : 'list'
   })
 
   const [dragIndex, setDragIndex] = useState(null)
@@ -689,6 +888,22 @@ export function Tasks() {
   const doneCount = tasks.filter(t => t.status === 'done' && !t.archived).length
 
   const folders = [...new Set(tasks.flatMap(t => t.labels || []))].filter(Boolean).sort()
+
+  useEffect(() => {
+    const recurring = tasks.filter(t => t.recurrence && t.status === 'done' && !t._spawned)
+    recurring.forEach(async (t) => {
+      const nextDate = getNextRecurrenceDate(t.due_date, t.recurrence)
+      await createTask({
+        title: t.title,
+        priority: t.priority,
+        labels: t.labels,
+        recurrence: t.recurrence,
+        subtasks: (t.subtasks || []).map(s => ({ ...s, done: false })),
+        due_date: nextDate,
+      })
+      await useTasksStore.getState().updateTask(t.id, { _spawned: true })
+    })
+  }, [tasks])
 
   const handleCreate = async (taskData) => {
     try {
@@ -853,9 +1068,142 @@ export function Tasks() {
                 ))}
               </div>
             )}
+
+            {/* KANBAN VIEW */}
+            {viewMode === 'kanban' && (
+              <KanbanBoard tasks={displayTasks} />
+            )}
           </>
         )}
       </div>
+    </div>
+  )
+}
+
+/* ── Kanban column ── */
+const KANBAN_COLUMNS = [
+  { id: 'todo', label: 'To Do', color: 'var(--color-text-muted)' },
+  { id: 'in_progress', label: 'In Progress', color: 'var(--color-warning)' },
+  { id: 'done', label: 'Done', color: 'var(--color-success)' },
+]
+
+function KanbanColumn({ column, tasks, onDrop }) {
+  const updateTask = useTasksStore(s => s.updateTask)
+  const [dragOver, setDragOver] = useState(false)
+
+  const handleDragOver = (e) => {
+    e.preventDefault()
+    setDragOver(true)
+  }
+  const handleDragLeave = () => setDragOver(false)
+  const handleDrop = (e) => {
+    e.preventDefault()
+    setDragOver(false)
+    const taskId = e.dataTransfer.getData('text/plain')
+    if (taskId) onDrop(taskId, column.id)
+  }
+
+  return (
+    <div
+      onDragOver={handleDragOver}
+      onDragLeave={handleDragLeave}
+      onDrop={handleDrop}
+      className="flex flex-col flex-1 min-w-[240px] max-w-[340px] rounded-xl"
+      style={{
+        background: dragOver
+          ? 'color-mix(in oklch, var(--color-accent) 5%, var(--color-surface))'
+          : 'var(--color-surface)',
+        border: `1px solid ${dragOver ? 'var(--color-accent)' : 'var(--color-border)'}`,
+        transition: 'border-color 0.15s, background 0.15s',
+      }}
+    >
+      <div className="flex items-center gap-2 px-3 py-2.5 border-b" style={{ borderColor: 'var(--color-border)' }}>
+        <span className="w-2 h-2 rounded-full shrink-0" style={{ background: column.color }} />
+        <span className="font-mono uppercase tracking-widest flex-1" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+          {column.label}
+        </span>
+        <span className="font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>{tasks.length}</span>
+      </div>
+      <div className="flex flex-col gap-1.5 p-2 overflow-y-auto flex-1" style={{ maxHeight: 'calc(100vh - 260px)' }}>
+        {tasks.map(task => (
+          <KanbanCard key={task.id} task={task} />
+        ))}
+        {tasks.length === 0 && (
+          <p className="text-center font-mono py-6" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+            Drop tasks here
+          </p>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function KanbanCard({ task }) {
+  const isDone = task.status === 'done'
+  const subtasks = task.subtasks || []
+  const subtaskDone = subtasks.filter(s => s.done).length
+
+  return (
+    <div
+      draggable
+      onDragStart={(e) => e.dataTransfer.setData('text/plain', task.id)}
+      className="flex flex-col gap-1.5 p-2.5 rounded-lg cursor-grab transition-colors hover:bg-[var(--color-surface-hover)]"
+      style={{ border: '1px solid var(--color-border)' }}
+    >
+      <div className="flex items-start gap-2">
+        <span
+          className="font-medium flex-1"
+          style={{
+            fontFamily: 'var(--font-body)',
+            fontSize: 12,
+            color: isDone ? 'var(--color-text-muted)' : 'var(--color-text-primary)',
+            textDecoration: isDone ? 'line-through' : 'none',
+            lineHeight: 1.4,
+          }}
+        >
+          {task.title}
+        </span>
+        <PriorityBadge priority={task.priority} />
+      </div>
+      <div className="flex items-center gap-2">
+        {task.due_date && (
+          <span className="flex items-center gap-1 font-mono" style={{ fontSize: 9, color: 'var(--color-text-muted)' }}>
+            <Calendar size={9} strokeWidth={1.5} />
+            {format(new Date(task.due_date + 'T00:00:00'), 'MMM d')}
+          </span>
+        )}
+        {subtasks.length > 0 && (
+          <span className="flex items-center gap-0.5 font-mono" style={{ fontSize: 9, color: 'var(--color-text-muted)' }}>
+            <ListTree size={9} strokeWidth={1.5} />
+            {subtaskDone}/{subtasks.length}
+          </span>
+        )}
+        {task.recurrence && (
+          <Repeat size={9} strokeWidth={1.5} style={{ color: 'var(--color-text-muted)' }} />
+        )}
+      </div>
+    </div>
+  )
+}
+
+function KanbanBoard({ tasks }) {
+  const updateTask = useTasksStore(s => s.updateTask)
+
+  const handleDrop = async (taskId, newStatus) => {
+    try { await updateTask(taskId, { status: newStatus }) }
+    catch { toast.error('Failed to move task') }
+  }
+
+  return (
+    <div className="flex gap-4 px-5 pb-5 pt-2 overflow-x-auto flex-1">
+      {KANBAN_COLUMNS.map(col => (
+        <KanbanColumn
+          key={col.id}
+          column={col}
+          tasks={tasks.filter(t => t.status === col.id)}
+          onDrop={handleDrop}
+        />
+      ))}
     </div>
   )
 }

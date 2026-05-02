@@ -9,6 +9,7 @@ import { NotesPanel } from '@/components/sidebar/NotesPanel'
 import { NoteEditor } from '@/components/editor/NoteEditor'
 import { AISidebar } from '@/components/ai/AISidebar'
 import { ToastContainer } from '@/components/ui/Toast'
+import { CommandPalette } from '@/components/ui/CommandPalette'
 import { ErrorBoundary } from '@/components/ui/ErrorBoundary'
 import { Notes } from '@/pages/Notes'
 import { Tasks } from '@/pages/Tasks'
@@ -18,6 +19,7 @@ import { Dashboard } from '@/pages/Dashboard'
 import { FavouritesView } from '@/pages/FavouritesView'
 import { TagsView } from '@/pages/TagsView'
 import { ArchivedView } from '@/pages/ArchivedView'
+import { Journal } from '@/pages/Journal'
 
 function CenterPanel({ panel }) {
   switch (panel) {
@@ -30,6 +32,7 @@ function CenterPanel({ panel }) {
     case 'favourites':return <FavouritesView />
     case 'tags':      return <TagsView />
     case 'archive':   return <ArchivedView />
+    case 'journal':   return <Journal />
     default:          return <Notes />
   }
 }
@@ -133,6 +136,7 @@ export default function App() {
       </ErrorBoundary>
 
       <ToastContainer />
+      <CommandPalette />
     </div>
   )
 }

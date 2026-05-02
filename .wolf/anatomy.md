@@ -1,7 +1,7 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-04-30T23:12:13.336Z
-> Files: 39 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-02T03:54:33.600Z
+> Files: 44 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../../.claude/
 
@@ -297,8 +297,8 @@
 
 ## frontend/src/
 
-- `App.jsx` — CenterPanel (~1379 tok)
-- `index.css` — Styles: 4 rules, 224 vars (~7564 tok)
+- `App.jsx` — CenterPanel (~1428 tok)
+- `index.css` — Styles: 4 rules, 224 vars (~7694 tok)
 
 ## frontend/src/components/ai/
 
@@ -307,8 +307,10 @@
 ## frontend/src/components/editor/
 
 - `EditorToolbar.jsx` — ToolBtn (~4076 tok)
-- `FloatingToolbar.jsx` — GROQ_BASE_URL (~3459 tok)
-- `NoteEditor.jsx` — lowlight (~8946 tok)
+- `FloatingToolbar.jsx` — GROQ_BASE_URL (~3820 tok)
+- `NoteEditor.jsx` — lowlight (~9908 tok)
+- `NoteLinkExtension.jsx` — NOTELINK_RE (~544 tok)
+- `NoteLinkPreview.jsx` — HOVER_DELAY (~1546 tok)
 
 ## frontend/src/components/notes/
 
@@ -316,11 +318,12 @@
 
 ## frontend/src/components/sidebar/
 
-- `NotesPanel.jsx` — extractText (~3495 tok)
-- `Sidebar.jsx` — NavItem — renders form, modal (~4849 tok)
+- `NotesPanel.jsx` — extractText (~4095 tok)
+- `Sidebar.jsx` — NavItem — renders form, modal (~4948 tok)
 
 ## frontend/src/components/ui/
 
+- `CommandPalette.jsx` — extractText (~2879 tok)
 - `Dropdown.jsx` — Dropdown (~1028 tok)
 - `Toast.jsx` — icons (~531 tok)
 
@@ -338,15 +341,17 @@
 - `ArchivedView.jsx` — TabButton (~2620 tok)
 - `Calendar.jsx` — WEEKDAYS (~4723 tok)
 - `Dashboard.jsx` — getGreeting (~3037 tok)
+- `Journal.jsx` — JOURNAL_TAG (~5206 tok)
 - `Notes.jsx` — SORT_OPTIONS (~1873 tok)
-- `Settings.jsx` — useEditorSettings (~5293 tok)
+- `Settings.jsx` — useEditorSettings (~5691 tok)
 - `TagsView.jsx` — TagsView (~1668 tok)
-- `Tasks.jsx` — PRIORITY_COLORS (~9048 tok)
+- `Tasks.jsx` — PRIORITY_COLORS (~12902 tok)
 
 ## frontend/src/store/
 
 - `aiStore.js` — Exports useAIStore (~2213 tok)
 - `authStore.js` — Exports useAuthStore (~196 tok)
 - `notesStore.js` — Exports useNotesStore (~1866 tok)
-- `tasksStore.js` — Exports useTasksStore (~772 tok)
+- `tasksStore.js` — Exports useTasksStore (~1030 tok)
 - `uiStore.js` — Exports ACCENT_MAP, useUIStore, toast (~1609 tok)
+- `vaultStore.js` — Exports useVaultStore (~740 tok)

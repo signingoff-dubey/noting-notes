@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import {
   FileText, CheckSquare, Calendar, Settings, Lock, Unlock,
-  Star, Tag, Clock, Sparkles,
+  Star, Tag, Clock, Sparkles, BookOpen,
   LayoutDashboard, Archive, ChevronDown, ChevronRight, User, ChevronsLeft, ChevronsRight,
   LogIn, LogOut,
 } from 'lucide-react'
@@ -360,13 +360,19 @@ export function Sidebar() {
           icon={<CheckSquare size={15} strokeWidth={1.5} />}
           label="Tasks"
           active={activePanel === 'tasks'}
-          onClick={() => setActivePanel('tasks')}
+          onClick={() => { setActivePanel('tasks'); setActiveNote(null) }}
         />
         <NavItem
           icon={<Calendar size={15} strokeWidth={1.5} />}
           label="Calendar"
           active={activePanel === 'calendar'}
-          onClick={() => setActivePanel('calendar')}
+          onClick={() => { setActivePanel('calendar'); setActiveNote(null) }}
+        />
+        <NavItem
+          icon={<BookOpen size={15} strokeWidth={1.5} />}
+          label="Journal"
+          active={activePanel === 'journal'}
+          onClick={() => { setActivePanel('journal'); setActiveNote(null) }}
         />
       </nav>
 
@@ -409,7 +415,7 @@ export function Sidebar() {
                 icon={<Archive size={14} strokeWidth={1.5} />}
                 label="Archive"
                 active={activePanel === 'archive'}
-                onClick={() => setActivePanel('archive')}
+                onClick={() => { setActivePanel('archive'); setActiveNote(null) }}
               />
             </div>
           </div>
@@ -489,7 +495,7 @@ export function Sidebar() {
           icon={<Settings size={14} strokeWidth={1.5} />}
           label="Settings"
           active={activePanel === 'settings'}
-          onClick={() => setActivePanel('settings')}
+          onClick={() => { setActivePanel('settings'); setActiveNote(null) }}
         />
       </div>
 

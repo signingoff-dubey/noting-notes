@@ -41,18 +41,16 @@ export function Notes() {
 
   const handleNewNote = useCallback(async () => {
     try {
-      const newNote = await createNote()
-      console.log('Created note, activeNote set:', newNote?.id)
+      await createNote()
     } catch (err) {
-      console.error('Failed to create note:', err)
       toast.error('Failed to create note: ' + err.message)
     }
   }, [createNote])
 
   const activeFolder = folders.find(f => f.id === activeFolderId)
   const visibleNotes = activeFolderId
-    ? notes.filter(n => n.folder_id === activeFolderId && !n.archived)
-    : notes.filter(n => !n.archived)
+    ? notes.filter(n => n.folder_id === activeFolderId && !n.archived && n._source !== 'journal')
+    : notes.filter(n => !n.archived && n._source !== 'journal')
   const noteCount = visibleNotes.length
   const sortLabel = SORT_OPTIONS.find(o => o.value === sortBy)?.label || 'Last edited'
 

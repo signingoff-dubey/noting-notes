@@ -208,7 +208,7 @@ export function Sidebar() {
   const [libraryCollapsed, setLibraryCollapsed] = useState(false)
   const [foldersCollapsed, setFoldersCollapsed] = useState(false)
 
-  const noteCount = notes.filter(n => !n.archived).length
+  const noteCount = notes.filter(n => !n.archived && n._source !== 'journal').length
   const displayName = userName || 'Guest'
   const greeting = `Welcome, ${displayName}`
 
@@ -242,6 +242,7 @@ export function Sidebar() {
         <button
           onClick={toggleSidebar}
           title="Expand sidebar"
+          aria-label="Expand sidebar"
           className="w-7 h-7 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
           style={{ color: 'var(--color-text-muted)' }}
         >
@@ -289,6 +290,7 @@ export function Sidebar() {
           <button
             onClick={toggleAI}
             title="Toggle AI Sidebar (Ctrl+Shift+A)"
+            aria-label="Toggle AI sidebar"
             className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-[var(--color-surface-hover)]"
             style={{ color: 'var(--color-text-muted)' }}
           >
@@ -297,6 +299,7 @@ export function Sidebar() {
           <button
             onClick={toggleSidebar}
             title="Collapse sidebar"
+            aria-label="Collapse sidebar"
             className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-[var(--color-surface-hover)]"
             style={{ color: 'var(--color-text-muted)' }}
           >

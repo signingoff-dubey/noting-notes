@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useRef } from 'react'
+import { useEffect, useCallback, useRef, lazy, Suspense } from 'react'
 import { useUIStore } from '@/store/uiStore'
 import { useNotesStore } from '@/store/notesStore'
 import { useAIStore } from '@/store/aiStore'
@@ -6,20 +6,21 @@ import { useAuthStore } from '@/store/authStore'
 import { useTasksStore } from '@/store/tasksStore'
 import { Sidebar } from '@/components/sidebar/Sidebar'
 import { NotesPanel } from '@/components/sidebar/NotesPanel'
-import { NoteEditor } from '@/components/editor/NoteEditor'
-import { AISidebar } from '@/components/ai/AISidebar'
 import { ToastContainer } from '@/components/ui/Toast'
 import { CommandPalette } from '@/components/ui/CommandPalette'
 import { ErrorBoundary } from '@/components/ui/ErrorBoundary'
 import { Notes } from '@/pages/Notes'
-import { Tasks } from '@/pages/Tasks'
-import { Calendar } from '@/pages/Calendar'
-import { Settings } from '@/pages/Settings'
 import { Dashboard } from '@/pages/Dashboard'
-import { FavouritesView } from '@/pages/FavouritesView'
-import { TagsView } from '@/pages/TagsView'
-import { ArchivedView } from '@/pages/ArchivedView'
-import { Journal } from '@/pages/Journal'
+
+const NoteEditor    = lazy(() => import('@/components/editor/NoteEditor').then(m => ({ default: m.NoteEditor })))
+const AISidebar     = lazy(() => import('@/components/ai/AISidebar').then(m => ({ default: m.AISidebar })))
+const Tasks         = lazy(() => import('@/pages/Tasks').then(m => ({ default: m.Tasks })))
+const Calendar      = lazy(() => import('@/pages/Calendar').then(m => ({ default: m.Calendar })))
+const Settings      = lazy(() => import('@/pages/Settings').then(m => ({ default: m.Settings })))
+const FavouritesView = lazy(() => import('@/pages/FavouritesView').then(m => ({ default: m.FavouritesView })))
+const TagsView      = lazy(() => import('@/pages/TagsView').then(m => ({ default: m.TagsView })))
+const ArchivedView  = lazy(() => import('@/pages/ArchivedView').then(m => ({ default: m.ArchivedView })))
+const Journal       = lazy(() => import('@/pages/Journal').then(m => ({ default: m.Journal })))
 
 function CenterPanel({ panel }) {
   switch (panel) {
@@ -107,6 +108,14 @@ export default function App() {
 
   return (
     <div className="flex h-full w-full overflow-hidden bg-bg">
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[9999] focus:px-3 focus:py-1.5 focus:rounded"
+        style={{ background: 'var(--color-accent)', color: 'var(--color-bg)', fontFamily: 'var(--font-mono)', fontSize: 12 }}
+      >
+        Skip to content
+      </a>
+
       {/* Left nav sidebar */}
       <Sidebar />
 
@@ -119,20 +128,24 @@ export default function App() {
       )}
 
       {/* Main content */}
-      <main className="flex-1 flex flex-col min-w-0 bg-bg">
+      <main id="main-content" className="flex-1 flex flex-col min-w-0 bg-bg">
         <ErrorBoundary key={activePanel}>
-          <div key={activeNote?.id ?? activePanel} className="panel-enter flex-1 flex flex-col min-h-0">
-            {activeNote
-              ? <NoteEditor note={activeNote} onBack={() => setActiveNote(null)} />
-              : <CenterPanel panel={activePanel} />
-            }
-          </div>
+          <Suspense fallback={null}>
+            <div key={activeNote?.id ?? activePanel} className="panel-enter flex-1 flex flex-col min-h-0">
+              {activeNote
+                ? <NoteEditor note={activeNote} onBack={() => setActiveNote(null)} />
+                : <CenterPanel panel={activePanel} />
+              }
+            </div>
+          </Suspense>
         </ErrorBoundary>
       </main>
 
       {/* Right AI Sidebar (overlay) */}
       <ErrorBoundary>
-        <AISidebar />
+        <Suspense fallback={null}>
+          <AISidebar />
+        </Suspense>
       </ErrorBoundary>
 
       <ToastContainer />

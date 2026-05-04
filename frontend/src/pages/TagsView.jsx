@@ -14,9 +14,9 @@ export function TagsView() {
 
   useEffect(() => { fetchNotes() }, [])
 
-  // Build tag → count map
+  // Build tag → count map (exclude journal entries)
   const tagMap = {}
-  notes.filter(n => !n.archived).forEach(n => {
+  notes.filter(n => !n.archived && n._source !== 'journal').forEach(n => {
     ;(n.tags || []).forEach(tag => {
       tagMap[tag] = (tagMap[tag] || 0) + 1
     })
@@ -24,7 +24,7 @@ export function TagsView() {
   const tags = Object.entries(tagMap).sort((a, b) => b[1] - a[1])
 
   const filteredNotes = selectedTag
-    ? notes.filter(n => !n.archived && (n.tags || []).includes(selectedTag))
+    ? notes.filter(n => !n.archived && n._source !== 'journal' && (n.tags || []).includes(selectedTag))
     : []
 
   const handleBack = () => setActiveNote(null)

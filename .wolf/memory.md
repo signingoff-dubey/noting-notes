@@ -489,3 +489,80 @@
 
 | Time | Action | File(s) | Outcome | ~Tokens |
 |------|--------|---------|---------|--------|
+| 13:10 | Edited frontend/src/store/notesStore.js | 4→8 lines | ~74 |
+| 13:10 | Edited frontend/src/store/notesStore.js | added 1 condition(s) | ~282 |
+| 13:10 | Edited frontend/src/store/notesStore.js | 20→20 lines | ~270 |
+| 13:10 | Edited frontend/src/components/sidebar/NotesPanel.jsx | added 1 import(s) | ~92 |
+| 13:10 | Edited frontend/src/components/sidebar/NotesPanel.jsx | 2→2 lines | ~34 |
+| 13:10 | Edited frontend/src/components/sidebar/NotesPanel.jsx | inline fix | ~21 |
+| 13:11 | Edited frontend/src/components/sidebar/Sidebar.jsx | added 1 import(s) | ~83 |
+| 13:11 | Edited frontend/src/components/sidebar/Sidebar.jsx | inline fix | ~28 |
+| 13:11 | Edited frontend/src/pages/Dashboard.jsx | added 1 import(s) | ~46 |
+| 13:11 | Edited frontend/src/pages/Dashboard.jsx | inline fix | ~28 |
+| 13:11 | Edited frontend/src/pages/Journal.jsx | 3→3 lines | ~43 |
+| 13:11 | Edited frontend/src/pages/Journal.jsx | 2→1 lines | ~6 |
+| 13:12 | Edited frontend/src/pages/TagsView.jsx | inline fix | ~18 |
+| 13:12 | Edited frontend/src/pages/TagsView.jsx | 12→12 lines | ~155 |
+| 13:12 | Edited frontend/src/store/notesStore.js | 3→7 lines | ~68 |
+| 13:12 | Session end: 15 writes across 6 files (notesStore.js, NotesPanel.jsx, Sidebar.jsx, Dashboard.jsx, Journal.jsx) | 6 reads | ~22082 tok |
+| 13:15 | Edited frontend/src/store/notesStore.js | 2→1 lines | ~14 |
+| 13:15 | Edited frontend/src/store/notesStore.js | modified loadNotes() | ~450 |
+| 13:15 | Edited frontend/src/pages/Journal.jsx | inline fix | ~15 |
+| 13:16 | Edited frontend/src/pages/Journal.jsx | 3→3 lines | ~40 |
+| 13:16 | Edited frontend/src/pages/Journal.jsx | CSS: _source | ~60 |
+| 13:16 | Edited frontend/src/pages/Journal.jsx | CSS: _source | ~59 |
+| 13:16 | Edited frontend/src/pages/Journal.jsx | 2→2 lines | ~22 |
+| 13:16 | Edited frontend/src/components/sidebar/NotesPanel.jsx | — | ~0 |
+| 13:16 | Edited frontend/src/components/sidebar/NotesPanel.jsx | inline fix | ~8 |
+| 13:16 | Edited frontend/src/components/sidebar/Sidebar.jsx | — | ~0 |
+| 13:16 | Edited frontend/src/components/sidebar/Sidebar.jsx | inline fix | ~24 |
+| 13:16 | Edited frontend/src/pages/Dashboard.jsx | — | ~0 |
+| 13:16 | Edited frontend/src/pages/Dashboard.jsx | inline fix | ~24 |
+| 13:17 | Edited frontend/src/pages/TagsView.jsx | inline fix | ~15 |
+| 13:17 | Edited frontend/src/pages/TagsView.jsx | 12→12 lines | ~130 |
+| 13:17 | Edited frontend/src/store/notesStore.js | 5→3 lines | ~30 |
+| 13:17 | Session end: 31 writes across 6 files (notesStore.js, NotesPanel.jsx, Sidebar.jsx, Dashboard.jsx, Journal.jsx) | 6 reads | ~23428 tok |
+
+## Session: 2026-05-02 13:24
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+
+## Session: 2026-05-03 18:17
+
+| Time | Action | File(s) | Outcome | ~Tokens |
+|------|--------|---------|---------|--------|
+| 18:18 | Edited frontend/src/pages/Notes.jsx | modified filter() | ~57 |
+| 18:18 | Session end: 1 writes across 1 files (Notes.jsx) | 7 reads | ~23262 tok |
+| 18:34 | Session end: 1 writes across 1 files (Notes.jsx) | 10 reads | ~32384 tok |
+| 18:43 | Edited frontend/src/index.css | removed 3 lines | ~5 |
+| 18:43 | Edited frontend/src/index.css | 3→3 lines | ~17 |
+| 18:43 | Edited frontend/src/index.css | CSS: outline-offset, ink-search, ink-search | ~69 |
+| 18:44 | Edited frontend/src/index.css | 4→4 lines | ~36 |
+| 18:44 | Edited frontend/src/index.css | 4→4 lines | ~37 |
+| 18:44 | Edited frontend/src/index.css | 5→5 lines | ~33 |
+| 18:44 | Edited frontend/src/index.css | 8→8 lines | ~50 |
+| 18:44 | Edited frontend/src/index.css | 6→6 lines | ~36 |
+| 18:44 | Edited frontend/src/index.css | 4→4 lines | ~37 |
+| 18:44 | Edited frontend/src/index.css | 7→7 lines | ~42 |
+| 18:44 | Edited frontend/src/index.css | 7→7 lines | ~42 |
+| 18:44 | Edited frontend/src/index.css | 8→8 lines | ~44 |
+| 18:44 | Edited frontend/src/index.css | 4→4 lines | ~37 |
+| 18:45 | Edited frontend/src/App.jsx | 22→23 lines | ~462 |
+| 18:45 | Edited frontend/src/App.jsx | expanded (+12 lines) | ~418 |
+| 18:45 | Edited frontend/src/pages/Dashboard.jsx | inline fix | ~12 |
+| 18:45 | Edited frontend/src/pages/Dashboard.jsx | inline fix | ~30 |
+| 18:45 | Edited frontend/src/pages/Notes.jsx | modified catch() | ~34 |
+| 18:45 | Edited frontend/src/components/sidebar/Sidebar.jsx | 8→9 lines | ~112 |
+| 18:46 | Edited frontend/src/components/sidebar/Sidebar.jsx | 16→18 lines | ~237 |
+| 18:46 | Edited frontend/src/components/sidebar/NotesPanel.jsx | 8→9 lines | ~112 |
+| 18:46 | Edited frontend/src/components/sidebar/NotesPanel.jsx | 26→29 lines | ~370 |
+| 18:46 | Edited frontend/src/components/ai/AISidebar.jsx | 7→8 lines | ~99 |
+| 18:46 | Edited frontend/src/components/editor/NoteEditor.jsx | 4→5 lines | ~48 |
+| 18:46 | Edited frontend/src/components/editor/NoteEditor.jsx | 3→4 lines | ~63 |
+| 18:47 | Edited frontend/src/components/editor/NoteEditor.jsx | 3→4 lines | ~62 |
+| 18:47 | Edited frontend/src/components/editor/NoteEditor.jsx | 3→4 lines | ~73 |
+| 18:47 | Edited frontend/src/components/editor/NoteEditor.jsx | 3→4 lines | ~63 |
+| 18:47 | Edited frontend/src/components/editor/NoteEditor.jsx | 3→4 lines | ~59 |
+| 18:47 | Edited frontend/src/components/editor/NoteEditor.jsx | 2→3 lines | ~68 |
+| 18:47 | Session end: 31 writes across 8 files (Notes.jsx, index.css, App.jsx, Dashboard.jsx, Sidebar.jsx) | 13 reads | ~55255 tok |

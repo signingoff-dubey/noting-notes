@@ -2,9 +2,12 @@ import { create } from 'zustand'
 import { nanoid } from 'nanoid'
 
 const NOTES_KEY = 'ink_notes'
+const JOURNAL_KEY = 'ink_journal'
 const FOLDERS_KEY = 'ink_folders'
 const VERSIONS_KEY = 'ink_versions'
 const MAX_VERSIONS = 10
+
+const isJournal = (n) => n._source === 'journal'
 
 function extractText(content) {
   if (!content) return ''
@@ -20,11 +23,45 @@ function extractText(content) {
 }
 
 function loadNotes() {
-  try { return JSON.parse(localStorage.getItem(NOTES_KEY) || '[]') } catch { return [] }
+  try {
+    const regular = JSON.parse(localStorage.getItem(NOTES_KEY) || '[]')
+    const rawJournal = JSON.parse(localStorage.getItem(JOURNAL_KEY) || '[]')
+
+    // Migration: old journal entries may still have _journal tag — strip it, mark source
+    const journal = rawJournal.map(n => ({
+      ...n,
+      _source: 'journal',
+      tags: (n.tags || []).filter(t => t !== '_journal'),
+    }))
+
+    // Migration: any notes leaked into ink_notes with _journal tag → move to ink_journal
+    const leaked = regular.filter(n => (n.tags || []).includes('_journal'))
+    if (leaked.length > 0) {
+      const cleanRegular = regular.filter(n => !(n.tags || []).includes('_journal'))
+      const fixedLeaked = leaked.map(n => ({
+        ...n,
+        _source: 'journal',
+        tags: (n.tags || []).filter(t => t !== '_journal'),
+      }))
+      const mergedJournal = [
+        ...journal,
+        ...fixedLeaked.filter(l => !journal.find(j => j.id === l.id)),
+      ]
+      localStorage.setItem(NOTES_KEY, JSON.stringify(cleanRegular))
+      localStorage.setItem(JOURNAL_KEY, JSON.stringify(mergedJournal.map(({ _source, ...rest }) => rest)))
+      return [...cleanRegular, ...mergedJournal]
+    }
+
+    return [...regular, ...journal]
+  } catch { return [] }
 }
 
 function saveNotes(notes) {
-  localStorage.setItem(NOTES_KEY, JSON.stringify(notes))
+  localStorage.setItem(NOTES_KEY, JSON.stringify(notes.filter(n => !isJournal(n))))
+  // Strip _source before persisting journal entries
+  localStorage.setItem(JOURNAL_KEY, JSON.stringify(
+    notes.filter(n => isJournal(n)).map(({ _source, ...rest }) => rest)
+  ))
 }
 
 function loadFolders() {
@@ -75,7 +112,9 @@ export const useNotesStore = create((set, get) => ({
   fetchNotes: async () => {
     set({ isLoading: true, error: null })
     const notes = loadNotes()
-    const allTags = [...new Set(notes.flatMap(n => n.tags || []))]
+    const allTags = [...new Set(
+      notes.filter(n => !isJournal(n)).flatMap(n => n.tags || [])
+    )]
     set({ notes, tags: allTags, isLoading: false })
   },
 
@@ -204,7 +243,7 @@ export const useNotesStore = create((set, get) => ({
 
   getFilteredNotes: () => {
     const { notes, activeFolderId, searchQuery } = get()
-    let filtered = notes.filter(n => !n.archived)
+    let filtered = notes.filter(n => !n.archived && !isJournal(n))
     if (activeFolderId) filtered = filtered.filter(n => n.folder_id === activeFolderId)
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase()
@@ -216,10 +255,10 @@ export const useNotesStore = create((set, get) => ({
     return [...filtered.filter(n => n.pinned), ...filtered.filter(n => !n.pinned)]
   },
 
-  getArchivedNotes: () => get().notes.filter(n => n.archived),
-  getFavouriteNotes: () => get().notes.filter(n => !n.archived && n.starred),
+  getArchivedNotes: () => get().notes.filter(n => n.archived && !isJournal(n)),
+  getFavouriteNotes: () => get().notes.filter(n => !n.archived && n.starred && !isJournal(n)),
   getRecentNotes: (limit = 5) => get().notes
-    .filter(n => !n.archived)
+    .filter(n => !n.archived && !isJournal(n))
     .sort((a, b) => new Date(b.updated_at || b.created_at) - new Date(a.updated_at || a.created_at))
     .slice(0, limit),
 }))

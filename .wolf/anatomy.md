@@ -1,6 +1,6 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-03T13:17:29.278Z
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-04T21:51:07.298Z
 > Files: 44 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../../.claude/
@@ -314,11 +314,11 @@
 
 ## frontend/src/components/notes/
 
-- `NoteCard.jsx` — extractPreview (~3043 tok)
+- `NoteCard.jsx` — extractPreview (~3396 tok)
 
 ## frontend/src/components/sidebar/
 
-- `NotesPanel.jsx` — extractText (~4179 tok)
+- `NotesPanel.jsx` — extractText (~4355 tok)
 - `Sidebar.jsx` — NavItem — renders form, modal (~4990 tok)
 
 ## frontend/src/components/ui/

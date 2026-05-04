@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Search, Plus, X, PanelLeftClose, ChevronsRight, Pin, Star, Lock, Trash2, Sparkles } from 'lucide-react'
+import { Search, Plus, X, PanelLeftClose, ChevronsRight, Pin, Star, Lock, Trash2, Sparkles, Folder } from 'lucide-react'
 import { api } from '@/lib/api'
 import { formatDistanceToNow } from 'date-fns'
 import { cn } from '@/lib/cn'
@@ -36,13 +36,14 @@ function extractFullText(content) {
   return ''
 }
 
-function NoteRow({ note, active, onClick }) {
+function NoteRow({ note, active, onClick, folderName }) {
   const timeAgo = note.updated_at
     ? formatDistanceToNow(new Date(note.updated_at), { addSuffix: true })
         .replace(' ago', '')
         .replace('about ', '~')
     : ''
   const preview = extractText(note.content)
+  const indent = (note.pinned || note.starred || note.is_vault) ? 14 : 0
 
   return (
     <button
@@ -86,21 +87,33 @@ function NoteRow({ note, active, onClick }) {
           fontFamily: 'var(--font-body)',
           fontSize: 'var(--text-xs)',
           color: 'var(--color-text-muted)',
-          paddingLeft: (note.pinned || note.starred || note.is_vault) ? 14 : 0,
+          paddingLeft: indent,
         }}
       >
         {preview || 'Empty note'}
       </span>
-      {/* Tags */}
-      {(note.tags || []).length > 0 && (
-        <div className="flex gap-1 mt-0.5" style={{ paddingLeft: (note.pinned || note.starred || note.is_vault) ? 14 : 0 }}>
-          {note.tags.slice(0, 2).map(tag => (
-            <span key={tag} className="ink-tag" style={{ fontSize: 9, height: 14 }}>
-              {tag}
-            </span>
-          ))}
-        </div>
-      )}
+      {/* Folder + Tags */}
+      <div className="flex items-center gap-1 mt-0.5 flex-wrap" style={{ paddingLeft: indent }}>
+        {folderName && (
+          <span
+            className="inline-flex items-center gap-0.5 font-mono px-1 rounded"
+            style={{
+              fontSize: 9,
+              height: 14,
+              color: 'var(--color-accent)',
+              background: 'var(--color-accent-dim)',
+            }}
+          >
+            <Folder size={7} strokeWidth={1.5} />
+            {folderName}
+          </span>
+        )}
+        {(note.tags || []).slice(0, 2).map(tag => (
+          <span key={tag} className="ink-tag" style={{ fontSize: 9, height: 14 }}>
+            {tag}
+          </span>
+        ))}
+      </div>
     </button>
   )
 }
@@ -114,13 +127,15 @@ export function NotesPanel({ collapsed, onToggle }) {
   const semanticTimer = useRef(null)
   const searchRef = useRef(null)
   const notes = useNotesStore(s => s.notes)
+  const folders = useNotesStore(s => s.folders)
   const activeNote = useNotesStore(s => s.activeNote)
   const setActiveNote = useNotesStore(s => s.setActiveNote)
   const createNote = useNotesStore(s => s.createNote)
   const fetchNotes = useNotesStore(s => s.fetchNotes)
   const deleteNote = useNotesStore(s => s.deleteNote)
+  const fetchFolders = useNotesStore(s => s.fetchFolders)
 
-  useEffect(() => { fetchNotes() }, [])
+  useEffect(() => { fetchNotes(); fetchFolders() }, [])
 
   /* Ctrl+F focuses search */
   useEffect(() => {
@@ -338,6 +353,7 @@ export function NotesPanel({ collapsed, onToggle }) {
               note={note}
               active={note.id === activeNote?.id}
               onClick={() => handleSelect(note.id)}
+              folderName={note.folder_id ? folders.find(f => f.id === note.folder_id)?.name : null}
             />
           ))
         )}

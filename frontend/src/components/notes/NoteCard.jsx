@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Star, Trash2, Archive, ArchiveRestore, Pin, MoreHorizontal, GripVertical, Lock } from 'lucide-react'
+import { Star, Trash2, Archive, ArchiveRestore, Pin, MoreHorizontal, GripVertical, Lock, Folder } from 'lucide-react'
 import { Dropdown } from '@/components/ui/Dropdown'
 import { useNotesStore } from '@/store/notesStore'
 import { ConfirmModal } from '@/components/ui/Modal'
@@ -31,6 +31,8 @@ export function NoteCard({ note, active, onClick, grid }) {
   const updateNote  = useNotesStore(s => s.updateNote)
   const deleteNote  = useNotesStore(s => s.deleteNote)
   const archiveNote = useNotesStore(s => s.archiveNote)
+  const folders     = useNotesStore(s => s.folders)
+  const folderName  = note.folder_id ? folders.find(f => f.id === note.folder_id)?.name : null
 
   const preview = extractPreview(note.content)
   const timeAgo = note.updated_at
@@ -158,9 +160,23 @@ export function NoteCard({ note, active, onClick, grid }) {
             </p>
           )}
 
-          {/* Footer: tags + time */}
+          {/* Footer: folder + tags + time */}
           <div className="flex items-center justify-between gap-2 mt-auto pt-1">
-            <div className="flex flex-wrap gap-1 min-w-0">
+            <div className="flex flex-wrap gap-1 min-w-0 items-center">
+              {folderName && (
+                <span
+                  className="inline-flex items-center gap-0.5 font-mono px-1.5 rounded"
+                  style={{
+                    fontSize: 10,
+                    height: 18,
+                    color: 'var(--color-accent)',
+                    background: 'var(--color-accent-dim)',
+                  }}
+                >
+                  <Folder size={9} strokeWidth={1.5} />
+                  {folderName}
+                </span>
+              )}
               {(note.tags || []).slice(0, 3).map(tag => (
                 <TagChip key={tag} tag={tag} />
               ))}
@@ -271,9 +287,23 @@ export function NoteCard({ note, active, onClick, grid }) {
             </p>
           )}
 
-          {/* Tags */}
-          {(note.tags || []).length > 0 && (
-            <div className="flex flex-wrap gap-1 mt-0.5">
+          {/* Folder + Tags */}
+          {(folderName || (note.tags || []).length > 0) && (
+            <div className="flex flex-wrap gap-1 mt-0.5 items-center">
+              {folderName && (
+                <span
+                  className="inline-flex items-center gap-0.5 font-mono px-1.5 rounded"
+                  style={{
+                    fontSize: 10,
+                    height: 18,
+                    color: 'var(--color-accent)',
+                    background: 'var(--color-accent-dim)',
+                  }}
+                >
+                  <Folder size={9} strokeWidth={1.5} />
+                  {folderName}
+                </span>
+              )}
               {(note.tags || []).slice(0, 4).map(tag => (
                 <TagChip key={tag} tag={tag} />
               ))}

@@ -2,14 +2,14 @@
   "version": 1,
   "created_at": "2026-04-20T00:51:14.976Z",
   "lifetime": {
-    "total_tokens_estimated": 1415215,
-    "total_reads": 501,
-    "total_writes": 734,
-    "total_sessions": 25,
-    "anatomy_hits": 325,
-    "anatomy_misses": 169,
+    "total_tokens_estimated": 1443470,
+    "total_reads": 510,
+    "total_writes": 743,
+    "total_sessions": 26,
+    "anatomy_hits": 331,
+    "anatomy_misses": 172,
     "repeated_reads_blocked": 132,
-    "estimated_savings_vs_bare_cli": 786824
+    "estimated_savings_vs_bare_cli": 788024
   },
   "sessions": [
     {
@@ -7668,6 +7668,122 @@
         "writes_count": 31,
         "repeated_reads_blocked": 6,
         "anatomy_lookups": 11
+      }
+    },
+    {
+      "id": "session-2026-05-04-0317",
+      "started": "2026-05-04T21:47:21.892Z",
+      "ended": "2026-05-04T21:53:23.893Z",
+      "reads": [
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/store/notesStore.js",
+          "tokens_estimated": 2312,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/sidebar/Sidebar.jsx",
+          "tokens_estimated": 4990,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/sidebar/NotesPanel.jsx",
+          "tokens_estimated": 4179,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/notes/NoteCard.jsx",
+          "tokens_estimated": 3043,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/pages/Notes.jsx",
+          "tokens_estimated": 1851,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/notes/NoteList.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/notes/NoteGrid.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/NoteEditor.jsx",
+          "tokens_estimated": 9993,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/.claude/launch.json",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/sidebar/NotesPanel.jsx",
+          "tokens_estimated": 107,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/sidebar/NotesPanel.jsx",
+          "tokens_estimated": 804,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/sidebar/NotesPanel.jsx",
+          "tokens_estimated": 105,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/sidebar/NotesPanel.jsx",
+          "tokens_estimated": 97,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/notes/NoteCard.jsx",
+          "tokens_estimated": 121,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/notes/NoteCard.jsx",
+          "tokens_estimated": 124,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/notes/NoteCard.jsx",
+          "tokens_estimated": 244,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/notes/NoteCard.jsx",
+          "tokens_estimated": 237,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/sidebar/NotesPanel.jsx",
+          "tokens_estimated": 48,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 26368,
+        "output_tokens_estimated": 1887,
+        "reads_count": 9,
+        "writes_count": 9,
+        "repeated_reads_blocked": 0,
+        "anatomy_lookups": 6
       }
     }
   ],

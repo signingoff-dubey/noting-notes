@@ -1473,6 +1473,278 @@
       "related_bugs": [],
       "occurrences": 2,
       "last_seen": "2026-05-02T03:52:51.699Z"
+    },
+    {
+      "id": "bug-093",
+      "timestamp": "2026-05-02T07:40:09.629Z",
+      "error_message": "Significant refactor of ",
+      "file": "frontend/src/store/notesStore.js",
+      "root_cause": "2 lines replaced/restructured",
+      "fix": "Rewrote 7→26 lines (2 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "js"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-02T07:40:09.629Z"
+    },
+    {
+      "id": "bug-094",
+      "timestamp": "2026-05-02T07:41:16.827Z",
+      "error_message": "Wrong reference: length should be n",
+      "file": "frontend/src/components/sidebar/Sidebar.jsx",
+      "root_cause": "Used \"length\" instead of \"n\"",
+      "fix": "Changed length → n",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-02T07:41:16.827Z"
+    },
+    {
+      "id": "bug-095",
+      "timestamp": "2026-05-02T07:41:57.767Z",
+      "error_message": "Wrong reference: JOURNAL_TAG should be MOOD_OPTIONS",
+      "file": "frontend/src/pages/Journal.jsx",
+      "root_cause": "Used \"JOURNAL_TAG\" instead of \"MOOD_OPTIONS\"",
+      "fix": "Changed JOURNAL_TAG → MOOD_OPTIONS",
+      "tags": [
+        "auto-detected",
+        "wrong-reference",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-02T07:41:57.767Z"
+    },
+    {
+      "id": "bug-096",
+      "timestamp": "2026-05-02T07:42:22.038Z",
+      "error_message": "Significant refactor of ",
+      "file": "frontend/src/pages/TagsView.jsx",
+      "root_cause": "4 lines replaced/restructured",
+      "fix": "Rewrote 12→12 lines (4 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-02T07:42:22.038Z"
+    },
+    {
+      "id": "bug-097",
+      "timestamp": "2026-05-02T07:45:37.912Z",
+      "error_message": "Incorrect value in code",
+      "file": "frontend/src/store/notesStore.js",
+      "root_cause": "Had '_journal'",
+      "fix": "Changed to 'journal'",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "js"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-02T07:45:37.912Z"
+    },
+    {
+      "id": "bug-098",
+      "timestamp": "2026-05-02T07:45:48.684Z",
+      "error_message": "Significant refactor of ",
+      "file": "frontend/src/store/notesStore.js",
+      "root_cause": "7 lines replaced/restructured",
+      "fix": "Rewrote 26→41 lines (7 removed) | Also: notes; .filter(n => !isJournal(n))",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "js"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-05-02T07:47:25.801Z"
+    },
+    {
+      "id": "bug-099",
+      "timestamp": "2026-05-02T07:46:05.373Z",
+      "error_message": "Wrong operator: || should be ===",
+      "file": "frontend/src/pages/Journal.jsx",
+      "root_cause": "Used \"||\" instead of \"===\"",
+      "fix": "Changed operator || → ===",
+      "tags": [
+        "auto-detected",
+        "operator-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-05-02T07:46:23.005Z"
+    },
+    {
+      "id": "bug-100",
+      "timestamp": "2026-05-02T07:46:11.319Z",
+      "error_message": "CSS fix: tags",
+      "file": "frontend/src/pages/Journal.jsx",
+      "root_cause": "tags: [JOURNAL_TAG], → [],",
+      "fix": "Changed tags: [JOURNAL_TAG], → [],",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-05-02T07:46:17.799Z"
+    },
+    {
+      "id": "bug-101",
+      "timestamp": "2026-05-02T07:46:33.628Z",
+      "error_message": "Wrong operator: || should be !==",
+      "file": "frontend/src/components/sidebar/NotesPanel.jsx",
+      "root_cause": "Used \"||\" instead of \"!==\"",
+      "fix": "Changed operator || → !==",
+      "tags": [
+        "auto-detected",
+        "operator-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-02T07:46:33.628Z"
+    },
+    {
+      "id": "bug-102",
+      "timestamp": "2026-05-02T07:46:46.847Z",
+      "error_message": "Wrong operator: || should be !==",
+      "file": "frontend/src/components/sidebar/Sidebar.jsx",
+      "root_cause": "Used \"||\" instead of \"!==\"",
+      "fix": "Changed operator || → !==",
+      "tags": [
+        "auto-detected",
+        "operator-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-02T07:46:46.847Z"
+    },
+    {
+      "id": "bug-103",
+      "timestamp": "2026-05-02T07:46:56.541Z",
+      "error_message": "Wrong operator: || should be !==",
+      "file": "frontend/src/pages/Dashboard.jsx",
+      "root_cause": "Used \"||\" instead of \"!==\"",
+      "fix": "Changed operator || → !==",
+      "tags": [
+        "auto-detected",
+        "operator-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-02T07:46:56.541Z"
+    },
+    {
+      "id": "bug-104",
+      "timestamp": "2026-05-03T12:48:02.885Z",
+      "error_message": "Significant refactor of ",
+      "file": "frontend/src/pages/Notes.jsx",
+      "root_cause": "2 lines replaced/restructured",
+      "fix": "Rewrote 3→3 lines (2 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-03T12:48:02.885Z"
+    },
+    {
+      "id": "bug-105",
+      "timestamp": "2026-05-03T13:13:51.041Z",
+      "error_message": "CSS fix: --radius-sm, --radius-md, --radius-lg",
+      "file": "frontend/src/index.css",
+      "root_cause": "--radius-sm: 4px → 2px; --radius-md: 8px → 2px; --radius-lg: 12px → 3px",
+      "fix": "Changed --radius-sm: 4px → 2px; --radius-md: 8px → 2px; --radius-lg: 12px → 3px",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "css"
+      ],
+      "related_bugs": [],
+      "occurrences": 11,
+      "last_seen": "2026-05-03T13:14:53.433Z"
+    },
+    {
+      "id": "bug-106",
+      "timestamp": "2026-05-03T13:13:56.409Z",
+      "error_message": "Significant refactor of ",
+      "file": "frontend/src/index.css",
+      "root_cause": "3 lines replaced/restructured",
+      "fix": "Rewrote 9→11 lines (3 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "css"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-03T13:13:56.409Z"
+    },
+    {
+      "id": "bug-107",
+      "timestamp": "2026-05-03T13:15:09.331Z",
+      "error_message": "Missing import: @/components/editor/NoteEditor, @/components/ai/AISidebar, @/pages/Tasks, @/pages/Calendar, @/pages/Settings, @/pages/FavouritesView, @/pages/TagsView, @/pages/ArchivedView, @/pages/Journal",
+      "file": "frontend/src/App.jsx",
+      "root_cause": "Module(s) not imported: @/components/editor/NoteEditor, @/components/ai/AISidebar, @/pages/Tasks, @/pages/Calendar, @/pages/Settings, @/pages/FavouritesView, @/pages/TagsView, @/pages/ArchivedView, @/pages/Journal",
+      "fix": "Added import(s) for @/components/editor/NoteEditor, @/components/ai/AISidebar, @/pages/Tasks, @/pages/Calendar, @/pages/Settings, @/pages/FavouritesView, @/pages/TagsView, @/pages/ArchivedView, @/pages/Journal",
+      "tags": [
+        "auto-detected",
+        "missing-import",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-03T13:15:09.331Z"
+    },
+    {
+      "id": "bug-108",
+      "timestamp": "2026-05-03T13:15:46.765Z",
+      "error_message": "Significant refactor of ",
+      "file": "frontend/src/pages/Notes.jsx",
+      "root_cause": "3 lines replaced/restructured",
+      "fix": "Rewrote 7→5 lines (3 removed)",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-03T13:15:46.765Z"
+    },
+    {
+      "id": "bug-109",
+      "timestamp": "2026-05-03T13:17:29.295Z",
+      "error_message": "Incorrect value in code",
+      "file": "frontend/src/components/editor/NoteEditor.jsx",
+      "root_cause": "Had \"w-7 h-7 flex items-center justify-center rounded-",
+      "fix": "Changed to 'Remove from vault'",
+      "tags": [
+        "auto-detected",
+        "wrong-value",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-03T13:17:29.295Z"
     }
   ]
 }

@@ -408,6 +408,7 @@ export function NoteEditor({ note, onBack }) {
         <button
           onClick={onBack}
           title="Back to notes (Esc)"
+          aria-label="Back to notes"
           className="transition-colors shrink-0"
           style={{ color: 'var(--color-text-muted)' }}
           onMouseEnter={e => e.currentTarget.style.color = 'var(--color-text-secondary)'}
@@ -431,6 +432,7 @@ export function NoteEditor({ note, onBack }) {
         <button
           onClick={() => importRef.current?.click()}
           title="Import .md or .txt file"
+          aria-label="Import file"
           className="w-7 h-7 flex items-center justify-center rounded-lg transition-all"
           style={{ color: 'var(--color-text-muted)' }}
           onMouseEnter={e => e.currentTarget.style.color = 'var(--color-text-secondary)'}
@@ -445,6 +447,7 @@ export function NoteEditor({ note, onBack }) {
           <button
             onClick={() => setShowExportMenu(v => !v)}
             title="Export note"
+            aria-label="Export note"
             className="w-7 h-7 flex items-center justify-center rounded-lg transition-all"
             style={{ color: 'var(--color-text-muted)' }}
             onMouseEnter={e => e.currentTarget.style.color = 'var(--color-text-secondary)'}
@@ -486,6 +489,7 @@ export function NoteEditor({ note, onBack }) {
         <button
           onClick={() => { setHistoryVersions(getVersions(note.id)); setShowHistory(true) }}
           title="Version history"
+          aria-label="Version history"
           className="w-7 h-7 flex items-center justify-center rounded-lg transition-all"
           style={{ color: 'var(--color-text-muted)' }}
           onMouseEnter={e => e.currentTarget.style.color = 'var(--color-text-secondary)'}
@@ -499,6 +503,7 @@ export function NoteEditor({ note, onBack }) {
           <button
             onClick={() => setShowMoveFolder(v => !v)}
             title="Move to folder"
+            aria-label="Move to folder"
             className="w-7 h-7 flex items-center justify-center rounded-lg transition-all"
             style={{
               color: note.folder_id ? 'var(--color-accent)' : 'var(--color-text-muted)',
@@ -550,6 +555,7 @@ export function NoteEditor({ note, onBack }) {
         <button
           onClick={() => setShowDeleteConfirm(true)}
           title="Delete note"
+          aria-label="Delete note"
           className="w-7 h-7 flex items-center justify-center rounded-lg transition-all"
           style={{ color: 'var(--color-text-muted)' }}
           onMouseEnter={e => e.currentTarget.style.color = 'var(--color-error, #ef4444)'}
@@ -572,6 +578,7 @@ export function NoteEditor({ note, onBack }) {
             }
           }}
           title={note.is_vault ? 'Remove from vault' : 'Move to vault'}
+          aria-label={note.is_vault ? 'Remove from vault' : 'Move to vault'}
           className="w-7 h-7 flex items-center justify-center rounded-lg transition-all"
           style={{
             color: note.is_vault ? 'var(--color-accent)' : 'var(--color-text-muted)',

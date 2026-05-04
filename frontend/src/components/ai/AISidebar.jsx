@@ -119,6 +119,7 @@ function CustomAPIModal({ open, onClose, initial, onSave }) {
           </div>
           <button
             onClick={onClose}
+            aria-label="Close"
             className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-[var(--color-surface-hover)]"
             style={{ color: 'var(--color-text-muted)' }}
           >

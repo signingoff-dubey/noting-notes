@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { FileText, CheckSquare, Star, ArrowRight, Clock } from 'lucide-react'
 import { format, isToday, isTomorrow, isPast, formatDistanceToNow } from 'date-fns'
 import { useNotesStore } from '@/store/notesStore'
@@ -184,7 +184,7 @@ export function Dashboard() {
     fetchTasks()
   }, [])
 
-  const activeNotes   = notes.filter(n => !n.archived)
+  const activeNotes   = notes.filter(n => !n.archived && n._source !== 'journal')
   const recentNotes   = getRecentNotes(6)
   const activeTasks   = tasks.filter(t => !t.archived && t.status !== 'done')
   const upcomingTasks = activeTasks
@@ -199,7 +199,7 @@ export function Dashboard() {
   const doneTasks     = tasks.filter(t => t.status === 'done')
   const starredNotes  = getFavouriteNotes()
   const archivedNotes = getArchivedNotes()
-  const totalWords    = notes.reduce((acc, n) => acc + (n.word_count || 0), 0)
+  const totalWords    = useMemo(() => notes.reduce((acc, n) => acc + (n.word_count || 0), 0), [notes])
 
   const handleNoteClick = async (id) => {
     setActivePanel('notes')

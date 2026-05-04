@@ -6,7 +6,6 @@ import { format, subDays, addDays, startOfMonth, endOfMonth, eachDayOfInterval, 
 import { ChevronLeft, ChevronRight, Flame, BookOpen, Sun, Moon, CloudRain, Zap, Heart, Frown, Meh, Smile, SmilePlus } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
-const JOURNAL_TAG = '_journal'
 const MOOD_OPTIONS = [
   { value: 'great',   icon: SmilePlus, label: 'Great',   color: 'var(--color-accent)' },
   { value: 'good',    icon: Smile,     label: 'Good',    color: '#00d26a' },
@@ -198,7 +197,7 @@ export function Journal() {
   // All journal entries indexed by date key
   const journalMap = useMemo(() => {
     const map = new Map()
-    notes.filter(n => (n.tags || []).includes(JOURNAL_TAG) && !n.archived).forEach(n => {
+    notes.filter(n => n._source === 'journal' && !n.archived).forEach(n => {
       // Extract date from title "Journal — Weekday, Month Day, Year"
       const match = n.title?.match(/Journal — .+, (\w+ \d+, \d{4})/)
       if (match) {
@@ -233,7 +232,8 @@ export function Journal() {
         entry = await createNote({
           title: getJournalTitle(selectedDate),
           content: JOURNAL_TEMPLATE,
-          tags: [JOURNAL_TAG],
+          tags: [],
+          _source: 'journal',
           journal_mood: null,
         })
         toast.success('Journal entry created')
@@ -250,10 +250,11 @@ export function Journal() {
     if (!todayEntry) {
       // Create entry first
       try {
-        const entry = await createNote({
+        await createNote({
           title: getJournalTitle(selectedDate),
           content: JOURNAL_TEMPLATE,
-          tags: [JOURNAL_TAG],
+          tags: [],
+          _source: 'journal',
           journal_mood: newMood,
         })
       } catch {
@@ -268,7 +269,7 @@ export function Journal() {
   // Recent entries for sidebar list
   const recentEntries = useMemo(() => {
     return notes
-      .filter(n => (n.tags || []).includes(JOURNAL_TAG) && !n.archived)
+      .filter(n => n._source === 'journal' && !n.archived)
       .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
       .slice(0, 7)
   }, [notes])

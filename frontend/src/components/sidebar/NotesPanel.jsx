@@ -158,7 +158,7 @@ export function NotesPanel({ collapsed, onToggle }) {
   }, [search, semanticMode])
 
   const filtered = (() => {
-    let result = notes.filter(n => !n.archived)
+    let result = notes.filter(n => !n.archived && n._source !== 'journal')
     if (semanticMode && semanticResults) {
       const order = new Map(semanticResults.map((id, i) => [id, i]))
       result = result.filter(n => order.has(n.id)).sort((a, b) => order.get(a.id) - order.get(b.id))
@@ -183,7 +183,7 @@ export function NotesPanel({ collapsed, onToggle }) {
   }
 
   const handleDeleteAll = async () => {
-    const toDelete = notes.filter(n => !n.archived)
+    const toDelete = notes.filter(n => !n.archived && n._source !== 'journal')
     try {
       await Promise.all(toDelete.map(n => deleteNote(n.id)))
       setActiveNote(null)
@@ -213,6 +213,7 @@ export function NotesPanel({ collapsed, onToggle }) {
         <button
           onClick={onToggle}
           title="Expand notes panel"
+          aria-label="Expand notes panel"
           className="w-7 h-7 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
           style={{ color: 'var(--color-text-muted)' }}
         >
@@ -249,10 +250,11 @@ export function NotesPanel({ collapsed, onToggle }) {
         >
           {filtered.length}
         </span>
-        {notes.filter(n => !n.archived).length > 0 && (
+        {notes.filter(n => !n.archived && n._source !== 'journal').length > 0 && (
           <button
             onClick={() => setConfirmDelete(true)}
             title="Delete all notes"
+            aria-label="Delete all notes"
             className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
             style={{ color: 'var(--color-error, #ef4444)' }}
           >
@@ -262,6 +264,7 @@ export function NotesPanel({ collapsed, onToggle }) {
         <button
           onClick={handleNewNote}
           title="New note (Ctrl+N)"
+          aria-label="New note"
           className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
           style={{ color: 'var(--color-text-muted)' }}
         >
@@ -270,6 +273,7 @@ export function NotesPanel({ collapsed, onToggle }) {
         <button
           onClick={onToggle}
           title="Collapse notes panel"
+          aria-label="Collapse notes panel"
           className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
           style={{ color: 'var(--color-text-muted)' }}
         >
@@ -366,7 +370,7 @@ export function NotesPanel({ collapsed, onToggle }) {
               </span>
             </div>
             <p className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
-              This will permanently delete {notes.filter(n => !n.archived).length} note{notes.filter(n => !n.archived).length !== 1 ? 's' : ''}. Cannot be undone.
+              This will permanently delete {notes.filter(n => !n.archived && n._source !== 'journal').length} note{notes.filter(n => !n.archived && n._source !== 'journal').length !== 1 ? 's' : ''}. Cannot be undone.
             </p>
             <div className="flex gap-2 justify-end">
               <button

@@ -1,6 +1,6 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-04T21:51:07.298Z
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-04T22:57:44.163Z
 > Files: 44 tracked | Anatomy hits: 0 | Misses: 0
 
 ## ../../../.claude/
@@ -302,13 +302,13 @@
 
 ## frontend/src/components/ai/
 
-- `AISidebar.jsx` — POPULAR_CATALOG (~10164 tok)
+- `AISidebar.jsx` — POPULAR_CATALOG (~10162 tok)
 
 ## frontend/src/components/editor/
 
-- `EditorToolbar.jsx` — ToolBtn (~4076 tok)
+- `EditorToolbar.jsx` — ToolBtn (~4203 tok)
 - `FloatingToolbar.jsx` — GROQ_BASE_URL (~3820 tok)
-- `NoteEditor.jsx` — lowlight (~9993 tok)
+- `NoteEditor.jsx` — lowlight (~11203 tok)
 - `NoteLinkExtension.jsx` — NOTELINK_RE (~544 tok)
 - `NoteLinkPreview.jsx` — HOVER_DELAY (~1546 tok)
 
@@ -349,7 +349,7 @@
 
 ## frontend/src/store/
 
-- `aiStore.js` — Exports useAIStore (~2213 tok)
+- `aiStore.js` — Exports useAIStore (~2540 tok)
 - `authStore.js` — Exports useAuthStore (~196 tok)
 - `notesStore.js` — Exports useNotesStore (~2312 tok)
 - `tasksStore.js` — Exports useTasksStore (~1030 tok)

@@ -588,7 +588,7 @@ export function AISidebar() {
     requestNoteWrite(content)
   }
 
-  const WRITE_INTENT_RE = /\b(add|write|insert|append|put)\b.{0,30}\b(to|into|in|on)\b.{0,20}\bnote\b|\badd this\b|\bsave (this|it) to/i
+  const WRITE_INTENT_RE = /\b(add|write|insert|append|put|delete|clear|remove|replace|rewrite|improve|make.{0,20}better|fix)\b/i
 
   const handleSend = () => {
     const msg = input.trim()

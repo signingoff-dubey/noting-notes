@@ -18,6 +18,8 @@ const GROQ_MODELS = [
 const WRITE_OPEN = '[NOTEWRITE]'
 const WRITE_CLOSE = '[/NOTEWRITE]'
 const WRITE_RE = /\[NOTEWRITE\]([\s\S]*?)\[\/NOTEWRITE\]/i
+const REPLACE_RE = /\[NOTEREPLACE\]([\s\S]*?)\[\/NOTEREPLACE\]/i
+const CLEAR_RE = /\[NOTECLEAR\]/i
 
 function loadMemory(noteId) {
   if (!noteId) return []
@@ -31,32 +33,37 @@ function saveMemory(noteId, messages) {
   catch {}
 }
 
-/* Strip NOTEWRITE tags from text shown in chat */
+/* Strip all action tags from text shown in chat */
 function stripWriteTags(text) {
-  return text.replace(WRITE_RE, '').replace(/\n{3,}/g, '\n\n').trim()
+  return text
+    .replace(WRITE_RE, '')
+    .replace(REPLACE_RE, '')
+    .replace(CLEAR_RE, '')
+    .replace(/\n{3,}/g, '\n\n').trim()
 }
 
 function buildSystemPrompt(noteContent) {
-  const writeInstructions = `
-When the user asks you to add, write, insert, append, or modify content in their note:
-- Reply naturally (1–2 sentences explaining what you're adding)
-- Wrap ONLY the content to insert inside ${WRITE_OPEN}...${WRITE_CLOSE} tags
-- Do NOT output raw JSON, TipTap document format, or code blocks unless the actual content is code
-- Example: "Added a haiku to your note. ${WRITE_OPEN}Silent pond at dusk\nA frog leaps into the water\nRipples fade away${WRITE_CLOSE}"
-- Never show internal document structures to the user`.trim()
+  const noteSection = noteContent
+    ? `\n\nThe user is working on this note:\n${noteContent}`
+    : ''
 
-  if (noteContent) {
-    return `You are a helpful AI assistant inside a notes app called INK. The user is working on a note:
+  return `You are a helpful AI assistant inside a notes app called INK.${noteSection}
 
-${noteContent}
+CRITICAL RULES:
+- When the user sends greetings, casual messages, or questions NOT about modifying the note — respond normally. Do NOT mention the note, do NOT offer to edit it, do NOT ask permission.
+- NEVER proactively offer to "add or modify content". Only act when explicitly told to.
+- Only use action tags below when the user EXPLICITLY asks you to change the note.
 
-${writeInstructions}`
-  }
-  return `You are a helpful AI assistant inside a notes app called INK.
+Note action tags (use ONLY when user asks):
+- Append content: ${WRITE_OPEN}text to add${WRITE_CLOSE}
+- Replace entire note: [NOTEREPLACE]full new content[/NOTEREPLACE]
+- Delete/clear note: [NOTECLEAR]
 
-${writeInstructions}
-
-If the user asks to write to a note but no note context is set, tell them to select a note first.`
+Rules for note actions:
+- Do NOT output raw JSON or TipTap format — plain text and markdown only
+- When replacing: write the full improved content, not just a diff
+- 1–2 sentence reply describing what you did, then the tag
+- If no note context is set and user asks to modify note, tell them to select a note first`
 }
 
 export const useAIStore = create((set, get) => ({
@@ -77,11 +84,15 @@ export const useAIStore = create((set, get) => ({
   },
   error: null,
 
-  /* ── Note-write permission ── */
-  pendingNoteWrite: null,   // { content: string } | null
-  writeNoteCallback: null,  // (content: string) => void — registered by NoteEditor
+  /* ── Note manipulation callbacks (registered by NoteEditor) ── */
+  pendingNoteWrite: null,
+  writeNoteCallback: null,    // append content
+  replaceNoteCallback: null,  // replace entire content
+  clearNoteCallback: null,    // clear entire content
 
   registerWriteCallback: (cb) => set({ writeNoteCallback: cb }),
+  registerReplaceCallback: (cb) => set({ replaceNoteCallback: cb }),
+  registerClearCallback: (cb) => set({ clearNoteCallback: cb }),
 
   requestNoteWrite: (content) => set({ pendingNoteWrite: { content } }),
 
@@ -144,7 +155,7 @@ export const useAIStore = create((set, get) => ({
     set({ messages: newMessages, isStreaming: true, streamingMessage: '' })
 
     const systemPrompt = buildSystemPrompt(noteContent)
-    const chatHistory = newMessages.slice(-20).map(m => ({ role: m.role, content: m.content }))
+    const chatHistory = newMessages.slice(-10).map(m => ({ role: m.role, content: m.content }))
 
     const ctrl = new AbortController()
 
@@ -158,7 +169,7 @@ export const useAIStore = create((set, get) => ({
         model,
         messages: [{ role: 'system', content: systemPrompt }, ...chatHistory],
         stream: true,
-        max_tokens: 2048,
+        max_tokens: 1024,
       }),
       signal: ctrl.signal,
     })
@@ -194,8 +205,6 @@ export const useAIStore = create((set, get) => ({
         }
       }
 
-      /* Check for NOTEWRITE marker in final response */
-      const writeMatch = WRITE_RE.exec(accumulated)
       const displayContent = stripWriteTags(accumulated)
 
       const aiMsg = {
@@ -207,10 +216,28 @@ export const useAIStore = create((set, get) => ({
       set({ messages: finalMessages, isStreaming: false, streamingMessage: '' })
       if (contextNoteId) saveMemory(contextNoteId, finalMessages)
 
-      /* Trigger write-permission popup only if user explicitly requested it */
-      if (writeMatch && userRequestedWrite) {
-        const writeContent = writeMatch[1].trim()
-        if (writeContent) get().requestNoteWrite(writeContent)
+      /* Execute note actions directly — no permission popup needed, user asked for it */
+      const { writeNoteCallback, replaceNoteCallback, clearNoteCallback } = get()
+
+      const clearMatch = CLEAR_RE.test(accumulated)
+      const replaceMatch = REPLACE_RE.exec(accumulated)
+      const writeMatch = WRITE_RE.exec(accumulated)
+
+      if (clearMatch && clearNoteCallback) {
+        clearNoteCallback()
+      } else if (replaceMatch) {
+        const content = replaceMatch[1].trim()
+        if (content && replaceNoteCallback) replaceNoteCallback(content)
+      } else if (writeMatch) {
+        const content = writeMatch[1].trim()
+        if (content) {
+          if (userRequestedWrite && writeNoteCallback) {
+            writeNoteCallback(content)
+          } else if (!userRequestedWrite) {
+            /* AI proactively put NOTEWRITE but user didn't ask — show permission popup */
+            get().requestNoteWrite(content)
+          }
+        }
       }
     })
     .catch((err) => {

@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import {
   Bold, Italic, Underline, Strikethrough, Highlighter, Code, List, ListOrdered,
   CheckSquare, Quote, Minus, Table, Link, Image, Paperclip, Heading1, Heading2, Heading3,
-  X, Upload, Globe,
+  X, Upload, Globe, Undo2, Redo2,
 } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
@@ -286,6 +286,16 @@ export function EditorToolbar({ editor, onAttach }) {
   return (
     <>
       <div className="flex items-center gap-0.5 px-2 h-10 border-b border-border bg-surface sticky top-0 z-10 overflow-x-auto shrink-0">
+        {/* Undo / Redo */}
+        <ToolBtn title="Undo (Ctrl+Z)" onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().undo()}>
+          <Undo2 size={14} strokeWidth={1.5} />
+        </ToolBtn>
+        <ToolBtn title="Redo (Ctrl+Y)" onClick={() => editor.chain().focus().redo().run()} disabled={!editor.can().redo()}>
+          <Redo2 size={14} strokeWidth={1.5} />
+        </ToolBtn>
+
+        <Divider />
+
         {/* Headings */}
         <ToolBtn title="Heading 1" onClick={() => handleHeading(1)} active={editor.isActive('heading', { level: 1 })}>
           <Heading1 size={14} strokeWidth={1.5} />

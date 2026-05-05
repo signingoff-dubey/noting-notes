@@ -97,19 +97,108 @@ const AutoCapitalize = Extension.create({
         appendTransaction(transactions, _oldState, newState) {
           if (!transactions.some(tr => tr.docChanged)) return null
           const { $from } = newState.selection
-          if ($from.parentOffset !== 1) return null
           const parent = $from.parent
           if (!['paragraph', 'heading'].includes(parent.type.name)) return null
-          const firstChild = parent.firstChild
-          if (!firstChild || firstChild.type.name !== 'text') return null
-          const text = firstChild.text || ''
-          if (!text.length) return null
-          const first = text[0]
-          const upper = first.toUpperCase()
-          if (first === upper) return null
-          const tr = newState.tr
-          tr.replaceWith($from.start(), $from.start() + 1, newState.schema.text(upper))
-          return tr
+
+          // First char of block
+          if ($from.parentOffset === 1) {
+            const firstChild = parent.firstChild
+            if (!firstChild || firstChild.type.name !== 'text') return null
+            const text = firstChild.text || ''
+            if (!text.length) return null
+            const first = text[0]
+            const upper = first.toUpperCase()
+            if (first === upper) return null
+            const tr = newState.tr
+            tr.replaceWith($from.start(), $from.start() + 1, newState.schema.text(upper))
+            return tr
+          }
+
+          // After sentence-ending punctuation (". " / "! " / "? ")
+          const textBefore = parent.textContent.slice(0, $from.parentOffset)
+          if (textBefore.length >= 3) {
+            const last3 = textBefore.slice(-3)
+            const last2 = textBefore.slice(-2)
+            const justTyped = textBefore.slice(-1)
+            if (
+              /[a-z]/.test(justTyped) &&
+              (/[.!?] $/.test(last3) || /[.!?] $/.test(last2))
+            ) {
+              const pos = $from.pos - 1
+              const upper = justTyped.toUpperCase()
+              const tr = newState.tr
+              tr.replaceWith(pos, pos + 1, newState.schema.text(upper))
+              return tr
+            }
+          }
+
+          return null
+        },
+      }),
+    ]
+  },
+})
+
+const AUTOCORRECT_MAP = {
+  teh: 'the', hte: 'the', thier: 'their', recieve: 'receive',
+  beleive: 'believe', definately: 'definitely', occured: 'occurred',
+  seperate: 'separate', wierd: 'weird', alot: 'a lot',
+  dont: "don't", cant: "can't", wont: "won't", didnt: "didn't",
+  doesnt: "doesn't", isnt: "isn't", wasnt: "wasn't", shouldnt: "shouldn't",
+  wouldnt: "wouldn't", couldnt: "couldn't",
+}
+
+const AutoCorrect = Extension.create({
+  name: 'autoCorrect',
+  addProseMirrorPlugins() {
+    return [
+      new Plugin({
+        key: new PluginKey('autoCorrect'),
+        appendTransaction(transactions, _oldState, newState) {
+          if (!transactions.some(tr => tr.docChanged)) return null
+          const { $from } = newState.selection
+          const parent = $from.parent
+          if (!parent.isTextblock) return null
+
+          const textBefore = parent.textContent.slice(0, $from.parentOffset)
+          const lastChar = textBefore.slice(-1)
+
+          // Only trigger on space or common punctuation after a word
+          if (lastChar !== ' ' && lastChar !== ',' && lastChar !== '.' && lastChar !== '!' && lastChar !== '?') return null
+
+          const textBeforeTrigger = textBefore.slice(0, -1)
+          const wordMatch = textBeforeTrigger.match(/(\S+)$/)
+          if (!wordMatch) return null
+
+          const word = wordMatch[1]
+          // Strip trailing punctuation from word for lookup
+          const clean = word.replace(/[.,!?]+$/, '').toLowerCase()
+
+          // Standalone "i" → "I"
+          if (clean === 'i' && !/[A-Z]/.test(word)) {
+            const wordEnd = $from.pos - 1
+            const wordStart = wordEnd - word.length
+            const replacement = word.replace(/^i/, 'I')
+            const tr = newState.tr
+            tr.replaceWith(wordStart, wordEnd, newState.schema.text(replacement))
+            return tr
+          }
+
+          // Common typo corrections
+          const correction = AUTOCORRECT_MAP[clean]
+          if (correction) {
+            // Preserve leading caps if original word was capitalized
+            const final = /^[A-Z]/.test(word)
+              ? correction[0].toUpperCase() + correction.slice(1)
+              : correction
+            const wordEnd = $from.pos - 1
+            const wordStart = wordEnd - word.length
+            const tr = newState.tr
+            tr.replaceWith(wordStart, wordEnd, newState.schema.text(final))
+            return tr
+          }
+
+          return null
         },
       }),
     ]
@@ -186,6 +275,7 @@ export function NoteEditor({ note, onBack }) {
   const fileInputRef = useRef(null)
   const scrollContainerRef = useRef(null)
   const editorRef = useRef(null)
+  const titleRef = useRef(null)
 
   useEffect(() => {
     if (note) {
@@ -213,6 +303,7 @@ export function NoteEditor({ note, onBack }) {
       CharacterCount,
       Placeholder.configure({ placeholder: 'Start writing...' }),
       AutoCapitalize,
+      AutoCorrect,
       NoteLinkHighlight,
     ],
     content: note?.content || '',
@@ -230,9 +321,10 @@ export function NoteEditor({ note, onBack }) {
   /* Keep editorRef current so autosave timer always has the live editor instance */
   useEffect(() => { editorRef.current = editor }, [editor])
 
-  /* Register AI write callback — inserts content at end of note with accent highlight */
+  /* Register AI note-manipulation callbacks */
   useEffect(() => {
     if (!editor) return
+
     const writeToNote = (content) => {
       const blocks = content.split(/\n\n+/).filter(b => b.trim())
       const nodes = blocks.map(block => ({
@@ -244,9 +336,33 @@ export function NoteEditor({ note, onBack }) {
       }))
       editor.chain().focus().insertContentAt(editor.state.doc.content.size, nodes).run()
     }
-    const { registerWriteCallback } = useAIStore.getState()
-    registerWriteCallback(writeToNote)
-    return () => registerWriteCallback(null)
+
+    const replaceNote = (content) => {
+      const blocks = content.split(/\n\n+/).filter(b => b.trim())
+      const nodes = blocks.map(block => ({
+        type: 'paragraph',
+        content: block.split('\n').filter(l => l).flatMap((line, i, arr) => [
+          { type: 'text', text: line },
+          ...(i < arr.length - 1 ? [{ type: 'hardBreak' }] : []),
+        ]),
+      }))
+      editor.chain().focus().setContent({ type: 'doc', content: nodes }).run()
+    }
+
+    const clearNote = () => {
+      editor.chain().focus().clearContent().run()
+    }
+
+    const store = useAIStore.getState()
+    store.registerWriteCallback(writeToNote)
+    store.registerReplaceCallback(replaceNote)
+    store.registerClearCallback(clearNote)
+    return () => {
+      const s = useAIStore.getState()
+      s.registerWriteCallback(null)
+      s.registerReplaceCallback(null)
+      s.registerClearCallback(null)
+    }
   }, [editor])
 
   /* Typewriter mode: keep cursor vertically centred */
@@ -417,8 +533,14 @@ export function NoteEditor({ note, onBack }) {
           <ArrowLeft size={16} strokeWidth={1.5} />
         </button>
         <input
+          ref={titleRef}
           value={title}
           onChange={handleTitleChange}
+          onFocus={(e) => {
+            if (!e.target.value || e.target.value === 'Untitled') {
+              e.target.select()
+            }
+          }}
           placeholder="Untitled"
           className="flex-1 bg-transparent font-body outline-none font-medium"
           style={{

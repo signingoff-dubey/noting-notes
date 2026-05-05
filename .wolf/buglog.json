@@ -1809,6 +1809,54 @@
       "related_bugs": [],
       "occurrences": 1,
       "last_seen": "2026-05-04T21:50:50.161Z"
+    },
+    {
+      "id": "bug-114",
+      "timestamp": "2026-05-04T22:44:33.985Z",
+      "error_message": "CSS fix: name, key",
+      "file": "frontend/src/components/editor/NoteEditor.jsx",
+      "root_cause": "name: 'autoCapitalize', → 'autoCorrect',; key: new PluginKey('autoCapitalize'), → new PluginKey('autoCorrect'),",
+      "fix": "Changed name: 'autoCapitalize', → 'autoCorrect',; key: new PluginKey('autoCapitalize'), → new PluginKey('autoCorrect'),",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-04T22:44:33.985Z"
+    },
+    {
+      "id": "bug-115",
+      "timestamp": "2026-05-04T22:56:41.341Z",
+      "error_message": "Significant refactor of ",
+      "file": "frontend/src/store/aiStore.js",
+      "root_cause": "3 lines replaced/restructured",
+      "fix": "Rewrote 17→21 lines (3 removed) | Also: /* Check for NOTEWRITE marker in final response */; /* Trigger write-permission popup only if user exp",
+      "tags": [
+        "auto-detected",
+        "refactor",
+        "js"
+      ],
+      "related_bugs": [],
+      "occurrences": 2,
+      "last_seen": "2026-05-04T22:57:05.092Z"
+    },
+    {
+      "id": "bug-116",
+      "timestamp": "2026-05-04T22:57:27.185Z",
+      "error_message": "CSS fix: type",
+      "file": "frontend/src/components/editor/NoteEditor.jsx",
+      "root_cause": "type: 'hardBreak' → 'doc', content: nodes",
+      "fix": "Changed type: 'hardBreak' → 'doc', content: nodes",
+      "tags": [
+        "auto-detected",
+        "style-fix",
+        "jsx"
+      ],
+      "related_bugs": [],
+      "occurrences": 1,
+      "last_seen": "2026-05-04T22:57:27.185Z"
     }
   ]
 }

@@ -1,10 +1,31 @@
 {
-  "session_id": "session-2026-05-05-0616",
-  "started": "2026-05-05T00:46:44.986Z",
-  "files_read": {},
-  "files_written": [],
-  "edit_counts": {},
-  "anatomy_hits": 0,
+  "session_id": "session-2026-05-06-0531",
+  "started": "2026-05-06T00:01:09.293Z",
+  "files_read": {
+    "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/NoteEditor.jsx": {
+      "count": 1,
+      "tokens": 11477,
+      "first_read": "2026-05-06T00:01:21.333Z"
+    }
+  },
+  "files_written": [
+    {
+      "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/NoteEditor.jsx",
+      "action": "edit",
+      "tokens": 372,
+      "at": "2026-05-06T00:01:36.071Z"
+    },
+    {
+      "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/NoteEditor.jsx",
+      "action": "edit",
+      "tokens": 38,
+      "at": "2026-05-06T00:01:43.117Z"
+    }
+  ],
+  "edit_counts": {
+    "frontend/src/components/editor/NoteEditor.jsx": 2
+  },
+  "anatomy_hits": 1,
   "anatomy_misses": 0,
   "repeated_reads_warned": 0,
   "cerebrum_warnings": 0,

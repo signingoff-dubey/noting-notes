@@ -1,7 +1,43 @@
 # anatomy.md
 
-> Auto-maintained by OpenWolf. Last scanned: 2026-05-04T22:57:44.163Z
-> Files: 44 tracked | Anatomy hits: 0 | Misses: 0
+> Auto-maintained by OpenWolf. Last scanned: 2026-05-06T00:01:43.101Z
+> Files: 56 tracked | Anatomy hits: 0 | Misses: 0
+
+## ../../../../../PU Hackethon/vuln-detect-rag/EMET/
+
+- `netlify.toml` (~52 tok)
+
+## ../../../../../PU Hackethon/vuln-detect-rag/EMET/.claude/
+
+- `launch.json` (~60 tok)
+
+## ../../../../../PU Hackethon/vuln-detect-rag/EMET/backend/
+
+- `main.py` — API: 4 endpoints (~1540 tok)
+
+## ../../../../../PU Hackethon/vuln-detect-rag/EMET/frontend/
+
+- `vite.config.js` (~48 tok)
+
+## ../../../../../PU Hackethon/vuln-detect-rag/EMET/frontend/public/
+
+- `_redirects` (~6 tok)
+
+## ../../../../../PU Hackethon/vuln-detect-rag/EMET/frontend/src/api/
+
+- `client.js` — ─── Health ──────────────────────────────────────────────────────────────── (~1762 tok)
+- `cveApi.js` — Exports searchCVEs, getCVEById (~831 tok)
+- `groqClient.js` — Exports chatWithGroq, checkGroqStatus (~614 tok)
+
+## ../../../../../PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/
+
+- `ScanConsole.jsx` — ScanConsole (~2637 tok)
+- `Settings.jsx` — Settings (~1976 tok)
+
+## ../../../../../PU Hackethon/vuln-detect-rag/EMET/frontend/src/services/
+
+- `mockScanner.js` — Exports runMockScan, buildAttackPaths (~2061 tok)
+- `store.js` — Exports getScans, saveScan, getScan, getVulns + 8 more (~722 tok)
 
 ## ../../../.claude/
 
@@ -308,7 +344,7 @@
 
 - `EditorToolbar.jsx` — ToolBtn (~4203 tok)
 - `FloatingToolbar.jsx` — GROQ_BASE_URL (~3820 tok)
-- `NoteEditor.jsx` — lowlight (~11203 tok)
+- `NoteEditor.jsx` — lowlight (~11649 tok)
 - `NoteLinkExtension.jsx` — NOTELINK_RE (~544 tok)
 - `NoteLinkPreview.jsx` — HOVER_DELAY (~1546 tok)
 

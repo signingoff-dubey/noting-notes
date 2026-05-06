@@ -17,7 +17,7 @@ import CharacterCount from '@tiptap/extension-character-count'
 import Placeholder from '@tiptap/extension-placeholder'
 import Underline from '@tiptap/extension-underline'
 import { common, createLowlight } from 'lowlight'
-import { ArrowLeft, Lock, Unlock, Trash2, History, RotateCcw, Download, Upload, FileText, FileDown, Paperclip, X as XIcon, FolderOpen } from 'lucide-react'
+import { ArrowLeft, Lock, Unlock, Trash2, History, RotateCcw, Download, Upload, FileText, FileDown, Paperclip, X as XIcon, FolderOpen, Eye, EyeOff } from 'lucide-react'
 import { FileViewer } from '@/components/viewer/FileViewer'
 import { nanoid } from 'nanoid'
 import { useNotesStore } from '@/store/notesStore'
@@ -270,6 +270,7 @@ export function NoteEditor({ note, onBack }) {
   const [showExportMenu, setShowExportMenu] = useState(false)
   const [showMoveFolder, setShowMoveFolder] = useState(false)
   const [activeFileViewer, setActiveFileViewer] = useState(null)
+  const [showPreview, setShowPreview] = useState(false)
   const importRef = useRef(null)
   const autosaveTimer = useRef(null)
   const fileInputRef = useRef(null)
@@ -550,6 +551,22 @@ export function NoteEditor({ note, onBack }) {
         />
         <SaveStatus saving={isSaving} lastSaved={lastSaved} />
 
+        {/* Markdown preview toggle */}
+        <button
+          onClick={() => setShowPreview(v => !v)}
+          title={showPreview ? 'Back to editor' : 'Markdown preview'}
+          aria-label={showPreview ? 'Back to editor' : 'Markdown preview'}
+          className="w-7 h-7 flex items-center justify-center rounded-lg transition-all"
+          style={{
+            color: showPreview ? 'var(--color-accent)' : 'var(--color-text-muted)',
+            background: showPreview ? 'var(--color-accent-dim)' : 'transparent',
+          }}
+          onMouseEnter={e => { if (!showPreview) e.currentTarget.style.color = 'var(--color-text-secondary)' }}
+          onMouseLeave={e => { if (!showPreview) e.currentTarget.style.color = 'var(--color-text-muted)' }}
+        >
+          {showPreview ? <EyeOff size={14} strokeWidth={1.5} /> : <Eye size={14} strokeWidth={1.5} />}
+        </button>
+
         {/* Import button */}
         <button
           onClick={() => importRef.current?.click()}
@@ -755,7 +772,7 @@ export function NoteEditor({ note, onBack }) {
       </div>
 
       {/* ── Toolbar ── */}
-      <EditorToolbar editor={editor} onAttach={() => fileInputRef.current?.click()} />
+      {!showPreview && <EditorToolbar editor={editor} onAttach={() => fileInputRef.current?.click()} />}
       <input
         ref={fileInputRef}
         type="file"
@@ -795,16 +812,33 @@ export function NoteEditor({ note, onBack }) {
             '--editor-line-height': editorLineHeight,
           }}
         >
-          {editor && <FloatingToolbar editor={editor} />}
-          <EditorContent
-            editor={editor}
-            style={{
-              maxWidth: 720,
-              margin: '0 auto',
-              padding: '32px 40px 80px',
-            }}
-          />
-          <NoteLinkPreview editorContainer={scrollContainerRef} />
+          {showPreview ? (
+            <div
+              className="prose-preview editor-content"
+              style={{
+                maxWidth: 720,
+                margin: '0 auto',
+                padding: '32px 40px 80px',
+                fontSize: `${editorFontSize}px`,
+                lineHeight: editorLineHeight,
+                color: 'var(--color-text-primary)',
+              }}
+              dangerouslySetInnerHTML={{ __html: editor?.getHTML() || '' }}
+            />
+          ) : (
+            <>
+              {editor && <FloatingToolbar editor={editor} />}
+              <EditorContent
+                editor={editor}
+                style={{
+                  maxWidth: 720,
+                  margin: '0 auto',
+                  padding: '32px 40px 80px',
+                }}
+              />
+              <NoteLinkPreview editorContainer={scrollContainerRef} />
+            </>
+          )}
         </div>
         {activeFileViewer && (
           <FileViewer

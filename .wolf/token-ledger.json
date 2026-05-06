@@ -2,14 +2,14 @@
   "version": 1,
   "created_at": "2026-04-20T00:51:14.976Z",
   "lifetime": {
-    "total_tokens_estimated": 1505580,
-    "total_reads": 523,
-    "total_writes": 766,
-    "total_sessions": 29,
-    "anatomy_hits": 341,
-    "anatomy_misses": 175,
-    "repeated_reads_blocked": 142,
-    "estimated_savings_vs_bare_cli": 879467
+    "total_tokens_estimated": 1566299,
+    "total_reads": 610,
+    "total_writes": 800,
+    "total_sessions": 34,
+    "anatomy_hits": 359,
+    "anatomy_misses": 244,
+    "repeated_reads_blocked": 151,
+    "estimated_savings_vs_bare_cli": 915163
   },
   "sessions": [
     {
@@ -8011,6 +8011,783 @@
         "writes_count": 10,
         "repeated_reads_blocked": 5,
         "anatomy_lookups": 3
+      }
+    },
+    {
+      "id": "session-2026-05-05-1516",
+      "started": "2026-05-05T09:46:15.301Z",
+      "ended": "2026-05-05T09:50:23.146Z",
+      "reads": [
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/vite.config.js",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/backend/main.py",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/vite.config.js",
+          "tokens_estimated": 85,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/Dashboard.jsx",
+          "tokens_estimated": 3054,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/backend/config.py",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/backend/models/database.py",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/backend/main.py",
+          "tokens_estimated": 50,
+          "action": "edit"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/backend/main.py",
+          "tokens_estimated": 24,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 3139,
+        "output_tokens_estimated": 74,
+        "reads_count": 6,
+        "writes_count": 2,
+        "repeated_reads_blocked": 0,
+        "anatomy_lookups": 2
+      }
+    },
+    {
+      "id": "session-2026-05-05-1516",
+      "started": "2026-05-05T09:46:15.301Z",
+      "ended": "2026-05-05T10:17:49.057Z",
+      "reads": [
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/vite.config.js",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/backend/main.py",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/vite.config.js",
+          "tokens_estimated": 85,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/Dashboard.jsx",
+          "tokens_estimated": 3054,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/backend/config.py",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/backend/models/database.py",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/ScanConsole.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/AttackPathGraph.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/MetricsPanel.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/CVEDetail.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/context/ThemeContext.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/Settings.jsx",
+          "tokens_estimated": 5691,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/CVEBrowse.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/ScanForm.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/RAGAssistant.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/Layout.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/Sidebar.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/App.jsx",
+          "tokens_estimated": 1712,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/main.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/ChatPanel.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/ScanResults.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/VulnerabilityCard.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/ErrorBoundary.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/package.json",
+          "tokens_estimated": 457,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/utils/sanitize.js",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/api/client.js",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/backend/main.py",
+          "tokens_estimated": 50,
+          "action": "edit"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/backend/main.py",
+          "tokens_estimated": 24,
+          "action": "edit"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/ScanConsole.jsx",
+          "tokens_estimated": 14,
+          "action": "edit"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/.claude/launch.json",
+          "tokens_estimated": 60,
+          "action": "create"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 10999,
+        "output_tokens_estimated": 148,
+        "reads_count": 26,
+        "writes_count": 4,
+        "repeated_reads_blocked": 1,
+        "anatomy_lookups": 5
+      }
+    },
+    {
+      "id": "session-2026-05-05-1516",
+      "started": "2026-05-05T09:46:15.301Z",
+      "ended": "2026-05-05T10:37:23.545Z",
+      "reads": [
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/vite.config.js",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/backend/main.py",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/vite.config.js",
+          "tokens_estimated": 85,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/Dashboard.jsx",
+          "tokens_estimated": 3054,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/backend/config.py",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/backend/models/database.py",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/ScanConsole.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/AttackPathGraph.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/MetricsPanel.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/CVEDetail.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/context/ThemeContext.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/Settings.jsx",
+          "tokens_estimated": 5691,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/CVEBrowse.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/ScanForm.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/RAGAssistant.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/Layout.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/Sidebar.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/App.jsx",
+          "tokens_estimated": 1712,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/main.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/ChatPanel.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/ScanResults.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/VulnerabilityCard.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/ErrorBoundary.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/package.json",
+          "tokens_estimated": 457,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/utils/sanitize.js",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/api/client.js",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/backend/models/schemas.py",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/backend/main.py",
+          "tokens_estimated": 50,
+          "action": "edit"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/backend/main.py",
+          "tokens_estimated": 24,
+          "action": "edit"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/ScanConsole.jsx",
+          "tokens_estimated": 14,
+          "action": "edit"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/.claude/launch.json",
+          "tokens_estimated": 60,
+          "action": "create"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/services/store.js",
+          "tokens_estimated": 722,
+          "action": "create"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/api/groqClient.js",
+          "tokens_estimated": 614,
+          "action": "create"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/api/cveApi.js",
+          "tokens_estimated": 831,
+          "action": "create"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/services/mockScanner.js",
+          "tokens_estimated": 2061,
+          "action": "create"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/api/client.js",
+          "tokens_estimated": 1762,
+          "action": "create"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/vite.config.js",
+          "tokens_estimated": 25,
+          "action": "edit"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/netlify.toml",
+          "tokens_estimated": 55,
+          "action": "create"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/public/_redirects",
+          "tokens_estimated": 6,
+          "action": "create"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/Settings.jsx",
+          "tokens_estimated": 13,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 10999,
+        "output_tokens_estimated": 6237,
+        "reads_count": 27,
+        "writes_count": 13,
+        "repeated_reads_blocked": 4,
+        "anatomy_lookups": 5
+      }
+    },
+    {
+      "id": "session-2026-05-05-1516",
+      "started": "2026-05-05T09:46:15.301Z",
+      "ended": "2026-05-05T10:54:27.300Z",
+      "reads": [
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/vite.config.js",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/backend/main.py",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/vite.config.js",
+          "tokens_estimated": 85,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/Dashboard.jsx",
+          "tokens_estimated": 3054,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/backend/config.py",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/backend/models/database.py",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/ScanConsole.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/AttackPathGraph.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/MetricsPanel.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/CVEDetail.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/context/ThemeContext.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/Settings.jsx",
+          "tokens_estimated": 5691,
+          "was_repeated": true,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/CVEBrowse.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/ScanForm.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/RAGAssistant.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/Layout.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/Sidebar.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/App.jsx",
+          "tokens_estimated": 1712,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/main.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/ChatPanel.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/ScanResults.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/VulnerabilityCard.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/components/ErrorBoundary.jsx",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/package.json",
+          "tokens_estimated": 457,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/utils/sanitize.js",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/api/client.js",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/backend/models/schemas.py",
+          "tokens_estimated": 0,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/backend/main.py",
+          "tokens_estimated": 50,
+          "action": "edit"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/backend/main.py",
+          "tokens_estimated": 24,
+          "action": "edit"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/ScanConsole.jsx",
+          "tokens_estimated": 14,
+          "action": "edit"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/.claude/launch.json",
+          "tokens_estimated": 60,
+          "action": "create"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/services/store.js",
+          "tokens_estimated": 722,
+          "action": "create"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/api/groqClient.js",
+          "tokens_estimated": 614,
+          "action": "create"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/api/cveApi.js",
+          "tokens_estimated": 831,
+          "action": "create"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/services/mockScanner.js",
+          "tokens_estimated": 2061,
+          "action": "create"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/api/client.js",
+          "tokens_estimated": 1762,
+          "action": "create"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/vite.config.js",
+          "tokens_estimated": 25,
+          "action": "edit"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/netlify.toml",
+          "tokens_estimated": 55,
+          "action": "create"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/public/_redirects",
+          "tokens_estimated": 6,
+          "action": "create"
+        },
+        {
+          "file": "C:/PU Hackethon/vuln-detect-rag/EMET/frontend/src/pages/Settings.jsx",
+          "tokens_estimated": 13,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 10999,
+        "output_tokens_estimated": 6237,
+        "reads_count": 27,
+        "writes_count": 13,
+        "repeated_reads_blocked": 4,
+        "anatomy_lookups": 5
+      }
+    },
+    {
+      "id": "session-2026-05-06-0531",
+      "started": "2026-05-06T00:01:09.293Z",
+      "ended": "2026-05-06T00:01:57.199Z",
+      "reads": [
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/NoteEditor.jsx",
+          "tokens_estimated": 11477,
+          "was_repeated": false,
+          "anatomy_had_description": false
+        }
+      ],
+      "writes": [
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/NoteEditor.jsx",
+          "tokens_estimated": 372,
+          "action": "edit"
+        },
+        {
+          "file": "C:/Users/kabir/OneDrive/Desktop/INK/frontend/src/components/editor/NoteEditor.jsx",
+          "tokens_estimated": 38,
+          "action": "edit"
+        }
+      ],
+      "totals": {
+        "input_tokens_estimated": 11477,
+        "output_tokens_estimated": 410,
+        "reads_count": 1,
+        "writes_count": 2,
+        "repeated_reads_blocked": 0,
+        "anatomy_lookups": 1
       }
     }
   ],

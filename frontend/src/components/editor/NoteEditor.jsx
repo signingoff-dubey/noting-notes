@@ -132,6 +132,7 @@ export function NoteEditor({ note, onBack }) {
         <button
           onClick={onBack}
           title="Back to notes (Esc)"
+          aria-label="Back to notes"
           className="transition-colors shrink-0"
           style={{ color: 'var(--color-text-muted)' }}
           onMouseEnter={e => e.currentTarget.style.color = 'var(--color-text-secondary)'}
@@ -143,6 +144,7 @@ export function NoteEditor({ note, onBack }) {
           value={title}
           onChange={handleTitleChange}
           placeholder="Untitled"
+          aria-label="Note title"
           className="flex-1 bg-transparent font-body outline-none font-medium"
           style={{
             fontSize: 'var(--text-xl)',

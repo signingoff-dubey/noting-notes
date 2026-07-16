@@ -17,7 +17,7 @@ function ToolBtn({ onClick, active, disabled, title, children }) {
         active && 'bg-surface-active text-accent',
         disabled && 'opacity-30 cursor-not-allowed',
       )}
-      style={{ borderRadius: 5 }}
+      style={{ borderRadius: 2 }}
     >
       {children}
     </button>

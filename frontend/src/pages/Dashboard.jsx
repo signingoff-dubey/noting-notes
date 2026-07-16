@@ -11,7 +11,7 @@ function StatCard({ icon, label, value, sub, accent }) {
     <div
       className="flex flex-col gap-2 p-4 border"
       style={{
-        borderRadius: 10,
+        borderRadius: 2,
         borderColor: accent ? 'var(--color-accent)' : 'var(--color-border)',
         background: accent ? 'var(--color-accent-dim)' : 'var(--color-surface)',
       }}
@@ -52,7 +52,7 @@ function RecentNoteRow({ note, onClick }) {
     <button
       onClick={onClick}
       className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors group ripple-root"
-      style={{ borderRadius: 8 }}
+      style={{ borderRadius: 2 }}
       onMouseEnter={e => e.currentTarget.style.background = 'var(--color-surface-hover)'}
       onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
       onMouseDown={e => {
@@ -94,7 +94,7 @@ function UpcomingTaskRow({ task }) {
   }[task.priority] || 'var(--color-text-muted)'
 
   return (
-    <div className="flex items-center gap-3 px-3 py-2.5" style={{ borderRadius: 8 }}>
+    <div className="flex items-center gap-3 px-3 py-2.5" style={{ borderRadius: 2 }}>
       <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: priorityColor }} />
       <span className="flex-1 font-body text-sm truncate" style={{
         color: task.status === 'done' ? 'var(--color-text-muted)' : 'var(--color-text-primary)',
@@ -139,7 +139,7 @@ function MiniCalendar() {
             style={{
               fontSize: 11,
               padding: '3px 0',
-              borderRadius: 4,
+              borderRadius: 2,
               background: d === today ? 'var(--color-accent)' : 'transparent',
               color: d === today ? 'var(--color-bg)' : d ? 'var(--color-text-secondary)' : 'transparent',
               fontWeight: d === today ? 700 : 400,
@@ -252,7 +252,7 @@ export function Dashboard() {
             <div
               className="p-4 border"
               style={{
-                borderRadius: 10,
+                borderRadius: 2,
                 borderColor: 'var(--color-border)',
                 background: 'var(--color-surface)',
                 maxWidth: 280,

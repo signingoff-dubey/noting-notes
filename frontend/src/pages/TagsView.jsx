@@ -113,7 +113,7 @@ export function TagsView() {
                       color: 'var(--color-accent)',
                       borderColor: 'var(--color-accent)',
                       background: 'var(--color-accent-dim)',
-                      borderRadius: 6,
+                      borderRadius: 2,
                     }}
                   >
                     # {tag}

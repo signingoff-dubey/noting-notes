@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { api } from '@/lib/api'
+import { api, setVaultToken } from '@/lib/api'
 
 export const useVaultStore = create((set) => ({
   isUnlocked: false,
@@ -9,6 +9,7 @@ export const useVaultStore = create((set) => ({
   unlock: async (pin) => {
     try {
       const res = await api.vault.unlock({ pin })
+      setVaultToken(res.token)
       set({ isUnlocked: true, sessionToken: res.token, error: null })
       return true
     } catch (err) {
@@ -21,6 +22,7 @@ export const useVaultStore = create((set) => ({
     try {
       await api.vault.lock()
     } catch {}
+    setVaultToken(null)
     set({ isUnlocked: false, sessionToken: null })
   },
 

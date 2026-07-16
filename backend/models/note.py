@@ -26,6 +26,7 @@ class NoteUpdate(BaseModel):
     is_vault: Optional[bool] = None
     archived: Optional[bool] = None
     word_count: Optional[int] = None
+    attachments: Optional[list[dict]] = None
 
 
 class NoteResponse(BaseModel):
@@ -40,6 +41,6 @@ class NoteResponse(BaseModel):
     archived: bool = False
     vault_content: Optional[str] = None
     word_count: int = 0
-    attachments: list[str] = Field(default_factory=list)
+    attachments: list[dict] = Field(default_factory=list)
     created_at: str = ""
     updated_at: str = ""

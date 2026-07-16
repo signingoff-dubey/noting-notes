@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from 'react'
-import { Search, LayoutGrid, List, X, ChevronDown } from 'lucide-react'
+import { Search, LayoutGrid, List, X, ChevronDown, Plus } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { useNotesStore } from '@/store/notesStore'
 import { NoteList } from '@/components/notes/NoteList'
@@ -17,7 +17,7 @@ export function Notes() {
   const {
     fetchNotes, fetchFolders, setActiveNote, activeNote,
     viewMode, setViewMode, searchQuery, setSearchQuery,
-    activeFolderId, folders, notes,
+    activeFolderId, folders, notes, createNote,
   } = useNotesStore()
 
   const [sortBy, setSortBy] = useState('updated')
@@ -95,6 +95,7 @@ export function Notes() {
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
                 placeholder="Search notes..."
+                aria-label="Search notes"
                 className="w-full border font-mono outline-none transition-colors"
                 style={{
                   height: 30,
@@ -102,7 +103,7 @@ export function Notes() {
                   paddingRight: searchQuery ? 28 : 10,
                   background: 'var(--color-surface-2)',
                   borderColor: 'var(--color-border)',
-                  borderRadius: 6,
+                  borderRadius: 2,
                   fontSize: 'var(--text-xs)',
                   color: 'var(--color-text-primary)',
                 }}
@@ -126,7 +127,7 @@ export function Notes() {
                 onClick={e => { e.stopPropagation(); setSortOpen(o => !o) }}
                 className="flex items-center gap-1 h-[30px] px-2.5 border font-mono transition-colors"
                 style={{
-                  borderRadius: 6,
+                  borderRadius: 2,
                   borderColor: 'var(--color-border)',
                   fontSize: 'var(--text-xs)',
                   color: 'var(--color-text-muted)',
@@ -143,7 +144,7 @@ export function Notes() {
                   style={{
                     background: 'var(--color-surface)',
                     borderColor: 'var(--color-border)',
-                    borderRadius: 8,
+                    borderRadius: 2,
                     minWidth: 130,
                     boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
                   }}
@@ -170,7 +171,7 @@ export function Notes() {
             {/* View mode toggle */}
             <div
               className="flex items-center border overflow-hidden"
-              style={{ borderRadius: 6, borderColor: 'var(--color-border)' }}
+              style={{ borderRadius: 2, borderColor: 'var(--color-border)' }}
             >
               <button
                 onClick={() => setViewMode('list')}
@@ -196,6 +197,25 @@ export function Notes() {
                 <LayoutGrid size={12} strokeWidth={1.5} />
               </button>
             </div>
+
+            {/* New note button */}
+            <button
+              onClick={async () => {
+                try { await createNote() } catch { toast.error('Failed to create note') }
+              }}
+              className="flex items-center gap-1.5 h-[30px] px-3 border font-mono transition-colors"
+              style={{
+                borderRadius: 2,
+                borderColor: 'var(--color-accent)',
+                background: 'var(--color-accent-dim)',
+                color: 'var(--color-accent)',
+                fontSize: 'var(--text-xs)',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              <Plus size={11} strokeWidth={1.5} />
+              New note
+            </button>
           </div>
 
           {/* ── Note list ── */}

@@ -30,8 +30,7 @@ function FolderItem({ folder, depth = 0, onSelect, activeId }) {
         className={cn(
           'group flex items-center gap-1 h-8 cursor-pointer select-none transition-colors',
           'hover:bg-sidebar-hover',
-          isActive && 'bg-sidebar-active border-l-2 border-l-accent',
-          !isActive && 'border-l-2 border-l-transparent',
+          isActive && 'bg-sidebar-active',
         )}
         style={{ paddingLeft: `${12 + depth * 12}px`, paddingRight: '8px' }}
         onClick={() => onSelect(folder.id)}

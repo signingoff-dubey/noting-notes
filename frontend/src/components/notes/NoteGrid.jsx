@@ -9,7 +9,7 @@ function SkeletonCard() {
       style={{
         background: 'var(--color-surface)',
         borderColor: 'var(--color-border)',
-        borderRadius: 10,
+        borderRadius: 2,
       }}
     >
       <div className="skeleton h-4 w-32 mb-3 rounded" />

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import {
   FileText, CheckSquare, Calendar, Settings, Lock, Unlock,
-  Star, Tag, Clock, FilePlus, ListPlus, Sparkles, Zap,
+  Star, Tag, Clock, Sparkles, Zap,
   LayoutDashboard, Archive,
 } from 'lucide-react'
 import { cn } from '@/lib/cn'
@@ -18,12 +18,13 @@ function NavItem({ icon, label, active, onClick, badge, dot }) {
   return (
     <button
       onClick={onClick}
+      aria-current={active ? 'page' : undefined}
       className={cn(
         'flex items-center gap-2.5 w-full h-[38px] px-4 transition-colors duration-[150ms] font-mono select-none',
-        'border-l-2 text-[var(--text-xs)]',
+        'text-[var(--text-xs)]',
         active
-          ? 'bg-[var(--color-sidebar-item-active)] border-l-[var(--color-accent)] text-[var(--color-text-primary)]'
-          : 'border-l-transparent text-[var(--color-text-secondary)] hover:bg-[var(--color-sidebar-item-hover)] hover:text-[var(--color-text-primary)]',
+          ? 'bg-[var(--color-sidebar-item-active)] text-[var(--color-text-primary)]'
+          : 'text-[var(--color-text-secondary)] hover:bg-[var(--color-sidebar-item-hover)] hover:text-[var(--color-text-primary)]',
       )}
       style={{ fontSize: 'var(--text-xs)' }}
     >
@@ -62,15 +63,6 @@ export function Sidebar() {
   const [vaultModal, setVaultModal] = useState(false)
   const [pin, setPin] = useState('')
   const [unlocking, setUnlocking] = useState(false)
-
-  const handleNewNote = async () => {
-    setActivePanel('notes')
-    try {
-      await createNote()
-    } catch {
-      toast.error('Failed to create note')
-    }
-  }
 
   const handleVaultToggle = async () => {
     if (isUnlocked) {
@@ -148,7 +140,7 @@ export function Sidebar() {
               borderColor: 'var(--color-border)',
               color: 'var(--color-text-muted)',
               padding: '2px 6px',
-              borderRadius: 8,
+              borderRadius: 2,
             }}
           >
             v0.1
@@ -156,6 +148,7 @@ export function Sidebar() {
           <button
             onClick={toggleAI}
             title="Toggle AI Sidebar (Ctrl+Shift+A)"
+            aria-label="Toggle AI Sidebar"
             className="transition-colors"
             style={{ color: 'var(--color-text-muted)' }}
             onMouseEnter={e => e.currentTarget.style.color = 'var(--color-text-secondary)'}
@@ -164,57 +157,6 @@ export function Sidebar() {
             <Sparkles size={15} strokeWidth={1.5} />
           </button>
         </div>
-      </div>
-
-      {/* ── Quick actions ── */}
-      <div className="flex flex-col gap-2 p-3 border-b shrink-0" style={{ borderColor: 'var(--color-border)' }}>
-        <button
-          onClick={handleNewNote}
-          className="flex items-center gap-2 h-8 px-3 border font-mono transition-all duration-[150ms]"
-          style={{
-            borderRadius: 8,
-            borderColor: 'var(--color-border)',
-            fontSize: 'var(--text-xs)',
-            color: 'var(--color-text-secondary)',
-            background: 'transparent',
-          }}
-          onMouseEnter={e => {
-            e.currentTarget.style.borderColor = 'var(--color-accent)'
-            e.currentTarget.style.color = 'var(--color-text-primary)'
-            e.currentTarget.style.background = 'var(--color-accent-dim)'
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.borderColor = 'var(--color-border)'
-            e.currentTarget.style.color = 'var(--color-text-secondary)'
-            e.currentTarget.style.background = 'transparent'
-          }}
-        >
-          <FilePlus size={13} strokeWidth={1.5} />
-          + New Note
-        </button>
-        <button
-          onClick={() => setActivePanel('tasks')}
-          className="flex items-center gap-2 h-8 px-3 border font-mono transition-all duration-[150ms]"
-          style={{
-            borderRadius: 8,
-            borderStyle: 'dashed',
-            borderColor: 'var(--color-border)',
-            fontSize: 'var(--text-xs)',
-            color: 'var(--color-text-secondary)',
-            background: 'transparent',
-          }}
-          onMouseEnter={e => {
-            e.currentTarget.style.borderColor = 'var(--color-text-muted)'
-            e.currentTarget.style.color = 'var(--color-text-primary)'
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.borderColor = 'var(--color-border)'
-            e.currentTarget.style.color = 'var(--color-text-secondary)'
-          }}
-        >
-          <ListPlus size={13} strokeWidth={1.5} />
-          + New Task
-        </button>
       </div>
 
       {/* ── Navigation ── */}
@@ -309,7 +251,7 @@ export function Sidebar() {
           <button
             className="flex items-center gap-2 w-full h-8 px-3 font-mono transition-all duration-[150ms]"
             style={{
-              borderRadius: 8,
+              borderRadius: 2,
               border: '1px solid var(--color-accent)',
               background: 'var(--color-accent-dim)',
               fontSize: 'var(--text-xs)',
@@ -350,7 +292,7 @@ export function Sidebar() {
             style={{
               background: 'var(--color-surface-2)',
               borderColor: 'var(--color-border)',
-              borderRadius: 8,
+              borderRadius: 2,
               padding: '8px 12px',
               color: 'var(--color-text-primary)',
               fontSize: 'var(--text-sm)',

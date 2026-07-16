@@ -9,11 +9,11 @@ const icons = {
   info:    <Info size={15} strokeWidth={1.5} />,
 }
 
-const borderColors = {
-  success: 'border-l-success',
-  error:   'border-l-error',
-  warning: 'border-l-warning',
-  info:    'border-l-info',
+const typeColors = {
+  success: 'border-[var(--color-success)]',
+  error:   'border-[var(--color-error)]',
+  warning: 'border-[var(--color-warning)]',
+  info:    'border-[var(--color-info)]',
 }
 
 const textColors = {
@@ -28,9 +28,8 @@ function ToastItem({ toast }) {
   return (
     <div
       className={cn(
-        'toast-enter flex items-start gap-3 w-80 bg-surface border border-border-strong rounded-sm p-3',
-        'border-l-[3px]',
-        borderColors[toast.type],
+        'toast-enter flex items-start gap-3 w-80 bg-surface border rounded-sm p-3',
+        typeColors[toast.type],
       )}
     >
       <span className={cn('mt-0.5 shrink-0', textColors[toast.type])}>

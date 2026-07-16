@@ -5,6 +5,7 @@ import { Button } from './Button'
 
 export function Modal({ open, onClose, title, children, footer, size = 'md' }) {
   const overlayRef = useRef(null)
+  const titleId = `modal-title-${Math.random().toString(36).slice(2, 8)}`
 
   useEffect(() => {
     if (!open) return
@@ -24,6 +25,9 @@ export function Modal({ open, onClose, title, children, footer, size = 'md' }) {
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
     >
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
         className={cn(
           'bg-surface border border-border-strong rounded-sm p-6 w-full mx-4 shadow-2xl',
           'animate-[scale-in_150ms_ease]',
@@ -32,9 +36,10 @@ export function Modal({ open, onClose, title, children, footer, size = 'md' }) {
         style={{ animation: 'modal-in 150ms ease forwards' }}
       >
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-mono text-lg text-text-primary">{title}</h2>
+          <h2 id={titleId} className="font-mono text-lg text-text-primary">{title}</h2>
           <button
             onClick={onClose}
+            aria-label="Close"
             className="text-text-muted hover:text-text-secondary transition-colors"
           >
             <X size={16} strokeWidth={1.5} />

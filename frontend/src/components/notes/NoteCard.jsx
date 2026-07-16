@@ -31,7 +31,7 @@ function TagPill({ tag }) {
         padding: '0 6px',
         display: 'inline-flex',
         alignItems: 'center',
-        borderRadius: 4,
+        borderRadius: 2,
         fontSize: 'var(--text-xs)',
         color: 'var(--color-text-muted)',
         background: 'var(--color-surface-2)',
@@ -99,7 +99,7 @@ export function NoteCard({ note, active, onClick, grid }) {
           style={{
             background: active ? 'var(--color-surface-2)' : 'var(--color-surface)',
             borderColor: active ? 'var(--color-border-strong)' : 'var(--color-border)',
-            borderRadius: 10,
+            borderRadius: 2,
           }}
           onMouseEnter={e => { if (!active) e.currentTarget.style.borderColor = 'var(--color-border-strong)' }}
           onMouseLeave={e => { if (!active) e.currentTarget.style.borderColor = 'var(--color-border)' }}
@@ -167,12 +167,11 @@ export function NoteCard({ note, active, onClick, grid }) {
         onClick={onClick}
         {...ripple}
         onMouseDown={(e) => { ripple.onMouseDown(e) }}
-        className={`${ripple.className} group flex flex-col gap-1 px-4 border-b border-l-2 cursor-pointer transition-colors duration-[150ms]`}
+        className={`${ripple.className} group flex flex-col gap-1 px-4 border-b cursor-pointer transition-colors duration-[150ms]`}
         style={{
           paddingTop: 14,
           paddingBottom: 14,
           borderBottomColor: 'var(--color-border)',
-          borderLeftColor: active ? 'var(--color-accent)' : 'transparent',
           background: active ? 'var(--color-surface-active)' : 'transparent',
         }}
         onMouseEnter={e => { if (!active) e.currentTarget.style.background = 'var(--color-surface)' }}

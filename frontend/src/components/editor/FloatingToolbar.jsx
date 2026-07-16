@@ -82,7 +82,7 @@ export function FloatingToolbar({ editor }) {
       tippyOptions={{ duration: 100, placement: 'top' }}
       className="float-in"
     >
-      <div className="flex items-center h-[34px] border overflow-hidden shadow-2xl" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border-strong)', borderRadius: 8 }}>
+      <div className="flex items-center h-[34px] border overflow-hidden shadow-2xl" style={{ background: 'var(--color-surface)', borderColor: 'var(--color-border-strong)', borderRadius: 2 }}>
         {/* Formatting */}
         <FloatBtn title="Bold" onClick={() => editor.chain().focus().toggleBold().run()} active={editor.isActive('bold')}>
           <Bold size={12} strokeWidth={1.5} />

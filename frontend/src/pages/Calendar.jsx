@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ChevronLeft, ChevronRight, Calendar as CalIcon, FileText, Plus } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import {
@@ -40,7 +40,7 @@ function DayCell({ day, isCurrentMonth, isCurrentDay, isSelected, tasks, notes, 
         className="font-mono w-6 h-6 flex items-center justify-center shrink-0"
         style={{
           fontSize: 'var(--text-xs)',
-          borderRadius: 6,
+          borderRadius: 2,
           background: isCurrentDay ? 'var(--color-accent)' : 'transparent',
           color: isCurrentDay ? 'var(--color-bg)' : 'var(--color-text-secondary)',
           fontWeight: isCurrentDay ? 700 : 400,
@@ -58,9 +58,12 @@ function DayCell({ day, isCurrentMonth, isCurrentDay, isSelected, tasks, notes, 
               background: 'var(--color-surface-2)',
               borderRadius: 3,
               color: 'var(--color-text-secondary)',
-              borderLeft: `2px solid ${PRIORITY_COLOR[task.priority] || 'var(--color-border)'}`,
             }}
           >
+            <span
+              className="shrink-0 w-1 h-1 rounded-full"
+              style={{ background: PRIORITY_COLOR[task.priority] || 'var(--color-border)' }}
+            />
             {task.title}
           </span>
         ))}
@@ -94,6 +97,10 @@ export function Calendar() {
   const [selectedDate, setSelectedDate] = useState(null)
   const tasks = useTasksStore(s => s.tasks)
   const notes = useNotesStore(s => s.notes)
+  const fetchTasks = useTasksStore(s => s.fetchTasks)
+  const fetchNotes = useNotesStore(s => s.fetchNotes)
+
+  useEffect(() => { fetchTasks(); fetchNotes() }, [])
 
   const monthStart = startOfMonth(currentDate)
   const monthEnd   = endOfMonth(currentDate)
@@ -132,7 +139,7 @@ export function Calendar() {
                 padding: btn.label ? '0 8px' : 0,
                 fontSize: 'var(--text-xs)',
                 color: 'var(--color-text-muted)',
-                borderRadius: 6,
+                borderRadius: 2,
               }}
               onMouseEnter={e => e.currentTarget.style.background = 'var(--color-surface-hover)'}
               onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
@@ -178,7 +185,7 @@ export function Calendar() {
           {/* Day cells */}
           <div
             className="grid grid-cols-7 flex-1 border overflow-hidden"
-            style={{ borderColor: 'var(--color-border)', borderRadius: 8 }}
+            style={{ borderColor: 'var(--color-border)', borderRadius: 2 }}
           >
             {days.map((day, i) => (
               <DayCell

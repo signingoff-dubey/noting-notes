@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useUIStore, ACCENT_MAP } from '@/store/uiStore'
 import { cn } from '@/lib/cn'
+import { api } from '@/lib/api'
 
 const THEME_LABELS = {
   'nothing-dark':  'Nothing Dark',
@@ -31,12 +32,12 @@ function ThemeSwatch({ themeKey, active, onClick }) {
       onClick={onClick}
       className="flex flex-col gap-2 p-3 border text-left transition-all duration-[150ms]"
       style={{
-        borderRadius: 8,
+        borderRadius: 2,
         borderColor: active ? 'var(--color-accent)' : 'var(--color-border)',
         background: active ? 'var(--color-accent-dim)' : 'transparent',
       }}
     >
-      <div className="w-full h-12 overflow-hidden flex" style={{ background: p.bg, borderRadius: 4 }}>
+      <div className="w-full h-12 overflow-hidden flex" style={{ background: p.bg, borderRadius: 2 }}>
         <div className="w-8 h-full border-r" style={{ background: p.surface, borderColor: p.accent + '33' }} />
         <div className="flex-1 flex flex-col justify-center px-2 gap-1">
           <div className="h-1.5 w-16 rounded" style={{ background: p.text + 'cc' }} />
@@ -70,7 +71,7 @@ function AccentSwatch({ accentKey, active, onClick }) {
       <div
         className="w-8 h-8 border-2 transition-all"
         style={{
-          borderRadius: 8,
+          borderRadius: 2,
           background: entry.color,
           borderColor: active ? entry.color : 'transparent',
           boxShadow: active ? `0 0 0 2px var(--color-bg), 0 0 0 4px ${entry.color}` : 'none',
@@ -91,7 +92,7 @@ function AccentSwatch({ accentKey, active, onClick }) {
 
 function Section({ title, children }) {
   return (
-    <div className="border p-6" style={{ borderRadius: 10, borderColor: 'var(--color-border)' }}>
+    <div className="border p-6" style={{ borderRadius: 2, borderColor: 'var(--color-border)' }}>
       <h3 className="font-mono mb-4" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-primary)' }}>
         {title}
       </h3>
@@ -119,22 +120,24 @@ function SettingRow({ label, description, children }) {
 function Toggle({ checked, onChange }) {
   return (
     <button
+      role="switch"
+      aria-checked={checked}
       onClick={() => onChange(!checked)}
       className="relative w-9 h-5 transition-colors duration-200"
       style={{
-        borderRadius: 99,
+        borderRadius: 2,
         background: checked ? 'var(--color-accent)' : 'var(--color-surface-2)',
         border: '1px solid',
         borderColor: checked ? 'var(--color-accent)' : 'var(--color-border)',
       }}
     >
       <span
-        className="absolute top-0.5 transition-all duration-200"
+        className="absolute top-[3px] transition-all duration-200"
         style={{
-          left: checked ? 'calc(100% - 18px)' : 2,
-          width: 14,
-          height: 14,
-          borderRadius: '50%',
+          left: checked ? 'calc(100% - 17px)' : 3,
+          width: 12,
+          height: 12,
+          borderRadius: 1,
           background: checked ? 'var(--color-bg)' : 'var(--color-text-muted)',
         }}
       />
@@ -189,48 +192,54 @@ function AppearanceTab({ theme, setTheme, themes, accent, setAccent }) {
   )
 }
 
-function EditorTab() {
-  const [fontSize, setFontSize] = useState(16)
-  const [lineHeight, setLineHeight] = useState(18)
-  const [autosave, setAutosave] = useState(2)
-  const [spellcheck, setSpellcheck] = useState(true)
-  const [typewriterMode, setTypewriterMode] = useState(false)
-  const [focusMode, setFocusMode] = useState(false)
+function EditorTab({ settings, onUpdate }) {
+  const fontSize     = settings?.extra?.font_size_px      ?? 16
+  const lineHeight   = settings?.extra?.line_height_px    ?? 18
+  const autosave     = settings?.extra?.autosave_delay    ?? 2
+  const spellcheck   = settings?.spell_check              ?? true
+  const typewriterMode = settings?.extra?.typewriter_mode ?? false
+  const focusMode    = settings?.extra?.focus_mode        ?? false
+
+  const updateExtra = (key, val) =>
+    onUpdate({ extra: { ...(settings?.extra || {}), [key]: val } })
 
   return (
     <div className="flex flex-col gap-6">
       <Section title="Typography">
         <SettingRow label="Font size" description="Base editor font size">
-          <RangeSlider value={fontSize} onChange={setFontSize} min={12} max={24} step={1} label="px" />
+          <RangeSlider value={fontSize} onChange={v => updateExtra('font_size_px', v)} min={12} max={24} step={1} label="px" />
         </SettingRow>
         <SettingRow label="Line height" description="Line spacing multiplier">
-          <RangeSlider value={lineHeight} onChange={setLineHeight} min={14} max={24} step={1} label="px" />
+          <RangeSlider value={lineHeight} onChange={v => updateExtra('line_height_px', v)} min={14} max={24} step={1} label="px" />
         </SettingRow>
       </Section>
 
       <Section title="Behaviour">
         <SettingRow label="Autosave delay" description="Seconds before auto-saving">
-          <RangeSlider value={autosave} onChange={setAutosave} min={1} max={10} step={1} label="s" />
+          <RangeSlider value={autosave} onChange={v => updateExtra('autosave_delay', v)} min={1} max={10} step={1} label="s" />
         </SettingRow>
         <SettingRow label="Spellcheck" description="Underline misspelled words">
-          <Toggle checked={spellcheck} onChange={setSpellcheck} />
+          <Toggle checked={spellcheck} onChange={v => onUpdate({ spell_check: v })} />
         </SettingRow>
         <SettingRow label="Typewriter mode" description="Keep cursor centred on screen">
-          <Toggle checked={typewriterMode} onChange={setTypewriterMode} />
+          <Toggle checked={typewriterMode} onChange={v => updateExtra('typewriter_mode', v)} />
         </SettingRow>
         <SettingRow label="Focus mode" description="Fade out everything except current paragraph">
-          <Toggle checked={focusMode} onChange={setFocusMode} />
+          <Toggle checked={focusMode} onChange={v => updateExtra('focus_mode', v)} />
         </SettingRow>
       </Section>
     </div>
   )
 }
 
-function AITab() {
-  const [model, setModel] = useState('mistral:7b-instruct-q4_K_M')
-  const [streaming, setStreaming] = useState(true)
-  const [memory, setMemory] = useState(true)
-  const [temperature, setTemperature] = useState(7)
+function AITab({ settings, onUpdate }) {
+  const model       = settings?.default_model    ?? 'mistral:7b-instruct-q4_K_M'
+  const streaming   = settings?.streaming        ?? true
+  const memory      = settings?.memory_enabled   ?? true
+  const temperature = settings?.extra?.temperature ?? 7
+
+  const updateExtra = (key, val) =>
+    onUpdate({ extra: { ...(settings?.extra || {}), [key]: val } })
 
   return (
     <div className="flex flex-col gap-6">
@@ -238,14 +247,14 @@ function AITab() {
         <SettingRow label="Active model" description="Ollama model used for AI responses">
           <select
             value={model}
-            onChange={e => setModel(e.target.value)}
+            onChange={e => onUpdate({ default_model: e.target.value })}
             className="font-mono border outline-none transition-colors"
             style={{
               fontSize: 'var(--text-xs)',
               color: 'var(--color-text-primary)',
               background: 'var(--color-surface-2)',
               borderColor: 'var(--color-border)',
-              borderRadius: 6,
+              borderRadius: 2,
               padding: '4px 8px',
             }}
           >
@@ -255,16 +264,16 @@ function AITab() {
           </select>
         </SettingRow>
         <SettingRow label="Temperature" description="Higher = more creative, lower = more precise">
-          <RangeSlider value={temperature} onChange={setTemperature} min={0} max={10} step={1} label="" />
+          <RangeSlider value={temperature} onChange={v => updateExtra('temperature', v)} min={0} max={10} step={1} label="" />
         </SettingRow>
       </Section>
 
       <Section title="Behaviour">
         <SettingRow label="Streaming" description="Show AI response token by token">
-          <Toggle checked={streaming} onChange={setStreaming} />
+          <Toggle checked={streaming} onChange={v => onUpdate({ streaming: v })} />
         </SettingRow>
         <SettingRow label="Note memory" description="AI remembers context from current note">
-          <Toggle checked={memory} onChange={setMemory} />
+          <Toggle checked={memory} onChange={v => onUpdate({ memory_enabled: v })} />
         </SettingRow>
       </Section>
     </div>
@@ -296,7 +305,7 @@ function DataTab() {
           <button
             className="flex items-center justify-center h-9 px-4 border font-mono transition-all duration-[150ms]"
             style={{
-              borderRadius: 8,
+              borderRadius: 2,
               borderColor: 'var(--color-border)',
               fontSize: 'var(--text-xs)',
               color: 'var(--color-text-secondary)',
@@ -307,7 +316,7 @@ function DataTab() {
           <button
             className="flex items-center justify-center h-9 px-4 border font-mono transition-all duration-[150ms]"
             style={{
-              borderRadius: 8,
+              borderRadius: 2,
               borderColor: 'var(--color-border)',
               fontSize: 'var(--text-xs)',
               color: 'var(--color-text-secondary)',
@@ -374,7 +383,7 @@ function ShortcutsTab() {
                 color: 'var(--color-text-muted)',
                 background: 'var(--color-surface-2)',
                 borderColor: 'var(--color-border)',
-                borderRadius: 6,
+                borderRadius: 2,
                 padding: '2px 8px',
               }}
             >
@@ -392,6 +401,18 @@ function ShortcutsTab() {
 export function Settings() {
   const { theme, setTheme, themes, accent, setAccent } = useUIStore()
   const [activeTab, setActiveTab] = useState('Appearance')
+  const [serverSettings, setServerSettings] = useState(null)
+
+  useEffect(() => {
+    api.settings.get().then(s => setServerSettings(s)).catch(() => {})
+  }, [])
+
+  const handleSettingsUpdate = async (patch) => {
+    try {
+      const updated = await api.settings.update(patch)
+      setServerSettings(updated)
+    } catch {}
+  }
 
   return (
     <div className="flex flex-col h-full">
@@ -437,8 +458,8 @@ export function Settings() {
           {activeTab === 'Appearance' && (
             <AppearanceTab theme={theme} setTheme={setTheme} themes={themes} accent={accent} setAccent={setAccent} />
           )}
-          {activeTab === 'Editor'     && <EditorTab />}
-          {activeTab === 'AI'         && <AITab />}
+          {activeTab === 'Editor'     && <EditorTab settings={serverSettings} onUpdate={handleSettingsUpdate} />}
+          {activeTab === 'AI'         && <AITab settings={serverSettings} onUpdate={handleSettingsUpdate} />}
           {activeTab === 'Data'       && <DataTab />}
           {activeTab === 'Shortcuts'  && <ShortcutsTab />}
         </div>

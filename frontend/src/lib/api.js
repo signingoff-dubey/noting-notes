@@ -1,9 +1,14 @@
 const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
+let _vaultToken = null
+export function setVaultToken(token) { _vaultToken = token }
+
 async function request(method, path, body = null) {
+  const headers = { 'Content-Type': 'application/json' }
+  if (_vaultToken) headers['X-Vault-Token'] = _vaultToken
   const res = await fetch(`${BASE_URL}${path}`, {
     method,
-    headers: { 'Content-Type': 'application/json' },
+    headers,
     body: body ? JSON.stringify(body) : null,
   })
   if (!res.ok) {
@@ -19,8 +24,11 @@ async function request(method, path, body = null) {
 }
 
 async function upload(path, formData) {
+  const headers = {}
+  if (_vaultToken) headers['X-Vault-Token'] = _vaultToken
   const res = await fetch(`${BASE_URL}${path}`, {
     method: 'POST',
+    headers,
     body: formData,
   })
   if (!res.ok) {
@@ -76,9 +84,11 @@ export const api = {
 
     chatStream: (payload, onToken, onDone, onError) => {
       const ctrl = new AbortController()
+      const headers = { 'Content-Type': 'application/json' }
+      if (_vaultToken) headers['X-Vault-Token'] = _vaultToken
       fetch(`${BASE_URL}/api/ai/chat`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify(payload),
         signal: ctrl.signal,
       })
@@ -117,6 +127,11 @@ export const api = {
   vault: {
     unlock: (data) => request('POST', '/api/vault/unlock', data),
     lock:   ()     => request('POST', '/api/vault/lock'),
+  },
+
+  settings: {
+    get:    ()     => request('GET', '/api/settings'),
+    update: (data) => request('PUT', '/api/settings', data),
   },
 
   importExport: {

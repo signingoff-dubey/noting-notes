@@ -44,7 +44,7 @@ export function Button({
       }}
       className={cn(
         'inline-flex items-center justify-center gap-2 font-mono transition-all duration-[150ms] cursor-pointer select-none',
-        'rounded border',
+        'rounded-[2px] border',
         ripple.className,
         variants[variant],
         sizes[size],

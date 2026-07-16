@@ -32,7 +32,7 @@ function TabButton({ label, active, onClick, count }) {
           style={{
             fontSize: 10,
             background: 'var(--color-surface-2)',
-            borderRadius: 99,
+            borderRadius: 2,
             color: 'var(--color-text-muted)',
           }}
         >
@@ -77,7 +77,7 @@ function ArchivedNoteRow({ note, onRestore, onDelete }) {
             color: 'var(--color-success)',
             borderColor: 'var(--color-success)',
             background: 'transparent',
-            borderRadius: 6,
+            borderRadius: 2,
           }}
           onMouseDown={e => {
             const el = e.currentTarget, rect = el.getBoundingClientRect()
@@ -100,7 +100,7 @@ function ArchivedNoteRow({ note, onRestore, onDelete }) {
             color: 'var(--color-error)',
             borderColor: 'var(--color-border)',
             background: 'transparent',
-            borderRadius: 6,
+            borderRadius: 2,
           }}
           onMouseDown={e => {
             const el = e.currentTarget, rect = el.getBoundingClientRect()
@@ -155,7 +155,7 @@ function ArchivedTaskRow({ task, onRestore, onDelete }) {
             color: 'var(--color-success)',
             borderColor: 'var(--color-success)',
             background: 'transparent',
-            borderRadius: 6,
+            borderRadius: 2,
           }}
           onMouseDown={e => {
             const el = e.currentTarget, rect = el.getBoundingClientRect()
@@ -178,7 +178,7 @@ function ArchivedTaskRow({ task, onRestore, onDelete }) {
             color: 'var(--color-error)',
             borderColor: 'var(--color-border)',
             background: 'transparent',
-            borderRadius: 6,
+            borderRadius: 2,
           }}
           onMouseDown={e => {
             const el = e.currentTarget, rect = el.getBoundingClientRect()

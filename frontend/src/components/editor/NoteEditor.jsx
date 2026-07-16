@@ -12,9 +12,10 @@ import CharacterCount from '@tiptap/extension-character-count'
 import Placeholder from '@tiptap/extension-placeholder'
 import Underline from '@tiptap/extension-underline'
 import { common, createLowlight } from 'lowlight'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Lock, Unlock } from 'lucide-react'
 import { useNotesStore } from '@/store/notesStore'
 import { useAIStore } from '@/store/aiStore'
+import { useVaultStore } from '@/store/vaultStore'
 import { toast } from '@/store/uiStore'
 import { EditorToolbar } from './EditorToolbar'
 import { FloatingToolbar } from './FloatingToolbar'
@@ -51,6 +52,7 @@ export function NoteEditor({ note, onBack }) {
   const updateNote = useNotesStore(s => s.updateNote)
   const isSaving = useNotesStore(s => s.isSaving)
   const setContextNote = useAIStore(s => s.setContextNote)
+  const { isUnlocked: vaultUnlocked } = useVaultStore()
   const [title, setTitle] = useState(note?.title || '')
   const [lastSaved, setLastSaved] = useState(false)
   const autosaveTimer = useRef(null)
@@ -150,6 +152,34 @@ export function NoteEditor({ note, onBack }) {
           }}
         />
         <SaveStatus saving={isSaving} lastSaved={lastSaved} />
+
+        {/* Vault lock button */}
+        <button
+          onClick={async () => {
+            if (note.is_vault) {
+              await updateNote(note.id, { is_vault: false })
+              toast.info('Removed from vault')
+            } else if (!vaultUnlocked) {
+              toast.error('Unlock vault first to move notes into it')
+            } else {
+              await updateNote(note.id, { is_vault: true })
+              toast.success('Note moved to vault')
+            }
+          }}
+          title={note.is_vault ? 'Remove from vault' : 'Move to vault'}
+          className="w-7 h-7 flex items-center justify-center rounded-lg transition-all"
+          style={{
+            color: note.is_vault ? 'var(--color-accent)' : 'var(--color-text-muted)',
+            background: note.is_vault ? 'var(--color-accent-dim)' : 'transparent',
+          }}
+          onMouseEnter={e => { if (!note.is_vault) e.currentTarget.style.color = 'var(--color-text-secondary)' }}
+          onMouseLeave={e => { if (!note.is_vault) e.currentTarget.style.color = 'var(--color-text-muted)' }}
+        >
+          {note.is_vault
+            ? <Unlock size={14} strokeWidth={1.5} />
+            : <Lock size={14} strokeWidth={1.5} />
+          }
+        </button>
       </div>
 
       {/* ── Tags ── */}

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -13,7 +15,7 @@
   --text-2xl: 1.75rem;
   --text-3xl: 2.25rem;
 
-  --font-display: 'Dot Gothic 16', 'Space Mono', monospace;
+  --font-display: 'Geist', 'Dot Gothic 16', 'Space Mono', monospace;
   --font-mono: 'Space Mono', 'Courier New', monospace;
   --font-body: 'Geist', 'Inter', sans-serif;
   --font-editor: 'Geist', 'Georgia', serif;
@@ -27,19 +29,23 @@
 
 /* ─── Nothing Dark (default) ─── */
 [data-theme="nothing-dark"] {
-  --color-bg: #080808;
-  --color-surface: #101010;
-  --color-surface-2: #161616;
-  --color-surface-hover: #1c1c1c;
-  --color-surface-active: #222222;
-  --color-border: #1e1e1e;
-  --color-border-strong: #2e2e2e;
-  --color-text-primary: #f0f0f0;
-  --color-text-secondary: #888888;
-  --color-text-muted: #484848;
-  --color-text-disabled: #2f2f2f;
-  --color-accent: #ffffff;
-  --color-accent-dim: #ffffff18;
+  /* surfaces: near-black, tinted subtly toward amber hue for cohesion */
+  --color-bg:             oklch(5.8%  0.004 65);
+  --color-surface:        oklch(8.8%  0.005 65);
+  --color-surface-2:      oklch(11.5% 0.005 65);
+  --color-surface-hover:  oklch(14%   0.006 65);
+  --color-surface-active: oklch(16.5% 0.007 65);
+  --color-border:         oklch(16%   0.006 65);
+  --color-border-strong:  oklch(23%   0.009 65);
+  /* text: warm-tinted neutrals */
+  --color-text-primary:   oklch(93%   0.007 65);
+  --color-text-secondary: oklch(58%   0.011 65);
+  --color-text-muted:     oklch(37%   0.008 65);
+  --color-text-disabled:  oklch(23%   0.006 65);
+  /* accent: amber phosphor — the single signal color */
+  --color-accent:         oklch(72%   0.17  65);
+  --color-accent-dim:     oklch(72%   0.10  65 / 0.15);
+  /* semantic — unchanged */
   --color-success: #00d26a;
   --color-warning: #f59e0b;
   --color-error: #eb0029;
@@ -48,9 +54,10 @@
   --color-priority-high: #f97316;
   --color-priority-medium: #f59e0b;
   --color-priority-low: #00d26a;
-  --color-sidebar-bg: #060606;
-  --color-sidebar-item-hover: #111111;
-  --color-sidebar-item-active: #181818;
+  /* sidebar: fractionally darker than bg */
+  --color-sidebar-bg:          oklch(4.8%  0.003 65);
+  --color-sidebar-item-hover:  oklch(9.5%  0.005 65);
+  --color-sidebar-item-active: oklch(12.5% 0.006 65);
 }
 
 /* ─── Nothing Light ─── */
@@ -304,7 +311,7 @@ body {
 }
 
 .editor-content blockquote {
-  border-left: 2px solid var(--color-border-strong);
+  border-left: 2px solid color-mix(in oklch, var(--color-accent) 45%, transparent);
   margin: 0 0 12px;
   padding: 4px 16px;
   color: var(--color-text-secondary);
@@ -438,6 +445,236 @@ body {
 .drag-over {
   border-color: var(--color-accent) !important;
   background: var(--color-accent-dim) !important;
+}
+
+/* ─── INK Card Base ─── */
+.ink-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 16px;
+  transition: border-color 150ms ease, box-shadow 150ms ease, background 150ms ease;
+}
+.ink-card:hover {
+  border-color: var(--color-border-strong);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+.ink-card-active {
+  border-color: var(--color-border-strong);
+  background: var(--color-surface-2);
+}
+
+/* ─── Stat card glow ─── */
+.ink-stat-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: border-color 150ms ease, transform 150ms ease;
+}
+.ink-stat-card:hover {
+  border-color: var(--color-border-strong);
+  transform: translateY(-1px);
+}
+
+/* ─── Pill / Badge ─── */
+.ink-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-2);
+  color: var(--color-text-secondary);
+  transition: background 120ms, border-color 120ms, color 120ms;
+}
+.ink-pill-active {
+  background: var(--color-surface-active);
+  border-color: var(--color-border-strong);
+  color: var(--color-text-primary);
+}
+
+/* ─── Count badge ─── */
+.ink-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  background: var(--color-surface-2);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+}
+
+/* ─── Tag chip ─── */
+.ink-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 7px;
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  background: var(--color-surface-2);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+}
+
+/* ─── Search input ─── */
+.ink-search {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  color: var(--color-text-primary);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  transition: border-color 150ms;
+  outline: none;
+}
+.ink-search:focus {
+  border-color: var(--color-border-strong);
+}
+.ink-search::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* ─── Primary button ─── */
+.ink-btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 14px;
+  height: 34px;
+  border-radius: 8px;
+  background: var(--color-accent);
+  color: var(--color-bg);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: opacity 150ms;
+}
+.ink-btn-primary:hover { opacity: 0.88; }
+
+/* ─── Ghost button ─── */
+.ink-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  height: 34px;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: background 120ms, border-color 120ms, color 120ms;
+}
+.ink-btn-ghost:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-border-strong);
+  color: var(--color-text-primary);
+}
+
+/* ─── Page header ─── */
+.ink-page-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+.ink-page-title {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  letter-spacing: -0.02em;
+}
+
+/* ─── Centered content area ─── */
+.ink-content-area {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
+}
+.ink-content-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px 24px 40px;
+}
+
+/* ─── Note card hover action bar ─── */
+.ink-card-actions {
+  opacity: 0;
+  transition: opacity 150ms;
+}
+.ink-card:hover .ink-card-actions,
+.group:hover .ink-card-actions {
+  opacity: 1;
+}
+
+/* ─── Sidebar nav item ─── */
+.ink-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: background 120ms, color 120ms;
+  text-align: left;
+}
+.ink-nav-item:hover {
+  background: var(--color-sidebar-item-hover);
+  color: var(--color-text-primary);
+}
+.ink-nav-item.active {
+  background: var(--color-sidebar-item-active);
+  color: var(--color-text-primary);
+}
+
+/* ─── Task card ─── */
+.ink-task-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  transition: border-color 150ms;
+}
+.ink-task-card:hover {
+  border-color: var(--color-border-strong);
+}
+.ink-task-card.done {
+  opacity: 0.55;
+}
+
+/* ─── Smooth transitions everywhere ─── */
+* {
+  transition-property: color, background-color, border-color, opacity;
+  transition-duration: 100ms;
+  transition-timing-function: ease;
+}
+/* But don't override layout transitions */
+.transition-all, .transition-colors, .transition-opacity, .transition-transform {
+  transition-property: all, color background-color border-color, opacity, transform;
 }
 
 /* ─── Button Ripple ─── */

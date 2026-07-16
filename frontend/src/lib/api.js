@@ -115,6 +115,8 @@ export const api = {
   },
 
   vault: {
+    status: ()     => request('GET',  '/api/vault/status'),
+    setup:  (data) => request('PUT',  '/api/vault/pin', data),
     unlock: (data) => request('POST', '/api/vault/unlock', data),
     lock:   ()     => request('POST', '/api/vault/lock'),
   },

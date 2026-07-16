@@ -1,8 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   FileText, CheckSquare, Calendar, Settings, Lock, Unlock,
-  Star, Tag, Clock, FilePlus, ListPlus, Sparkles, Zap,
-  LayoutDashboard, Archive,
+  Star, Tag, Clock, Sparkles,
+  LayoutDashboard, Archive, ChevronDown, ChevronRight, User,
 } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { useUIStore } from '@/store/uiStore'
@@ -14,63 +14,197 @@ import { Modal } from '@/components/ui/Modal'
 import { Button } from '@/components/ui/Button'
 import { toast } from '@/store/uiStore'
 
-function NavItem({ icon, label, active, onClick, badge, dot }) {
+function NavItem({ icon, label, active, onClick, badge }) {
   return (
     <button
       onClick={onClick}
-      className={cn(
-        'flex items-center gap-2.5 w-full h-[38px] px-4 transition-colors duration-[150ms] font-mono select-none',
-        'border-l-2 text-[var(--text-xs)]',
-        active
-          ? 'bg-[var(--color-sidebar-item-active)] border-l-[var(--color-accent)] text-[var(--color-text-primary)]'
-          : 'border-l-transparent text-[var(--color-text-secondary)] hover:bg-[var(--color-sidebar-item-hover)] hover:text-[var(--color-text-primary)]',
-      )}
-      style={{ fontSize: 'var(--text-xs)' }}
+      className={cn('ink-nav-item', active && 'active')}
     >
-      <span className="shrink-0 opacity-70">{icon}</span>
-      <span className="flex-1 text-left tracking-wide uppercase">{label}</span>
-      {badge && <span className="font-mono text-[var(--color-text-muted)]" style={{ fontSize: 'var(--text-xs)' }}>{badge}</span>}
-      {dot && active && (
-        <span className="w-[5px] h-[5px] rounded-full shrink-0" style={{ background: 'var(--color-accent)' }} />
+      <span className="shrink-0" style={{ color: active ? 'var(--color-text-primary)' : 'var(--color-text-muted)' }}>
+        {icon}
+      </span>
+      <span className="flex-1 text-left">{label}</span>
+      {badge != null && (
+        <span className="font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+          {badge}
+        </span>
       )}
     </button>
   )
 }
 
-function SectionLabel({ label }) {
+function SectionLabel({ label, collapsible, collapsed, onToggle }) {
   return (
-    <div className="px-4 pt-3 pb-1">
+    <button
+      onClick={collapsible ? onToggle : undefined}
+      className="flex items-center gap-1 w-full px-3 py-2 group"
+      style={{ cursor: collapsible ? 'pointer' : 'default', background: 'none', border: 'none' }}
+    >
       <span
-        className="font-mono uppercase tracking-[0.12em]"
-        style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}
+        className="font-mono uppercase tracking-[0.1em] flex-1 text-left"
+        style={{ fontSize: 10, color: 'var(--color-text-muted)' }}
       >
         {label}
       </span>
-    </div>
+      {collapsible && (
+        <span style={{ color: 'var(--color-text-muted)' }}>
+          {collapsed
+            ? <ChevronRight size={11} strokeWidth={1.5} />
+            : <ChevronDown size={11} strokeWidth={1.5} />
+          }
+        </span>
+      )}
+    </button>
+  )
+}
+
+/* ── Vault modal: handles setup (first time) and unlock ── */
+function VaultModal({ open, onClose, hasPIN }) {
+  const { setup, unlock, clearError, error } = useVaultStore()
+  const [step, setStep] = useState(hasPIN ? 'unlock' : 'setup') // 'setup' | 'confirm' | 'unlock'
+  const [pin, setPin] = useState('')
+  const [confirmPin, setConfirmPin] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (open) {
+      setStep(hasPIN ? 'unlock' : 'setup')
+      setPin('')
+      setConfirmPin('')
+      clearError()
+    }
+  }, [open, hasPIN])
+
+  const handleSetup = async (e) => {
+    e.preventDefault()
+    if (pin.length < 4) { toast.error('PIN must be at least 4 characters'); return }
+    if (pin !== confirmPin) { toast.error('PINs do not match'); return }
+    setLoading(true)
+    const ok = await setup(pin)
+    setLoading(false)
+    if (ok) {
+      toast.success('Vault PIN set — now unlock it')
+      setStep('unlock')
+      setPin('')
+      setConfirmPin('')
+    }
+  }
+
+  const handleUnlock = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    const ok = await unlock(pin)
+    setLoading(false)
+    if (ok) {
+      onClose()
+      toast.success('Vault unlocked')
+    } else {
+      toast.error('Incorrect PIN')
+    }
+  }
+
+  if (!open) return null
+
+  if (step === 'setup') {
+    return (
+      <Modal
+        open
+        onClose={onClose}
+        title="Set Up Vault"
+        footer={
+          <>
+            <Button variant="secondary" onClick={onClose}>Cancel</Button>
+            <Button variant="primary" onClick={handleSetup} loading={loading}>Set PIN</Button>
+          </>
+        }
+      >
+        <div className="mt-3 flex flex-col gap-4">
+          <p className="font-mono" style={{ fontSize: 12, color: 'var(--color-text-secondary)' }}>
+            Vault protects your private notes. Set a PIN to get started.
+          </p>
+          <div className="flex flex-col gap-2">
+            <label className="font-mono text-xs" style={{ color: 'var(--color-text-muted)' }}>
+              Create PIN (min 4 characters)
+            </label>
+            <input
+              type="password"
+              autoFocus
+              value={pin}
+              onChange={e => setPin(e.target.value)}
+              placeholder="••••••"
+              className="ink-search w-full"
+              style={{ padding: '8px 12px' }}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <label className="font-mono text-xs" style={{ color: 'var(--color-text-muted)' }}>
+              Confirm PIN
+            </label>
+            <input
+              type="password"
+              value={confirmPin}
+              onChange={e => setConfirmPin(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter') handleSetup(e) }}
+              placeholder="••••••"
+              className="ink-search w-full"
+              style={{ padding: '8px 12px' }}
+            />
+          </div>
+        </div>
+      </Modal>
+    )
+  }
+
+  return (
+    <Modal
+      open
+      onClose={onClose}
+      title="Unlock Vault"
+      footer={
+        <>
+          <Button variant="secondary" onClick={onClose}>Cancel</Button>
+          <Button variant="primary" onClick={handleUnlock} loading={loading}>Unlock</Button>
+        </>
+      }
+    >
+      <form onSubmit={handleUnlock} className="mt-3 flex flex-col gap-3">
+        <label className="font-mono text-xs" style={{ color: 'var(--color-text-muted)' }}>
+          Enter your vault PIN
+        </label>
+        <input
+          type="password"
+          autoFocus
+          value={pin}
+          onChange={e => setPin(e.target.value)}
+          placeholder="••••••"
+          className="ink-search w-full"
+          style={{ padding: '8px 12px' }}
+        />
+      </form>
+    </Modal>
   )
 }
 
 export function Sidebar() {
   const activePanel = useUIStore(s => s.activePanel)
   const setActivePanel = useUIStore(s => s.setActivePanel)
-  const createNote = useNotesStore(s => s.createNote)
+  const userName = useUIStore(s => s.userName)
   const activeFolderId = useNotesStore(s => s.activeFolderId)
   const setActiveFolderId = useNotesStore(s => s.setActiveFolderId)
   const setActiveNote = useNotesStore(s => s.setActiveNote)
+  const notes = useNotesStore(s => s.notes)
   const toggleAI = useAIStore(s => s.toggle)
-  const { isUnlocked, unlock, lock } = useVaultStore()
-  const [vaultModal, setVaultModal] = useState(false)
-  const [pin, setPin] = useState('')
-  const [unlocking, setUnlocking] = useState(false)
+  const { isUnlocked, hasPIN, lock, checkStatus } = useVaultStore()
 
-  const handleNewNote = async () => {
-    setActivePanel('notes')
-    try {
-      await createNote()
-    } catch {
-      toast.error('Failed to create note')
-    }
-  }
+  const [vaultModal, setVaultModal] = useState(false)
+  const [libraryCollapsed, setLibraryCollapsed] = useState(false)
+  const [foldersCollapsed, setFoldersCollapsed] = useState(false)
+
+  const noteCount = notes.filter(n => !n.archived).length
+  const displayName = userName || 'Guest'
+  const greeting = `Welcome, ${displayName}`
+
+  useEffect(() => { checkStatus() }, [])
 
   const handleVaultToggle = async () => {
     if (isUnlocked) {
@@ -78,20 +212,6 @@ export function Sidebar() {
       toast.info('Vault locked')
     } else {
       setVaultModal(true)
-    }
-  }
-
-  const handleUnlock = async (e) => {
-    e.preventDefault()
-    setUnlocking(true)
-    const ok = await unlock(pin)
-    setUnlocking(false)
-    if (ok) {
-      setVaultModal(false)
-      setPin('')
-      toast.success('Vault unlocked')
-    } else {
-      toast.error('Incorrect PIN')
     }
   }
 
@@ -115,249 +235,169 @@ export function Sidebar() {
         className="flex items-center justify-between px-4 shrink-0 border-b"
         style={{ height: 56, borderColor: 'var(--color-border)' }}
       >
-        <div className="flex flex-col gap-0.5">
+        <div className="flex items-baseline gap-2">
           <span
-            className="tracking-[0.18em] leading-none"
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 20,
+              fontSize: 22,
               fontWeight: 700,
-              color: 'var(--color-text-primary)',
+              color: 'var(--color-accent)',
+              letterSpacing: '0.12em',
             }}
           >
             INK
           </span>
           <span
-            className="tracking-[0.12em] uppercase leading-none"
-            style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: 'var(--text-xs)',
-              color: 'var(--color-text-muted)',
-            }}
+            className="font-mono"
+            style={{ fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: '0.08em' }}
           >
             NOTES
           </span>
         </div>
 
-        <div className="flex items-center gap-2">
+        <button
+          onClick={toggleAI}
+          title="Toggle AI Sidebar (Ctrl+Shift+A)"
+          className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-[var(--color-surface-hover)]"
+          style={{ color: 'var(--color-text-muted)' }}
+        >
+          <Sparkles size={14} strokeWidth={1.5} />
+        </button>
+      </div>
+
+      {/* ── Welcome ── */}
+      <div
+        className="flex items-center gap-2.5 px-4 py-3 border-b shrink-0"
+        style={{ borderColor: 'var(--color-border)' }}
+      >
+        <div
+          className="w-7 h-7 rounded-full flex items-center justify-center shrink-0"
+          style={{ background: 'var(--color-accent-dim)', border: '1px solid var(--color-accent)44' }}
+        >
+          <User size={13} strokeWidth={1.5} style={{ color: 'var(--color-accent)' }} />
+        </div>
+        <div className="flex flex-col min-w-0">
           <span
-            className="font-mono border"
-            style={{
-              fontSize: 'var(--text-xs)',
-              background: 'var(--color-surface-2)',
-              borderColor: 'var(--color-border)',
-              color: 'var(--color-text-muted)',
-              padding: '2px 6px',
-              borderRadius: 8,
-            }}
+            className="font-medium truncate"
+            style={{ fontSize: 13, color: 'var(--color-text-primary)', lineHeight: 1.3 }}
           >
-            v0.1
+            {greeting}
           </span>
-          <button
-            onClick={toggleAI}
-            title="Toggle AI Sidebar (Ctrl+Shift+A)"
-            className="transition-colors"
-            style={{ color: 'var(--color-text-muted)' }}
-            onMouseEnter={e => e.currentTarget.style.color = 'var(--color-text-secondary)'}
-            onMouseLeave={e => e.currentTarget.style.color = 'var(--color-text-muted)'}
+          <span
+            className="font-mono truncate"
+            style={{ fontSize: 10, color: 'var(--color-text-muted)' }}
           >
-            <Sparkles size={15} strokeWidth={1.5} />
-          </button>
+            {noteCount} note{noteCount !== 1 ? 's' : ''}
+          </span>
         </div>
       </div>
 
-      {/* ── Quick actions ── */}
-      <div className="flex flex-col gap-2 p-3 border-b shrink-0" style={{ borderColor: 'var(--color-border)' }}>
-        <button
-          onClick={handleNewNote}
-          className="flex items-center gap-2 h-8 px-3 border font-mono transition-all duration-[150ms]"
-          style={{
-            borderRadius: 8,
-            borderColor: 'var(--color-border)',
-            fontSize: 'var(--text-xs)',
-            color: 'var(--color-text-secondary)',
-            background: 'transparent',
-          }}
-          onMouseEnter={e => {
-            e.currentTarget.style.borderColor = 'var(--color-accent)'
-            e.currentTarget.style.color = 'var(--color-text-primary)'
-            e.currentTarget.style.background = 'var(--color-accent-dim)'
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.borderColor = 'var(--color-border)'
-            e.currentTarget.style.color = 'var(--color-text-secondary)'
-            e.currentTarget.style.background = 'transparent'
-          }}
-        >
-          <FilePlus size={13} strokeWidth={1.5} />
-          + New Note
-        </button>
-        <button
-          onClick={() => setActivePanel('tasks')}
-          className="flex items-center gap-2 h-8 px-3 border font-mono transition-all duration-[150ms]"
-          style={{
-            borderRadius: 8,
-            borderStyle: 'dashed',
-            borderColor: 'var(--color-border)',
-            fontSize: 'var(--text-xs)',
-            color: 'var(--color-text-secondary)',
-            background: 'transparent',
-          }}
-          onMouseEnter={e => {
-            e.currentTarget.style.borderColor = 'var(--color-text-muted)'
-            e.currentTarget.style.color = 'var(--color-text-primary)'
-          }}
-          onMouseLeave={e => {
-            e.currentTarget.style.borderColor = 'var(--color-border)'
-            e.currentTarget.style.color = 'var(--color-text-secondary)'
-          }}
-        >
-          <ListPlus size={13} strokeWidth={1.5} />
-          + New Task
-        </button>
-      </div>
-
       {/* ── Navigation ── */}
-      <nav className="flex flex-col border-b py-1 shrink-0" style={{ borderColor: 'var(--color-border)' }}>
+      <nav className="flex flex-col gap-0.5 px-2 py-2 border-b shrink-0" style={{ borderColor: 'var(--color-border)' }}>
         <NavItem
-          icon={<LayoutDashboard size={14} strokeWidth={1.5} />}
+          icon={<LayoutDashboard size={15} strokeWidth={1.5} />}
           label="Dashboard"
           active={activePanel === 'dashboard'}
           onClick={() => { setActivePanel('dashboard'); setActiveNote(null) }}
-          dot
         />
         <NavItem
-          icon={<FileText size={14} strokeWidth={1.5} />}
+          icon={<FileText size={15} strokeWidth={1.5} />}
           label="Notes"
           active={activePanel === 'notes' && !activeFolderId}
           onClick={() => { setActivePanel('notes'); setActiveFolderId(null); setActiveNote(null) }}
-          dot
+          badge={noteCount || undefined}
         />
         <NavItem
-          icon={<CheckSquare size={14} strokeWidth={1.5} />}
+          icon={<CheckSquare size={15} strokeWidth={1.5} />}
           label="Tasks"
           active={activePanel === 'tasks'}
           onClick={() => setActivePanel('tasks')}
-          dot
         />
         <NavItem
-          icon={<Calendar size={14} strokeWidth={1.5} />}
+          icon={<Calendar size={15} strokeWidth={1.5} />}
           label="Calendar"
           active={activePanel === 'calendar'}
           onClick={() => setActivePanel('calendar')}
-          dot
         />
       </nav>
 
       {/* ── Library ── */}
-      <div className="flex flex-col border-b py-1 shrink-0" style={{ borderColor: 'var(--color-border)' }}>
-        <SectionLabel label="Library" />
-        <NavItem
-          icon={<Star size={14} strokeWidth={1.5} />}
-          label="Favourites"
-          active={activePanel === 'favourites'}
-          onClick={() => { setActivePanel('favourites'); setActiveNote(null) }}
-          dot
+      <div className="border-b shrink-0" style={{ borderColor: 'var(--color-border)' }}>
+        <SectionLabel
+          label="Library"
+          collapsible
+          collapsed={libraryCollapsed}
+          onToggle={() => setLibraryCollapsed(v => !v)}
         />
-        <NavItem
-          icon={<Clock size={14} strokeWidth={1.5} />}
-          label="Recent"
-          active={activePanel === 'recent'}
-          onClick={() => { setActivePanel('recent'); setActiveFolderId(null); setActiveNote(null) }}
-          dot
-        />
-        <NavItem
-          icon={<Tag size={14} strokeWidth={1.5} />}
-          label="All Tags"
-          active={activePanel === 'tags'}
-          onClick={() => { setActivePanel('tags'); setActiveNote(null) }}
-          dot
-        />
-        <NavItem
-          icon={<Archive size={14} strokeWidth={1.5} />}
-          label="Archive"
-          active={activePanel === 'archive'}
-          onClick={() => setActivePanel('archive')}
-          dot
-        />
+        {!libraryCollapsed && (
+          <div className="flex flex-col gap-0.5 px-2 pb-2">
+            <NavItem
+              icon={<Star size={14} strokeWidth={1.5} />}
+              label="Favourites"
+              active={activePanel === 'favourites'}
+              onClick={() => { setActivePanel('favourites'); setActiveNote(null) }}
+            />
+            <NavItem
+              icon={<Clock size={14} strokeWidth={1.5} />}
+              label="Recent"
+              active={activePanel === 'recent'}
+              onClick={() => { setActivePanel('recent'); setActiveFolderId(null); setActiveNote(null) }}
+            />
+            <NavItem
+              icon={<Tag size={14} strokeWidth={1.5} />}
+              label="All Tags"
+              active={activePanel === 'tags'}
+              onClick={() => { setActivePanel('tags'); setActiveNote(null) }}
+            />
+            <NavItem
+              icon={<Archive size={14} strokeWidth={1.5} />}
+              label="Archive"
+              active={activePanel === 'archive'}
+              onClick={() => setActivePanel('archive')}
+            />
+          </div>
+        )}
       </div>
 
       {/* ── Folders ── */}
-      <div className="flex flex-col flex-1 overflow-y-auto py-1 border-b min-h-0" style={{ borderColor: 'var(--color-border)' }}>
-        <SectionLabel label="Folders" />
-        <FolderTree onSelect={handleFolderSelect} activeId={activeFolderId} />
+      <div className="flex flex-col flex-1 overflow-y-auto min-h-0 border-b" style={{ borderColor: 'var(--color-border)' }}>
+        <SectionLabel
+          label="Folders"
+          collapsible
+          collapsed={foldersCollapsed}
+          onToggle={() => setFoldersCollapsed(v => !v)}
+        />
+        {!foldersCollapsed && (
+          <div className="px-2 pb-2">
+            <FolderTree onSelect={handleFolderSelect} activeId={activeFolderId} />
+          </div>
+        )}
       </div>
 
-      {/* ── Bottom ── */}
-      <div className="flex flex-col py-1 shrink-0">
+      {/* ── Bottom: Vault + Settings ── */}
+      <div className="flex flex-col gap-0.5 px-2 py-2 shrink-0">
         <NavItem
-          icon={isUnlocked ? <Unlock size={14} strokeWidth={1.5} /> : <Lock size={14} strokeWidth={1.5} />}
-          label={isUnlocked ? 'Vault (open)' : 'Vault'}
+          icon={isUnlocked
+            ? <Unlock size={14} strokeWidth={1.5} />
+            : <Lock size={14} strokeWidth={1.5} />
+          }
+          label={isUnlocked ? 'Vault (open)' : hasPIN ? 'Vault' : 'Set up Vault'}
           active={activePanel === 'vault'}
           onClick={handleVaultToggle}
-          dot
         />
         <NavItem
           icon={<Settings size={14} strokeWidth={1.5} />}
           label="Settings"
           active={activePanel === 'settings'}
           onClick={() => setActivePanel('settings')}
-          dot
         />
-        {/* Upgrade to Pro */}
-        <div className="px-3 pt-2 pb-3">
-          <button
-            className="flex items-center gap-2 w-full h-8 px-3 font-mono transition-all duration-[150ms]"
-            style={{
-              borderRadius: 8,
-              border: '1px solid var(--color-accent)',
-              background: 'var(--color-accent-dim)',
-              fontSize: 'var(--text-xs)',
-              color: 'var(--color-accent)',
-            }}
-            onMouseEnter={e => e.currentTarget.style.opacity = '0.8'}
-            onMouseLeave={e => e.currentTarget.style.opacity = '1'}
-          >
-            <Zap size={12} strokeWidth={1.5} />
-            Upgrade to Pro
-          </button>
-        </div>
       </div>
 
-      {/* ── Vault unlock modal ── */}
-      <Modal
+      <VaultModal
         open={vaultModal}
-        onClose={() => { setVaultModal(false); setPin('') }}
-        title="Unlock Vault"
-        footer={
-          <>
-            <Button variant="secondary" onClick={() => { setVaultModal(false); setPin('') }}>Cancel</Button>
-            <Button variant="primary" onClick={handleUnlock} loading={unlocking}>Unlock</Button>
-          </>
-        }
-      >
-        <form onSubmit={handleUnlock} className="mt-3">
-          <label className="block font-mono text-xs mb-2" style={{ color: 'var(--color-text-muted)' }}>
-            Enter your vault PIN
-          </label>
-          <input
-            type="password"
-            autoFocus
-            value={pin}
-            onChange={e => setPin(e.target.value)}
-            placeholder="••••••"
-            className="w-full border font-mono text-sm outline-none transition-colors"
-            style={{
-              background: 'var(--color-surface-2)',
-              borderColor: 'var(--color-border)',
-              borderRadius: 8,
-              padding: '8px 12px',
-              color: 'var(--color-text-primary)',
-              fontSize: 'var(--text-sm)',
-            }}
-          />
-        </form>
-      </Modal>
+        onClose={() => setVaultModal(false)}
+        hasPIN={hasPIN}
+      />
     </aside>
   )
 }

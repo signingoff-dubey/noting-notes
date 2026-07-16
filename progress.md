@@ -1,7 +1,43 @@
 # Progress Log — INK
 
-## Current Version: v0.4.0
-## Status: In Progress — M1 complete, M2 frontend complete (stub backend), M4 partial
+## Current Version: v0.5.0
+## Status: In Progress — M1 complete, M2 complete (real Ollama + embeddings), M3 partial (attachments real, no viewer yet), Import/Export added
+
+---
+
+## [v0.5.0] — 2026-04-20
+### What's New
+- **`embed_service.py`** — real Ollama embeddings via `nomic-embed-text`; `embed_note()` stores vector; `semantic_search()` cosine similarity across all notes
+- **`file_service.py`** — text extraction for PDF (PyMuPDF), DOCX (python-docx), XLSX (openpyxl), PPTX (python-pptx); async via `asyncio.to_thread`
+- **`attachments.py` rewritten** — real file upload/download/delete; manifest.json per note; `extract` endpoint calls file_service
+- **`importexport.py` added** — `POST /api/import` (md/html → TipTap JSON → note), `GET /api/export/{id}?format=markdown|html`, `GET /api/export?format=json` (full dump); TipTap ↔ markdown/html converters built in
+- **Frontend UI redesign** — card-based layout everywhere; Geist font; centered max-width content; ink-card component system; Notes grid, Tasks cards, Dashboard stat cards all redesigned
+- **Sidebar redesigned** — cleaner pill nav, less clutter
+- **NoteCard redesigned** — no side-stripe, hover actions, 12px rounded cards with elevation
+
+### Files Changed
+- `backend/services/embed_service.py` — created
+- `backend/services/file_service.py` — created
+- `backend/routes/attachments.py` — rewritten (real impl)
+- `backend/routes/importexport.py` — created
+- `backend/main.py` — importexport router registered
+- `frontend/src/index.css` — Geist font, ink-card system, new design tokens
+- `frontend/src/components/notes/NoteCard.jsx` — redesigned
+- `frontend/src/components/sidebar/Sidebar.jsx` — redesigned
+- `frontend/src/pages/Notes.jsx` — redesigned (card grid)
+- `frontend/src/pages/Tasks.jsx` — redesigned (task cards)
+- `frontend/src/pages/Dashboard.jsx` — redesigned (stat cards + greeting)
+
+### Known Issues
+- File viewer components (PDF, DOCX preview in-app) not yet built
+- Vault encryption (AES-256) not yet wired to note content
+- Calendar week/day views not yet built
+
+### Future Scope
+- M3: In-app file viewer (PDF iframe, DOCX rendered HTML, image gallery)
+- M4: Calendar week/day views; Google Calendar sync
+- Vault: AES-256 encrypt note content on save
+- Electron wrapper (Layer 2)
 
 ---
 
@@ -128,3 +164,4 @@
 | v0.2.0 | 2026-04-19 | UI design overhaul — INK rebrand, Dot Gothic 16, Nothing Dark deep blacks, all 6 themes, accent color system, Sidebar + Settings rewrite |
 | v0.3.0 | 2026-04-19 | New views + interactions — Dashboard, Favourites, Tags, Archive pages; button ripples; NoteCard archive/star; Calendar detail panel; notesStore additions |
 | v0.4.0 | 2026-04-20 | App startup + search fixes — run.bat, TipTap JSON content search, AI streaming stub fixed, App/Sidebar routing for all panels |
+| v0.5.0 | 2026-04-20 | Backend completion + UI redesign — embed_service, file_service, real attachments, import/export, card-based UI redesign with Geist font |

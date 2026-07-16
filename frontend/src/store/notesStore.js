@@ -145,6 +145,17 @@ export const useNotesStore = create((set, get) => ({
     localStorage.setItem('noted_view_mode', mode)
     set({ viewMode: mode })
   },
+  reorderNotes: (fromIndex, toIndex) => {
+    set(state => {
+      const active = state.notes.filter(n => !n.archived)
+      const archived = state.notes.filter(n => n.archived)
+      const reordered = [...active]
+      const [moved] = reordered.splice(fromIndex, 1)
+      reordered.splice(toIndex, 0, moved)
+      return { notes: [...reordered, ...archived] }
+    })
+  },
+
   clearError: () => set({ error: null }),
 
   getFilteredNotes: () => {

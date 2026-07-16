@@ -11,7 +11,7 @@ from dotenv import load_dotenv
 # Load env before routes
 load_dotenv(os.path.join(os.path.dirname(__file__), ".env"))
 
-from backend.routes import notes, tasks, folders, ai, vault, attachments, settings
+from backend.routes import notes, tasks, folders, ai, vault, attachments, settings, importexport
 
 
 @asynccontextmanager
@@ -48,6 +48,7 @@ app.include_router(ai.router)
 app.include_router(vault.router)
 app.include_router(attachments.router)
 app.include_router(settings.router)
+app.include_router(importexport.router)
 
 
 @app.get("/api/health")

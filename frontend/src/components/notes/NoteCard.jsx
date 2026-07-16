@@ -1,11 +1,11 @@
-import { Pin, Star, MoreHorizontal, Trash2, Archive, ArchiveRestore } from 'lucide-react'
+import { useState } from 'react'
+import { Star, Trash2, Archive, ArchiveRestore, Pin, MoreHorizontal, GripVertical } from 'lucide-react'
 import { Dropdown } from '@/components/ui/Dropdown'
 import { useNotesStore } from '@/store/notesStore'
 import { ConfirmModal } from '@/components/ui/Modal'
 import { toast } from '@/store/uiStore'
-import { useState } from 'react'
 import { formatDistanceToNow } from 'date-fns'
-import { useRipple } from '@/lib/useRipple'
+import { cn } from '@/lib/cn'
 
 function extractPreview(content) {
   if (!content) return ''
@@ -22,25 +22,8 @@ function extractPreview(content) {
   return ''
 }
 
-function TagPill({ tag }) {
-  return (
-    <span
-      className="font-mono border"
-      style={{
-        height: 18,
-        padding: '0 6px',
-        display: 'inline-flex',
-        alignItems: 'center',
-        borderRadius: 4,
-        fontSize: 'var(--text-xs)',
-        color: 'var(--color-text-muted)',
-        background: 'var(--color-surface-2)',
-        borderColor: 'var(--color-border)',
-      }}
-    >
-      {tag}
-    </span>
-  )
+function TagChip({ tag }) {
+  return <span className="ink-tag">{tag}</span>
 }
 
 export function NoteCard({ note, active, onClick, grid }) {
@@ -48,7 +31,6 @@ export function NoteCard({ note, active, onClick, grid }) {
   const updateNote  = useNotesStore(s => s.updateNote)
   const deleteNote  = useNotesStore(s => s.deleteNote)
   const archiveNote = useNotesStore(s => s.archiveNote)
-  const ripple = useRipple()
 
   const preview = extractPreview(note.content)
   const timeAgo = note.updated_at
@@ -61,14 +43,15 @@ export function NoteCard({ note, active, onClick, grid }) {
     setConfirmDelete(false)
   }
 
-  const handlePin = async (e) => {
-    e.stopPropagation()
-    await updateNote(note.id, { pinned: !note.pinned })
-  }
-
   const handleStar = async (e) => {
     e?.stopPropagation()
     try { await updateNote(note.id, { starred: !note.starred }) }
+    catch { toast.error('Failed to update note') }
+  }
+
+  const handlePin = async (e) => {
+    e?.stopPropagation()
+    try { await updateNote(note.id, { pinned: !note.pinned }) }
     catch { toast.error('Failed to update note') }
   }
 
@@ -81,66 +64,114 @@ export function NoteCard({ note, active, onClick, grid }) {
   }
 
   const menuItems = [
-    { label: note.pinned ? 'Unpin' : 'Pin',       icon: <Pin     size={12} strokeWidth={1.5} />, onClick: handlePin },
-    { label: note.starred ? 'Unstar' : 'Star',    icon: <Star    size={12} strokeWidth={1.5} />, onClick: (e) => handleStar(e) },
-    { label: note.archived ? 'Restore' : 'Archive', icon: note.archived ? <ArchiveRestore size={12} strokeWidth={1.5} /> : <Archive size={12} strokeWidth={1.5} />, onClick: (e) => handleArchive(e) },
+    { label: note.pinned ? 'Unpin' : 'Pin', icon: <Pin size={12} strokeWidth={1.5} />, onClick: handlePin },
+    { label: note.starred ? 'Unstar' : 'Star', icon: <Star size={12} strokeWidth={1.5} />, onClick: handleStar },
+    { label: note.archived ? 'Restore' : 'Archive', icon: note.archived ? <ArchiveRestore size={12} strokeWidth={1.5} /> : <Archive size={12} strokeWidth={1.5} />, onClick: handleArchive },
     { separator: true },
     { label: 'Delete', icon: <Trash2 size={12} strokeWidth={1.5} />, destructive: true, onClick: (e) => { e?.stopPropagation(); setConfirmDelete(true) } },
   ]
 
+  // ── Grid / Card view ──
   if (grid) {
     return (
       <>
         <div
           onClick={onClick}
-          {...ripple}
-          onMouseDown={(e) => { ripple.onMouseDown(e) }}
-          className={`${ripple.className} group flex flex-col gap-2 p-4 border cursor-pointer transition-all duration-[150ms]`}
-          style={{
-            background: active ? 'var(--color-surface-2)' : 'var(--color-surface)',
-            borderColor: active ? 'var(--color-border-strong)' : 'var(--color-border)',
-            borderRadius: 10,
-          }}
-          onMouseEnter={e => { if (!active) e.currentTarget.style.borderColor = 'var(--color-border-strong)' }}
-          onMouseLeave={e => { if (!active) e.currentTarget.style.borderColor = 'var(--color-border)' }}
+          className={cn(
+            'ink-card group flex flex-col gap-3 cursor-pointer relative',
+            active && 'ink-card-active',
+          )}
         >
+          {/* Top: title + actions */}
           <div className="flex items-start justify-between gap-2">
-            <h3
-              className="font-body font-medium truncate"
-              style={{ fontSize: 'var(--text-base)', color: 'var(--color-text-primary)' }}
-            >
-              {note.title || 'Untitled'}
-            </h3>
+            <div className="flex items-center gap-1.5 min-w-0 flex-1">
+              {note.pinned && (
+                <Pin size={10} strokeWidth={1.5} className="shrink-0" style={{ color: 'var(--color-accent)' }} />
+              )}
+              <h3
+                className="font-semibold leading-snug"
+                style={{
+                  fontFamily: 'var(--font-body)',
+                  fontSize: 'var(--text-base)',
+                  color: 'var(--color-text-primary)',
+                  display: '-webkit-box',
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden',
+                }}
+              >
+                {note.title || 'Untitled'}
+              </h3>
+            </div>
             <div
-              className="flex items-center gap-1 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+              className="ink-card-actions flex items-center gap-1 shrink-0"
               onClick={e => e.stopPropagation()}
             >
-              {note.starred && <Star size={10} strokeWidth={1.5} fill="currentColor" style={{ color: 'var(--color-warning)' }} />}
-              {note.pinned && <Pin size={10} strokeWidth={1.5} style={{ color: 'var(--color-accent)' }} />}
-              <Dropdown align="right" trigger={
-                <button style={{ color: 'var(--color-text-muted)' }}>
-                  <MoreHorizontal size={13} strokeWidth={1.5} />
-                </button>
-              } items={menuItems} />
+              <div
+                className="w-6 h-6 flex items-center justify-center rounded-md cursor-grab opacity-0 group-hover:opacity-100 transition-opacity"
+                style={{ color: 'var(--color-text-muted)' }}
+              >
+                <GripVertical size={12} strokeWidth={1.5} />
+              </div>
+              {note.starred && (
+                <Star
+                  size={12}
+                  strokeWidth={1.5}
+                  fill="currentColor"
+                  style={{ color: 'var(--color-warning)' }}
+                />
+              )}
+              <button
+                onClick={handleStar}
+                className={cn(
+                  'w-6 h-6 flex items-center justify-center rounded-md transition-colors',
+                  note.starred ? 'opacity-100' : 'opacity-0 group-hover:opacity-100',
+                )}
+                style={{ color: note.starred ? 'var(--color-warning)' : 'var(--color-text-muted)' }}
+                title="Star"
+              >
+                <Star size={12} strokeWidth={1.5} fill={note.starred ? 'currentColor' : 'none'} />
+              </button>
+              <Dropdown
+                align="right"
+                trigger={
+                  <button
+                    className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
+                    style={{ color: 'var(--color-text-muted)' }}
+                  >
+                    <MoreHorizontal size={13} strokeWidth={1.5} />
+                  </button>
+                }
+                items={menuItems}
+              />
             </div>
           </div>
 
+          {/* Preview */}
           {preview && (
             <p
-              className="font-body line-clamp-3"
-              style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', lineHeight: 1.6 }}
+              className="line-clamp-3"
+              style={{
+                fontFamily: 'var(--font-body)',
+                fontSize: 'var(--text-sm)',
+                color: 'var(--color-text-secondary)',
+                lineHeight: 1.6,
+              }}
             >
               {preview}
             </p>
           )}
 
-          <div className="flex items-center justify-between mt-auto pt-1 gap-2">
-            <div className="flex flex-wrap gap-1">
-              {(note.tags || []).slice(0, 3).map(tag => <TagPill key={tag} tag={tag} />)}
+          {/* Footer: tags + time */}
+          <div className="flex items-center justify-between gap-2 mt-auto pt-1">
+            <div className="flex flex-wrap gap-1 min-w-0">
+              {(note.tags || []).slice(0, 3).map(tag => (
+                <TagChip key={tag} tag={tag} />
+              ))}
             </div>
             <span
-              className="font-mono shrink-0"
-              style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}
+              className="shrink-0 font-mono"
+              style={{ fontSize: 10, color: 'var(--color-text-muted)', whiteSpace: 'nowrap' }}
             >
               {timeAgo}
             </span>
@@ -165,71 +196,91 @@ export function NoteCard({ note, active, onClick, grid }) {
     <>
       <div
         onClick={onClick}
-        {...ripple}
-        onMouseDown={(e) => { ripple.onMouseDown(e) }}
-        className={`${ripple.className} group flex flex-col gap-1 px-4 border-b border-l-2 cursor-pointer transition-colors duration-[150ms]`}
-        style={{
-          paddingTop: 14,
-          paddingBottom: 14,
-          borderBottomColor: 'var(--color-border)',
-          borderLeftColor: active ? 'var(--color-accent)' : 'transparent',
-          background: active ? 'var(--color-surface-active)' : 'transparent',
-        }}
-        onMouseEnter={e => { if (!active) e.currentTarget.style.background = 'var(--color-surface)' }}
-        onMouseLeave={e => { if (!active) e.currentTarget.style.background = active ? 'var(--color-surface-active)' : 'transparent' }}
+        className={cn(
+          'ink-card group flex items-start gap-2 cursor-pointer',
+          active && 'ink-card-active',
+        )}
+        style={{ borderRadius: 10, padding: '12px 14px' }}
       >
-        {/* Title row */}
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex items-center gap-1.5 flex-1 min-w-0">
-            {note.pinned && (
-              <Pin size={10} strokeWidth={1.5} className="shrink-0" style={{ color: 'var(--color-accent)' }} />
-            )}
-            {note.starred && (
-              <Star size={10} strokeWidth={1.5} fill="currentColor" className="shrink-0" style={{ color: 'var(--color-warning)' }} />
-            )}
-            <h3
-              className="font-body font-medium truncate"
-              style={{ fontSize: 'var(--text-base)', color: 'var(--color-text-primary)' }}
-            >
-              {note.title || 'Untitled'}
-            </h3>
-          </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <span
-              className="font-mono"
-              style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}
-            >
-              {timeAgo}
-            </span>
-            <div
-              className="opacity-0 group-hover:opacity-100 transition-opacity"
-              onClick={e => e.stopPropagation()}
-            >
-              <Dropdown align="right" trigger={
-                <button style={{ color: 'var(--color-text-muted)' }}>
-                  <MoreHorizontal size={13} strokeWidth={1.5} />
-                </button>
-              } items={menuItems} />
-            </div>
-          </div>
+        {/* Drag handle */}
+        <div
+          className="shrink-0 cursor-grab opacity-0 group-hover:opacity-100 transition-opacity mt-0.5"
+          style={{ color: 'var(--color-text-muted)' }}
+          onClick={e => e.stopPropagation()}
+        >
+          <GripVertical size={13} strokeWidth={1.5} />
         </div>
 
-        {/* Preview */}
-        {preview && (
-          <p
-            className="font-body line-clamp-2"
-            style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', lineHeight: 1.5 }}
-          >
-            {preview}
-          </p>
-        )}
-
-        {/* Tags */}
-        {(note.tags || []).length > 0 && (
-          <div className="flex flex-wrap gap-1 mt-1">
-            {(note.tags || []).slice(0, 4).map(tag => <TagPill key={tag} tag={tag} />)}
+        {/* Content */}
+        <div className="flex-1 min-w-0 flex flex-col gap-1.5">
+          {/* Title row */}
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-1.5 flex-1 min-w-0">
+              {note.pinned && (
+                <Pin size={10} strokeWidth={1.5} className="shrink-0" style={{ color: 'var(--color-accent)' }} />
+              )}
+              {note.starred && (
+                <Star size={10} strokeWidth={1.5} fill="currentColor" className="shrink-0" style={{ color: 'var(--color-warning)' }} />
+              )}
+              <h3
+                className="font-semibold truncate"
+                style={{
+                  fontFamily: 'var(--font-body)',
+                  fontSize: 'var(--text-base)',
+                  color: 'var(--color-text-primary)',
+                }}
+              >
+                {note.title || 'Untitled'}
+              </h3>
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <span className="font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+                {timeAgo}
+              </span>
+              <div
+                className="ink-card-actions"
+                onClick={e => e.stopPropagation()}
+              >
+                <Dropdown
+                  align="right"
+                  trigger={
+                    <button
+                      className="w-6 h-6 flex items-center justify-center rounded-md"
+                      style={{ color: 'var(--color-text-muted)' }}
+                    >
+                      <MoreHorizontal size={13} strokeWidth={1.5} />
+                    </button>
+                  }
+                  items={menuItems}
+                />
+              </div>
+            </div>
           </div>
-        )}
+
+          {/* Preview */}
+          {preview && (
+            <p
+              className="line-clamp-2"
+              style={{
+                fontFamily: 'var(--font-body)',
+                fontSize: 'var(--text-sm)',
+                color: 'var(--color-text-secondary)',
+                lineHeight: 1.5,
+              }}
+            >
+              {preview}
+            </p>
+          )}
+
+          {/* Tags */}
+          {(note.tags || []).length > 0 && (
+            <div className="flex flex-wrap gap-1 mt-0.5">
+              {(note.tags || []).slice(0, 4).map(tag => (
+                <TagChip key={tag} tag={tag} />
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
       <ConfirmModal

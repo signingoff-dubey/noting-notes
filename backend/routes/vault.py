@@ -29,4 +29,7 @@ async def lock_vault():
 
 @router.get("/status")
 async def vault_status():
-    return {"unlocked": vault_service.is_unlocked()}
+    from backend.storage import store
+    settings = await store.read_settings()
+    has_pin = bool(settings.get("vault_pin_hash"))
+    return {"unlocked": vault_service.is_unlocked(), "has_pin": has_pin}

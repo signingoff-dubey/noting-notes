@@ -47,7 +47,8 @@ async def create_note(data: NoteCreate) -> dict:
         "created_at": now,
         "updated_at": now,
     }
-    return await store.write_note(note)
+    result = await store.write_note(note)
+    return result
 
 
 async def update_note(note_id: str, data: NoteUpdate | dict) -> dict:

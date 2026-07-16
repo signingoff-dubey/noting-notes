@@ -12,7 +12,7 @@
 
 ## What is INK?
 
-INK is a minimal, AI-powered notes app inspired by Nothing OS. It combines a rich markdown editor, task management, and a streaming AI assistant — all running in the browser with zero backend setup.
+INK is a minimal, AI-powered notes app inspired by Nothing OS. It combines a rich markdown editor, task management, and a streaming AI assistant — with optional FastAPI backend for extended features.
 
 **Notes** — TipTap editor with H1–H6, tables, code blocks, task lists, math, highlights, links  
 **Tasks** — priorities, labels, folders, due dates, drag-to-reorder  
@@ -20,6 +20,8 @@ INK is a minimal, AI-powered notes app inspired by Nothing OS. It combines a ric
 **Themes** — 8 built-in themes: Nothing Dark, Nothing Light, Midnight, Terminal, Sakura, Forest, Warm Paper, WIN95  
 **Tags & Archive** — tag notes, filter by tag, archive old notes  
 **Calendar** — month view with tasks by due date  
+**Vault** — PIN-protected encrypted notes  
+**File Viewer** — inline PDF, DOCX, XLSX, PPTX preview  
 
 ---
 
@@ -31,7 +33,8 @@ INK is a minimal, AI-powered notes app inspired by Nothing OS. It combines a ric
 | Styling | Tailwind CSS + CSS Variables (theme system) |
 | Editor | TipTap 2 |
 | State | Zustand |
-| AI | Groq API — OpenAI-compatible SSE streaming |
+| AI | Groq API (via FastAPI proxy — API key never leaves backend) |
+| Backend | FastAPI + Python 3.11 (optional — local JSON storage, Ollama, embeddings) |
 | Storage | Browser `localStorage` (Firebase / Supabase coming) |
 | Fonts | Geist, Dot Gothic 16, Space Mono |
 | Deploy | Netlify |
@@ -40,7 +43,7 @@ INK is a minimal, AI-powered notes app inspired by Nothing OS. It combines a ric
 
 ## Getting Started
 
-### Run locally
+### Run locally (frontend only)
 
 ```bash
 cd frontend
@@ -48,7 +51,21 @@ npm install
 npm run dev
 ```
 
-Opens at `http://localhost:3000`. No Python, no Ollama, no backend needed.
+Opens at `http://localhost:3000`. No backend required for basic usage.
+
+### Run locally (full stack)
+
+```bash
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env.local
+# Edit backend/.env — set GROQ_API_KEY or OLLAMA_URL
+npm install --prefix frontend
+pip install -r backend/requirements.txt
+python -m uvicorn backend.main:app --port 8000 &
+npm run dev --prefix frontend
+```
+
+Requires Python 3.11+ and optionally Ollama for local AI inference.
 
 ### Deploy to Netlify
 
@@ -67,11 +84,13 @@ Powered by [Groq](https://groq.com) for fast inference. Switch models from the A
 |-------|-------|----------|
 | Llama 3.3 70B | Fast | Default — best quality |
 | Llama 3.1 8B | Fastest | Quick questions |
-| Mixtral 8x7B | Fast | Long context |
-| Gemma 2 9B | Fast | General use |
-| DeepSeek R1 70B | Moderate | Reasoning tasks |
+| Llama 4 Scout 17B | Fast | Newest Llama |
+| Qwen 3 32B | Fast | General purpose |
+| Qwen 3.6 27B | Fast | Latest Qwen |
+| Groq Compound | Fast | Groq's flagship |
+| Groq Compound Mini | Fastest | Lightweight |
 
-You can also plug in any OpenAI-compatible API (OpenAI, Together AI, etc.) via the **Custom API** option in the dropdown.
+AI calls proxy through the FastAPI backend — your API key stays server-side, never exposed to the browser.
 
 ---
 
@@ -89,6 +108,19 @@ You can also plug in any OpenAI-compatible API (OpenAI, Together AI, etc.) via t
 | WIN95 | Windows 95 nostalgia |
 
 ---
+
+## Environment Variables
+
+Create `backend/.env` and `frontend/.env.local` from the `.example` files.
+
+| Variable | Where | Required | Default |
+|----------|-------|----------|---------|
+| `VITE_API_URL` | `frontend/.env.local` | Yes | `http://localhost:8000` |
+| `GROQ_API_KEY` | `backend/.env` | For AI | — |
+| `OLLAMA_URL` | `backend/.env` | For local AI | `http://localhost:11434` |
+| `CORS_ORIGINS` | `backend/.env` | For backend | `http://localhost:3000` |
+
+> **Security**: Frontend never holds the API key. All AI requests go through the FastAPI backend proxy.
 
 ## Project Structure
 
@@ -137,6 +169,17 @@ Data currently lives in `localStorage` — no server, no account, instant setup.
 ---
 
 ## Changelog
+
+### v2.0.0 — 2026-07-16
+- **Security**: All AI calls now proxy through FastAPI backend — API key never exposed to the browser
+- **Groq API key**: Updated to new key, auto-fallback from `GROQ_API_KEY` env var
+- **Model list**: Removed 4 discontinued models, added 5 new active models (Llama 4 Scout, Qwen 3, Groq Compound)
+- **Fixed backend**: Uncommented all deps, added asyncio locks around file I/O, asyncified blocking iterators
+- **Fixed AI model routing**: Backend now respects the model selected in the frontend sidebar
+- **Bug fixes**: 30+ fixes across useEffect deps, error handling, loading states, unused imports, selector performance
+- **Fixed editor**: Spellcheck toggle now works without destroying/recreating the editor
+- **Fixed pages**: Sort dropdown listener leaks, missing toast errors, Calendar/Journal/Dashboard stability
+- **Removed dead code**: Non-functional drag reorder, unused imports, stale CLAUDE.md artifacts
 
 ### v0.7.0 — 2026-04-29
 - Accessibility pass: focus rings restored on all interactive elements, ARIA labels added to nav/sidebar

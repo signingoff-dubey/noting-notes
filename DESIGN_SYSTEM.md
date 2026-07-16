@@ -1,7 +1,7 @@
 # DESIGN_SYSTEM.md — NOTED
 
-Visual language, component specs, and UI rules for Claude Design.
-This file tells Claude Design exactly how every element should look.
+Visual language, component specs, and UI rules for INK.
+Every element in the app follows these specifications.
 
 ---
 

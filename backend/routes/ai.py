@@ -86,7 +86,7 @@ async def chat_stream_endpoint(req: ChatRequest):
                 stream_fn = chat_stream_openai(
                     config["base_url"],
                     config["api_key"],
-                    config.get("model", "gpt-4o-mini"),
+                    req.model or config.get("model", "gpt-4o-mini"),
                     req.message,
                     req.note_content,
                     history,

@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef, useMemo } from 'react'
-import { Search, FileText, CheckSquare, Calendar, Settings, Star, Tag, Archive, LayoutDashboard, Sparkles, BookOpen, FolderOpen, Moon, Sun, Palette } from 'lucide-react'
+import { Search, FileText, CheckSquare, Calendar, Settings, Star, Tag, Archive, LayoutDashboard, Sparkles, BookOpen, Palette } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { useNotesStore } from '@/store/notesStore'
-import { useUIStore } from '@/store/uiStore'
+import { useUIStore, toast } from '@/store/uiStore'
 import { useAIStore } from '@/store/aiStore'
 
 function extractText(content, limit = 80) {
@@ -150,7 +150,7 @@ export function CommandPalette() {
       toggleAI()
     } else if (item.action === 'new-note') {
       setActivePanel('notes')
-      createNote().then(note => { if (note) setActiveNote(note.id) }).catch(() => {})
+      createNote().then(note => { if (note) setActiveNote(note.id) }).catch(() => toast.error('Failed to create note'))
     } else if (item.action === 'settings-appearance') {
       setActiveNote(null)
       setActivePanel('settings')

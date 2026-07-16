@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Tag, X, ArrowLeft } from 'lucide-react'
+import { Tag, ArrowLeft } from 'lucide-react'
 import { useNotesStore } from '@/store/notesStore'
 import { NoteCard } from '@/components/notes/NoteCard'
 import { NoteEditor } from '@/components/editor/NoteEditor'
@@ -12,7 +12,7 @@ export function TagsView() {
   const activeNote    = useNotesStore(s => s.activeNote)
   const [selectedTag, setSelectedTag] = useState(null)
 
-  useEffect(() => { fetchNotes() }, [])
+  useEffect(() => { fetchNotes() }, [fetchNotes])
 
   // Build tag → count map (exclude journal entries)
   const tagMap = {}

@@ -11,7 +11,7 @@ export function FavouritesView() {
   const setActiveNote    = useNotesStore(s => s.setActiveNote)
   const activeNote       = useNotesStore(s => s.activeNote)
 
-  useEffect(() => { fetchNotes() }, [])
+  useEffect(() => { fetchNotes() }, [fetchNotes])
 
   const notes = getFavouriteNotes()
 

@@ -4,7 +4,6 @@ import { formatDistanceToNow } from 'date-fns'
 import { useNotesStore } from '@/store/notesStore'
 import { useTasksStore } from '@/store/tasksStore'
 import { toast } from '@/store/uiStore'
-import { cn } from '@/lib/cn'
 import { NoteCard } from '@/components/notes/NoteCard'
 import { NoteEditor } from '@/components/editor/NoteEditor'
 
@@ -144,7 +143,7 @@ export function ArchivedView() {
   const updateTask      = useTasksStore(s => s.updateTask)
   const deleteTask      = useTasksStore(s => s.deleteTask)
 
-  useEffect(() => { fetchNotes(); fetchTasks() }, [])
+  useEffect(() => { fetchNotes(); fetchTasks() }, [fetchNotes, fetchTasks])
 
   const archivedNotes = getArchivedNotes()
   const archivedTasks = getArchivedTasks()

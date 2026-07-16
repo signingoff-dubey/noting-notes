@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useUIStore, ACCENT_MAP } from '@/store/uiStore'
 import { useVaultStore } from '@/store/vaultStore'
-import { cn } from '@/lib/cn'
 
 function useEditorSettings() {
   return useUIStore(s => ({

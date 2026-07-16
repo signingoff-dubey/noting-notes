@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useMemo } from 'react'
 import {
   X, ChevronLeft, ChevronRight, Send, Sparkles, Trash2,
   FileText, ChevronDown, AlertTriangle, Download, Check,
@@ -14,6 +14,8 @@ import { formatDistanceToNow } from 'date-fns'
 
 // No Ollama catalog — models come from Groq (all pre-available)
 const POPULAR_CATALOG = []
+
+const WRITE_INTENT_RE = /\b(add|write|insert|append|put|delete|clear|remove|replace|rewrite|improve|make.{0,20}better|fix)\b/i
 
 /* ── No LLM banner ── */
 function NoLLMBanner({ onInstall, onAddKey }) {
@@ -588,8 +590,6 @@ export function AISidebar() {
     requestNoteWrite(content)
   }
 
-  const WRITE_INTENT_RE = /\b(add|write|insert|append|put|delete|clear|remove|replace|rewrite|improve|make.{0,20}better|fix)\b/i
-
   const handleSend = () => {
     const msg = input.trim()
     if ((!msg && attachedImages.length === 0) || isStreaming) return
@@ -623,10 +623,10 @@ export function AISidebar() {
     return ok
   }
 
-  const noteOptions = [
+  const noteOptions = useMemo(() => [
     { value: '', label: 'No context' },
     ...notes.map(n => ({ value: n.id, label: n.title || 'Untitled' })),
-  ]
+  ], [notes])
   const contextNote = notes.find(n => n.id === contextNoteId)
 
   const noLLM = false // Groq always available via built-in key

@@ -262,7 +262,11 @@ export function Journal() {
         return
       }
     } else {
-      await updateNote(todayEntry.id, { journal_mood: newMood })
+      try {
+        await updateNote(todayEntry.id, { journal_mood: newMood })
+      } catch {
+        toast.error('Failed to update mood')
+      }
     }
   }
 

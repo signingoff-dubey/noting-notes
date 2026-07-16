@@ -3,24 +3,20 @@ import { BubbleMenu } from '@tiptap/react'
 import { Bold, Italic, Underline, Strikethrough, Highlighter, Code, Link, Zap, AlignLeft, MessageSquare, RefreshCw, Loader2, Check, Languages } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { useAIStore } from '@/store/aiStore'
+import { api } from '@/lib/api'
 import { toast } from '@/store/uiStore'
 
-const GROQ_BASE_URL = 'https://api.groq.com/openai/v1'
-const GROQ_API_KEY = import.meta.env.VITE_GROQ_API_KEY || ''
-
-async function groqOnce(prompt, model) {
-  const { apiConfig } = useAIStore.getState()
-  const apiKey = apiConfig.api_key || GROQ_API_KEY
-  const baseUrl = apiConfig.base_url || GROQ_BASE_URL
-  const m = apiConfig.model || model || 'llama-3.3-70b-versatile'
-  const res = await fetch(`${baseUrl}/chat/completions`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-    body: JSON.stringify({ model: m, messages: [{ role: 'user', content: prompt }], stream: false }),
+async function backendOnce(prompt) {
+  return new Promise((resolve, reject) => {
+    let full = ''
+    const { activeModel } = useAIStore.getState()
+    const cleanup = api.ai.chatStream(
+      { model: activeModel, message: prompt, note_content: '', note_id: null },
+      (token) => { full += token },
+      () => resolve(full),
+      (err) => reject(err),
+    )
   })
-  if (!res.ok) throw new Error('AI request failed')
-  const data = await res.json()
-  return data.choices?.[0]?.message?.content || ''
 }
 
 function FloatBtn({ onClick, active, title, children, ai, loading }) {
@@ -166,7 +162,7 @@ export function FloatingToolbar({ editor }) {
     setAiLoading(true)
     setAiResult(null)
     try {
-      const result = await groqOnce(`Summarize the following text in 2-4 concise bullet points. Return only the bullet points, no preamble:\n\n"${text}"`)
+      const result = await backendOnce(`Summarize the following text in 2-4 concise bullet points. Return only the bullet points, no preamble:\n\n"${text}"`)
       setAiResult(result)
     } catch {
       toast.error('AI unavailable — check API key in Settings')
@@ -185,7 +181,7 @@ export function FloatingToolbar({ editor }) {
     setAiLoading(true)
     setAiResult(null)
     try {
-      const result = await groqOnce(`Rephrase the following text in exactly 3 different ways. Number each variant (1. 2. 3.). Return only the 3 numbered variants, nothing else:\n\n"${text}"`)
+      const result = await backendOnce(`Rephrase the following text in exactly 3 different ways. Number each variant (1. 2. 3.). Return only the 3 numbered variants, nothing else:\n\n"${text}"`)
       setAiResult(result)
     } catch {
       toast.error('AI unavailable — check API key in Settings')
@@ -206,7 +202,7 @@ export function FloatingToolbar({ editor }) {
     setAiLoading(true)
     setAiResult(null)
     try {
-      const result = await groqOnce(`Translate the following text to ${lang}. Return ONLY the translated text, no explanations or preamble:\n\n"${text}"`)
+      const result = await backendOnce(`Translate the following text to ${lang}. Return ONLY the translated text, no explanations or preamble:\n\n"${text}"`)
       setAiResult(result)
     } catch {
       toast.error('AI unavailable — check API key in Settings')

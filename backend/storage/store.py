@@ -218,7 +218,8 @@ async def write_settings(settings: dict):
 
 async def read_embedding(note_id: str) -> list[float] | None:
     path = DATA_DIR / "embeddings" / f"{note_id}.json"
-    data = await asyncio.to_thread(_read_json_sync, path, None)
+    async with _get_lock(str(path)):
+        data = await asyncio.to_thread(_read_json_sync, path, None)
     if data and "vector" in data:
         return data["vector"]
     return None
@@ -226,14 +227,15 @@ async def read_embedding(note_id: str) -> list[float] | None:
 
 async def write_embedding(note_id: str, vector: list[float]):
     path = DATA_DIR / "embeddings" / f"{note_id}.json"
-    await asyncio.to_thread(_write_json_sync, path, {"note_id": note_id, "vector": vector})
+    async with _get_lock(str(path)):
+        await asyncio.to_thread(_write_json_sync, path, {"note_id": note_id, "vector": vector})
 
 
 async def read_all_embeddings() -> dict[str, list[float]]:
     embed_dir = DATA_DIR / "embeddings"
     result = {}
     if embed_dir.exists():
-        for f in embed_dir.iterdir():
+        for f in await asyncio.to_thread(lambda: list(embed_dir.iterdir())):
             if f.suffix == ".json":
                 data = await asyncio.to_thread(_read_json_sync, f, None)
                 if data and "note_id" in data and "vector" in data:
@@ -246,15 +248,15 @@ async def read_all_embeddings() -> dict[str, list[float]]:
 async def save_version(note_id: str, content: dict):
     from datetime import datetime, timezone
     version_dir = DATA_DIR / "versions" / note_id
-    version_dir.mkdir(parents=True, exist_ok=True)
+    await asyncio.to_thread(lambda: version_dir.mkdir(parents=True, exist_ok=True))
     ts = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S%f")
     path = version_dir / f"{ts}.json"
     await asyncio.to_thread(_write_json_sync, path, {"timestamp": ts, "content": content})
-    # Keep only last 10 versions (async unlink)
-    versions = sorted(version_dir.iterdir(), key=lambda p: p.name)
-    while len(versions) > 10:
-        await asyncio.to_thread(versions[0].unlink)
-        versions.pop(0)
+    async with _get_lock(str(version_dir)):
+        versions = await asyncio.to_thread(lambda: sorted(version_dir.iterdir(), key=lambda p: p.name))
+        while len(versions) > 10:
+            await asyncio.to_thread(versions[0].unlink)
+            versions.pop(0)
 
 
 async def get_versions(note_id: str) -> list[dict]:
@@ -262,7 +264,8 @@ async def get_versions(note_id: str) -> list[dict]:
     if not version_dir.exists():
         return []
     result = []
-    for f in sorted(version_dir.iterdir(), key=lambda p: p.name, reverse=True):
+    entries = await asyncio.to_thread(lambda: sorted(version_dir.iterdir(), key=lambda p: p.name, reverse=True))
+    for f in entries:
         if f.suffix == ".json":
             data = await asyncio.to_thread(_read_json_sync, f, None)
             if data:

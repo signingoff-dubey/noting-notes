@@ -10,8 +10,10 @@ function FolderItem({ folder, depth = 0, onSelect, activeId }) {
   const [expanded, setExpanded] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const deleteFolder = useNotesStore(s => s.deleteFolder)
-  const children = useNotesStore(s => s.folders.filter(f => f.parent_id === folder.id))
-  const noteCount = useNotesStore(s => s.notes.filter(n => n.folder_id === folder.id).length)
+  const folders = useNotesStore(s => s.folders)
+  const allNotes = useNotesStore(s => s.notes)
+  const children = folders.filter(f => f.parent_id === folder.id)
+  const noteCount = allNotes.filter(n => n.folder_id === folder.id).length
   const isActive = activeId === folder.id
 
   const handleDelete = async () => {
@@ -93,7 +95,8 @@ export function FolderTree({ onSelect, activeId }) {
   const [creating, setCreating] = useState(false)
   const [newName, setNewName] = useState('')
   const createFolder = useNotesStore(s => s.createFolder)
-  const rootFolders = useNotesStore(s => s.folders.filter(f => !f.parent_id))
+  const folders = useNotesStore(s => s.folders)
+  const rootFolders = folders.filter(f => !f.parent_id)
 
   const handleCreate = async (e) => {
     e.preventDefault()

@@ -5,9 +5,9 @@
 This project uses OpenWolf for context management. Read and follow .wolf/OPENWOLF.md every session. Check .wolf/cerebrum.md before generating code. Check .wolf/anatomy.md before reading files.
 
 
-# AGENTS.md — Instructions for Codex
+# AGENTS.md — Build Instructions
 
-This file is the single source of truth for AI coding agents working on NOTED.
+This file is the single source of truth for AI coding agents working on INK.
 Read this entire file before writing a single line of code.
 
 ---

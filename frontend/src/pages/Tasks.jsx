@@ -877,12 +877,12 @@ export function Tasks() {
   const [dragIndex, setDragIndex] = useState(null)
   const [localOrder, setLocalOrder] = useState(null)
 
-  useEffect(() => { fetchTasks() }, [])
+  useEffect(() => { fetchTasks() }, [fetchTasks])
 
   const filteredTasks = getFilteredTasks()
   const displayTasks = localOrder || filteredTasks
 
-  useEffect(() => { setLocalOrder(null) }, [filter])
+  useEffect(() => { setLocalOrder(null) }, [filter, setLocalOrder])
 
   const totalCount = tasks.filter(t => !t.archived).length
   const doneCount = tasks.filter(t => t.status === 'done' && !t.archived).length
@@ -903,7 +903,7 @@ export function Tasks() {
       })
       await useTasksStore.getState().updateTask(t.id, { _spawned: true })
     })
-  }, [tasks])
+  }, [tasks, createTask])
 
   const handleCreate = async (taskData) => {
     try {

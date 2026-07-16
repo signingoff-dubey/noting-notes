@@ -31,9 +31,8 @@ function DayCell({ day, isCurrentMonth, isCurrentDay, isSelected, tasks, notes, 
   return (
     <button
       onClick={onClick}
-      {...ripple}
       onMouseDown={ripple.onMouseDown}
-      className={`${ripple.className} flex flex-col p-1.5 border-b border-r border-border text-left transition-colors min-h-[80px]`}
+      className={`${ripple.className || ''} flex flex-col p-1.5 border-b border-r border-border text-left transition-colors min-h-[80px]`}
       style={{
         borderColor: 'var(--color-border)',
         background: isSelected ? 'var(--color-surface-active)' : 'transparent',
@@ -111,7 +110,7 @@ export function Calendar() {
   useEffect(() => {
     fetchTasks()
     fetchNotes()
-  }, [])
+  }, [fetchTasks, fetchNotes])
 
   const monthStart = startOfMonth(currentDate)
   const monthEnd   = endOfMonth(currentDate)
@@ -121,14 +120,18 @@ export function Calendar() {
 
   const handleCreateTask = async () => {
     if (!newTaskTitle.trim() || !selectedDate) return
-    await createTask({
-      title: newTaskTitle.trim(),
-      priority: newTaskPriority,
-      due_date: selectedDate.toISOString(),
-    })
-    setNewTaskTitle('')
-    setNewTaskPriority('none')
-    setAddingTask(false)
+    try {
+      await createTask({
+        title: newTaskTitle.trim(),
+        priority: newTaskPriority,
+        due_date: selectedDate.toISOString(),
+      })
+      setNewTaskTitle('')
+      setNewTaskPriority('none')
+      setAddingTask(false)
+    } catch {
+      console.error('Failed to create task')
+    }
   }
 
   const getTasksForDay  = (day) => tasks.filter(t => !t.archived && t.due_date && isSameDay(new Date(t.due_date), day))

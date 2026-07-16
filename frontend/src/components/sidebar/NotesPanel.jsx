@@ -198,9 +198,11 @@ export function NotesPanel({ collapsed, onToggle }) {
   }
 
   const handleDeleteAll = async () => {
-    const toDelete = notes.filter(n => !n.archived && n._source !== 'journal')
+    const toDelete = filtered.filter(n => !n.archived && n._source !== 'journal')
     try {
-      await Promise.all(toDelete.map(n => deleteNote(n.id)))
+      for (const n of toDelete) {
+        await deleteNote(n.id)
+      }
       setActiveNote(null)
       toast.success(`Deleted ${toDelete.length} note${toDelete.length !== 1 ? 's' : ''}`)
     } catch {

@@ -144,10 +144,15 @@ export const useNotesStore = create((set, get) => ({
       word_count: 0,
       ...data,
     }
-    const notes = [note, ...get().notes]
-    saveNotes(notes)
-    set({ notes, activeNote: note })
-    return note
+    try {
+      const notes = [note, ...get().notes]
+      saveNotes(notes)
+      set({ notes, activeNote: note })
+      return note
+    } catch (err) {
+      set({ error: 'Failed to create note: ' + err.message })
+      throw err
+    }
   },
 
   updateNote: async (id, data) => {

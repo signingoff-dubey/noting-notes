@@ -11,7 +11,6 @@ import { useNotesStore } from '@/store/notesStore'
 import { useAIStore } from '@/store/aiStore'
 import { useVaultStore } from '@/store/vaultStore'
 import { useAuthStore } from '@/store/authStore'
-import { firebaseConfigured } from '@/lib/firebase'
 import { FolderTree } from './FolderTree'
 import { Modal } from '@/components/ui/Modal'
 import { Button } from '@/components/ui/Button'
@@ -212,7 +211,7 @@ export function Sidebar() {
   const displayName = userName || 'Guest'
   const greeting = `Welcome, ${displayName}`
 
-  useEffect(() => { checkStatus() }, [])
+  useEffect(() => { checkStatus() }, [checkStatus])
 
   const handleVaultToggle = async () => {
     if (isUnlocked) {

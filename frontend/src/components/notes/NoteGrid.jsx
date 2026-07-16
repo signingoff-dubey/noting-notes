@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import { useNotesStore } from '@/store/notesStore'
 import { NoteCard } from './NoteCard'
 import { FileText } from 'lucide-react'
@@ -53,26 +52,6 @@ export function NoteGrid({ onSelect, activeId, sortBy = 'updated' }) {
   const getFilteredNotes = useNotesStore(s => s.getFilteredNotes)
   const notes = getFilteredNotes()
 
-  const [dragIndex, setDragIndex] = useState(null)
-  const [localOrder, setLocalOrder] = useState(null)
-
-  useEffect(() => { setLocalOrder(null) }, [notes.length])
-
-  const sorted = sortNotes(notes, sortBy)
-  const displayNotes = localOrder || sorted
-
-  const handleDragStart = (i) => setDragIndex(i)
-  const handleDragOver = (e, i) => {
-    e.preventDefault()
-    if (dragIndex === null || dragIndex === i) return
-    const next = [...displayNotes]
-    const [moved] = next.splice(dragIndex, 1)
-    next.splice(i, 0, moved)
-    setLocalOrder(next)
-    setDragIndex(i)
-  }
-  const handleDrop = () => setDragIndex(null)
-
   if (isLoading && !notes.length) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 p-4">
@@ -89,25 +68,18 @@ export function NoteGrid({ onSelect, activeId, sortBy = 'updated' }) {
     )
   }
 
+  const sorted = sortNotes(notes, sortBy)
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 p-4">
-      {displayNotes.map((note, i) => (
-        <div
+      {sorted.map(note => (
+        <NoteCard
           key={note.id}
-          draggable
-          onDragStart={() => handleDragStart(i)}
-          onDragOver={e => handleDragOver(e, i)}
-          onDrop={handleDrop}
-          style={{ opacity: dragIndex === i ? 0.5 : 1 }}
-        >
-          <NoteCard
-            key={note.id}
-            note={note}
-            grid
-            active={note.id === activeId}
-            onClick={() => onSelect(note.id)}
-          />
-        </div>
+          note={note}
+          grid
+          active={note.id === activeId}
+          onClick={() => onSelect(note.id)}
+        />
       ))}
     </div>
   )

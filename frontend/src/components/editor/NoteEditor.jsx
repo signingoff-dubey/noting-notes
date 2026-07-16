@@ -286,7 +286,6 @@ export function NoteEditor({ note, onBack }) {
     return () => setContextNote(null)
   }, [note?.id])
 
-  /* editor must be declared before any useEffect that lists it as a dependency */
   const editor = useEditor({
     extensions: [
       StarterKit.configure({ codeBlock: false }),
@@ -318,6 +317,12 @@ export function NoteEditor({ note, onBack }) {
       triggerAutosave(editor.getJSON())
     },
   }, [note?.id])
+
+  useEffect(() => {
+    if (editor) {
+      editor.view.dom.setAttribute('spellcheck', spellcheck ? 'true' : 'false')
+    }
+  }, [editor, spellcheck])
 
   /* Keep editorRef current so autosave timer always has the live editor instance */
   useEffect(() => { editorRef.current = editor }, [editor])
@@ -812,7 +817,7 @@ export function NoteEditor({ note, onBack }) {
             '--editor-line-height': editorLineHeight,
           }}
         >
-          {showPreview ? (
+          {showPreview && (
             <div
               className="prose-preview editor-content"
               style={{
@@ -825,20 +830,19 @@ export function NoteEditor({ note, onBack }) {
               }}
               dangerouslySetInnerHTML={{ __html: editor?.getHTML() || '' }}
             />
-          ) : (
-            <>
-              {editor && <FloatingToolbar editor={editor} />}
-              <EditorContent
-                editor={editor}
-                style={{
-                  maxWidth: 720,
-                  margin: '0 auto',
-                  padding: '32px 40px 80px',
-                }}
-              />
-              <NoteLinkPreview editorContainer={scrollContainerRef} />
-            </>
           )}
+          <div style={{ display: showPreview ? 'none' : undefined }}>
+            {editor && <FloatingToolbar editor={editor} />}
+            <EditorContent
+              editor={editor}
+              style={{
+                maxWidth: 720,
+                margin: '0 auto',
+                padding: '32px 40px 80px',
+              }}
+            />
+            <NoteLinkPreview editorContainer={scrollContainerRef} />
+          </div>
         </div>
         {activeFileViewer && (
           <FileViewer

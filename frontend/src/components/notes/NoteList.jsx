@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react'
 import { useNotesStore } from '@/store/notesStore'
 import { NoteCard } from './NoteCard'
 import { FileText } from 'lucide-react'
@@ -74,12 +73,6 @@ export function NoteList({ onSelect, activeId, sortBy = 'updated' }) {
   const getFilteredNotes = useNotesStore(s => s.getFilteredNotes)
   const notes = getFilteredNotes()
 
-  const [dragIndex, setDragIndex] = useState(null)
-  const [localOrder, setLocalOrder] = useState(null)
-
-  // Reset local order when notes change from outside (new note, fetch, etc.)
-  useEffect(() => { setLocalOrder(null) }, [notes.length])
-
   if (isLoading && !notes.length) {
     return (
       <div className="flex flex-col">
@@ -94,21 +87,6 @@ export function NoteList({ onSelect, activeId, sortBy = 'updated' }) {
   const rest   = sortNotes(notes.filter(n => !n.pinned), sortBy)
   const hasPinned = pinned.length > 0
 
-  // Apply local reorder only to unpinned notes
-  const displayRest = localOrder || rest
-
-  const handleDragStart = (i) => setDragIndex(i)
-  const handleDragOver = (e, i) => {
-    e.preventDefault()
-    if (dragIndex === null || dragIndex === i) return
-    const next = [...displayRest]
-    const [moved] = next.splice(dragIndex, 1)
-    next.splice(i, 0, moved)
-    setLocalOrder(next)
-    setDragIndex(i)
-  }
-  const handleDrop = () => setDragIndex(null)
-
   return (
     <div className="flex flex-col gap-2 p-4">
       {hasPinned && (
@@ -122,24 +100,16 @@ export function NoteList({ onSelect, activeId, sortBy = 'updated' }) {
               onClick={() => onSelect(note.id)}
             />
           ))}
-          {displayRest.length > 0 && <GroupLabel label="Notes" />}
+          {rest.length > 0 && <GroupLabel label="Notes" />}
         </>
       )}
-      {displayRest.map((note, i) => (
-        <div
+      {rest.map(note => (
+        <NoteCard
           key={note.id}
-          draggable
-          onDragStart={() => handleDragStart(i)}
-          onDragOver={e => handleDragOver(e, i)}
-          onDrop={handleDrop}
-          style={{ opacity: dragIndex === i ? 0.5 : 1 }}
-        >
-          <NoteCard
-            note={note}
-            active={note.id === activeId}
-            onClick={() => onSelect(note.id)}
-          />
-        </div>
+          note={note}
+          active={note.id === activeId}
+          onClick={() => onSelect(note.id)}
+        />
       ))}
     </div>
   )

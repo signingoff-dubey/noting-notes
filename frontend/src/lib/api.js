@@ -85,7 +85,11 @@ export const api = {
         signal: ctrl.signal,
       })
         .then(async (res) => {
-          if (!res.ok) throw new Error('AI request failed')
+          if (!res.ok) {
+            let msg = 'AI request failed'
+            try { const err = await res.json(); msg = err.detail || msg } catch {}
+            throw new Error(msg)
+          }
           const reader = res.body.getReader()
           const decoder = new TextDecoder()
           let buffer = ''
@@ -101,6 +105,7 @@ export const api = {
                 if (data === '[DONE]') { onDone?.(); return }
                 try {
                   const parsed = JSON.parse(data)
+                  if (parsed.error) { onError?.(new Error(parsed.error)); return }
                   const token = parsed.response || parsed.content || ''
                   if (token) onToken(token)
                 } catch {}

@@ -1,4 +1,4 @@
-# MILESTONES.md — Build Order for Claude Code
+# MILESTONES.md — Build Order
 
 This is the execution sequence. Do not skip milestones. Do not work on M2 until M1 is complete and tested.
 

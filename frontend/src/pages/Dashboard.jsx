@@ -182,7 +182,7 @@ export function Dashboard() {
   useEffect(() => {
     fetchNotes()
     fetchTasks()
-  }, [])
+  }, [fetchNotes, fetchTasks])
 
   const activeNotes   = notes.filter(n => !n.archived && n._source !== 'journal')
   const recentNotes   = getRecentNotes(6)

@@ -1,5 +1,7 @@
 import { Component } from 'react'
 
+const SHOWN_ERRORS = new Set()
+
 export class ErrorBoundary extends Component {
   constructor(props) {
     super(props)
@@ -10,9 +12,15 @@ export class ErrorBoundary extends Component {
     return { hasError: true, error }
   }
 
-  componentDidCatch(error, errorInfo) {
-    console.error('ErrorBoundary caught:', error, errorInfo)
-    alert('Error: ' + (error?.message || error))
+  componentDidCatch(error) {
+    console.error('ErrorBoundary caught:', error)
+    try {
+      const msg = error?.message || String(error)
+      if (!SHOWN_ERRORS.has(msg)) {
+        SHOWN_ERRORS.add(msg)
+        setTimeout(() => SHOWN_ERRORS.delete(msg), 5000)
+      }
+    } catch {}
   }
 
   render() {

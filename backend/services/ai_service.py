@@ -35,11 +35,19 @@ async def get_ai_config() -> dict:
     try:
         import aiofiles
         async with aiofiles.open(_CONFIG_FILE, "r") as f:
-            return json.loads(await f.read())
+            config = json.loads(await f.read())
     except FileNotFoundError:
-        return dict(_DEFAULT_CONFIG)
+        config = dict(_DEFAULT_CONFIG)
     except Exception:
-        return dict(_DEFAULT_CONFIG)
+        config = dict(_DEFAULT_CONFIG)
+
+    env_key = os.getenv("GROQ_API_KEY", "").strip()
+    if env_key and not config.get("api_key"):
+        config["api_key"] = env_key
+        config["type"] = "custom"
+        config["base_url"] = "https://api.groq.com/openai/v1"
+
+    return config
 
 
 async def save_ai_config(config: dict) -> None:

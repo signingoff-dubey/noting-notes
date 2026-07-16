@@ -1,6 +1,5 @@
-import { useEffect, useState, useCallback } from 'react'
+import { useEffect, useState, useCallback, useRef } from 'react'
 import { Search, LayoutGrid, List, X, Plus, ChevronDown } from 'lucide-react'
-import { cn } from '@/lib/cn'
 import { useNotesStore } from '@/store/notesStore'
 import { NoteList } from '@/components/notes/NoteList'
 import { NoteGrid } from '@/components/notes/NoteGrid'
@@ -21,17 +20,20 @@ export function Notes() {
 
   const [sortBy, setSortBy] = useState('updated')
   const [sortOpen, setSortOpen] = useState(false)
+  const sortRef = useRef(null)
 
   useEffect(() => {
     fetchNotes()
     fetchFolders()
-  }, [])
+  }, [fetchNotes, fetchFolders])
 
   useEffect(() => {
     if (!sortOpen) return
-    const close = () => setSortOpen(false)
-    window.addEventListener('click', close)
-    return () => window.removeEventListener('click', close)
+    const handler = (e) => {
+      if (sortRef.current && !sortRef.current.contains(e.target)) setSortOpen(false)
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
   }, [sortOpen])
 
   const handleSelect = useCallback(async (id) => {
@@ -92,9 +94,9 @@ export function Notes() {
         </div>
 
         {/* Sort */}
-        <div className="relative">
+        <div ref={sortRef} className="relative">
           <button
-            onClick={e => { e.stopPropagation(); setSortOpen(o => !o) }}
+            onClick={() => setSortOpen(o => !o)}
             className="ink-btn-ghost"
             style={{ height: 34, paddingLeft: 10, paddingRight: 10, gap: 6, fontSize: 'var(--text-xs)' }}
           >

@@ -152,5 +152,14 @@ export const useAIStore = create((set, get) => ({
     set({ messages: [] })
   },
 
+  apiConfig: {},
+  saveApiConfig: async (config) => {
+    try {
+      localStorage.setItem('ink_ai_config', JSON.stringify(config))
+      set({ apiConfig: config })
+      return true
+    } catch { return false }
+  },
+
   clearError: () => set({ error: null }),
 }))

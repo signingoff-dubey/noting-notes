@@ -108,12 +108,6 @@ export const useUIStore = create((set, get) => ({
 
   removeToast: (id) => set(state => ({ toasts: state.toasts.filter(t => t.id !== id) })),
 
-  toast: {
-    success: (message) => useUIStore.getState().addToast({ type: 'success', message }),
-    error:   (message) => useUIStore.getState().addToast({ type: 'error', message, duration: 5000 }),
-    info:    (message) => useUIStore.getState().addToast({ type: 'info', message }),
-    warning: (message) => useUIStore.getState().addToast({ type: 'warning', message }),
-  },
 }))
 
 export const toast = {

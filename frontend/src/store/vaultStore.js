@@ -9,7 +9,8 @@ function _clearIdleTimer() {
 }
 
 function _removeActivityListeners() {
-  _activityListeners.forEach(([evt, fn]) => document.removeEventListener(evt, fn))
+  const listeners = _activityListeners.slice()
+  listeners.forEach(([evt, fn]) => document.removeEventListener(evt, fn))
   _activityListeners = []
 }
 

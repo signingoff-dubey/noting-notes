@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import {
   Bold, Italic, Underline, Strikethrough, Highlighter, Code, List, ListOrdered,
   CheckSquare, Quote, Minus, Table, Link, Image, Paperclip, Heading1, Heading2, Heading3,
-  X, Upload, Globe, Undo2, Redo2,
+  X, Upload, Globe, Undo2, Redo2, Loader2,
 } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
@@ -45,7 +45,7 @@ function TablePicker({ onInsert, onClose }) {
   return (
     <div
       ref={ref}
-      className="absolute top-full left-0 mt-1 z-50 p-3 rounded-lg shadow-2xl"
+      className="absolute top-full right-0 mt-1 z-50 p-3 rounded-lg shadow-2xl"
       style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border-strong)' }}
     >
       <div
@@ -82,6 +82,91 @@ function TablePicker({ onInsert, onClose }) {
       >
         {hovered.rows > 0 ? `${hovered.rows} × ${hovered.cols} table` : 'Hover to select size'}
       </p>
+    </div>
+  )
+}
+
+/* ── Link modal ── */
+function LinkModal({ open, initialUrl, onSet, onRemove, onClose }) {
+  const [url, setUrl] = useState(initialUrl || '')
+
+  useEffect(() => {
+    if (open) setUrl(initialUrl || '')
+  }, [open, initialUrl])
+
+  if (!open) return null
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && url.trim()) { onSet(url.trim()); onClose() }
+  }
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center"
+      style={{ background: 'rgba(0,0,0,0.55)' }}
+      onClick={e => { if (e.target === e.currentTarget) onClose() }}
+    >
+      <div
+        className="flex flex-col rounded-xl overflow-hidden"
+        style={{
+          width: 380,
+          background: 'var(--color-surface)',
+          border: '1px solid var(--color-border)',
+          boxShadow: '0 24px 80px rgba(0,0,0,0.5)',
+        }}
+      >
+        <div
+          className="flex items-center justify-between px-5 py-4"
+          style={{ borderBottom: '1px solid var(--color-border)' }}
+        >
+          <span className="font-medium" style={{ fontSize: 14, color: 'var(--color-text-primary)' }}>
+            {initialUrl ? 'Edit Link' : 'Add Link'}
+          </span>
+          <button
+            onClick={onClose}
+            className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-[var(--color-surface-hover)]"
+            style={{ color: 'var(--color-text-muted)' }}
+          >
+            <X size={14} strokeWidth={1.5} />
+          </button>
+        </div>
+        <div className="px-5 py-5 flex flex-col gap-3">
+          <input
+            autoFocus
+            value={url}
+            onChange={e => setUrl(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="https://example.com"
+            className="w-full px-3 py-2 rounded-lg font-mono"
+            style={{
+              fontSize: 12,
+              background: 'var(--color-surface-2)',
+              border: '1px solid var(--color-border)',
+              color: 'var(--color-text-primary)',
+              outline: 'none',
+            }}
+          />
+          <div className="flex gap-2">
+            {initialUrl && (
+              <button
+                onClick={() => { onRemove(); onClose() }}
+                className="flex-1 h-9 rounded-lg font-mono font-medium transition-opacity"
+                style={{ fontSize: 13, border: '1px solid var(--color-border)', color: 'var(--color-text-secondary)' }}
+              >
+                Remove
+              </button>
+            )}
+            <button
+              onClick={() => { if (url.trim()) onSet(url.trim()); onClose() }}
+              disabled={!url.trim()}
+              className="flex-1 h-9 rounded-lg font-mono font-medium transition-opacity disabled:opacity-40"
+              style={{ fontSize: 13, background: 'var(--color-accent)', color: 'var(--color-bg)' }}
+            >
+              {initialUrl ? 'Update' : 'Insert'}
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
@@ -232,6 +317,8 @@ function ImageModal({ open, onInsertUrl, onInsertFile, onClose }) {
 export function EditorToolbar({ editor, onAttach }) {
   const [tablePicker, setTablePicker] = useState(false)
   const [imageModal, setImageModal] = useState(false)
+  const [linkModal, setLinkModal] = useState(false)
+  const [uploadingImage, setUploadingImage] = useState(false)
   const tableRef = useRef(null)
 
   if (!editor) return null
@@ -260,11 +347,16 @@ export function EditorToolbar({ editor, onAttach }) {
   }
 
   const setLink = () => {
-    const prev = editor.getAttributes('link').href
-    const url = window.prompt('URL:', prev)
-    if (url === null) return
+    setLinkModal(true)
+  }
+
+  const handleSetLink = (url) => {
     if (url === '') { editor.chain().focus().extendMarkRange('link').unsetLink().run(); return }
     editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+  }
+
+  const handleRemoveLink = () => {
+    editor.chain().focus().extendMarkRange('link').unsetLink().run()
   }
 
   const insertTable = (rows, cols) => {
@@ -276,10 +368,13 @@ export function EditorToolbar({ editor, onAttach }) {
   }
 
   const insertImageFile = (file) => {
+    setUploadingImage(true)
     const reader = new FileReader()
     reader.onload = (ev) => {
       if (ev.target?.result) editor.chain().focus().setImage({ src: ev.target.result }).run()
+      setUploadingImage(false)
     }
+    reader.onerror = () => setUploadingImage(false)
     reader.readAsDataURL(file)
   }
 
@@ -374,8 +469,8 @@ export function EditorToolbar({ editor, onAttach }) {
         <ToolBtn title="Link" onClick={setLink} active={editor.isActive('link')}>
           <Link size={14} strokeWidth={1.5} />
         </ToolBtn>
-        <ToolBtn title="Insert image" onClick={() => setImageModal(true)}>
-          <Image size={14} strokeWidth={1.5} />
+        <ToolBtn title="Insert image" onClick={() => setImageModal(true)} disabled={uploadingImage}>
+          {uploadingImage ? <Loader2 size={14} strokeWidth={1.5} className="animate-spin" /> : <Image size={14} strokeWidth={1.5} />}
         </ToolBtn>
 
         <div className="flex-1 shrink-0 min-w-2" />
@@ -392,6 +487,13 @@ export function EditorToolbar({ editor, onAttach }) {
         onInsertUrl={insertImageUrl}
         onInsertFile={insertImageFile}
         onClose={() => setImageModal(false)}
+      />
+      <LinkModal
+        open={linkModal}
+        initialUrl={editor.getAttributes('link').href || ''}
+        onSet={handleSetLink}
+        onRemove={handleRemoveLink}
+        onClose={() => setLinkModal(false)}
       />
     </>
   )

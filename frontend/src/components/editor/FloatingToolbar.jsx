@@ -6,7 +6,7 @@ import { useAIStore } from '@/store/aiStore'
 import { api } from '@/lib/api'
 import { toast } from '@/store/uiStore'
 
-async function backendOnce(prompt) {
+async function backendOnce(prompt, abortRef) {
   return new Promise((resolve, reject) => {
     let full = ''
     const { activeModel } = useAIStore.getState()
@@ -16,6 +16,7 @@ async function backendOnce(prompt) {
       () => resolve(full),
       (err) => reject(err),
     )
+    if (abortRef) abortRef.current = cleanup
   })
 }
 
@@ -130,6 +131,7 @@ export function FloatingToolbar({ editor }) {
   const [aiResult, setAiResult] = useState(null)
   const savedRange = useRef(null)
   const savedText = useRef('')
+  const abortRef = useRef(null)
 
   if (!editor) return null
 
@@ -162,7 +164,7 @@ export function FloatingToolbar({ editor }) {
     setAiLoading(true)
     setAiResult(null)
     try {
-      const result = await backendOnce(`Summarize the following text in 2-4 concise bullet points. Return only the bullet points, no preamble:\n\n"${text}"`)
+      const result = await backendOnce(`Summarize the following text in 2-4 concise bullet points. Return only the bullet points, no preamble:\n\n"${text}"`, abortRef)
       setAiResult(result)
     } catch {
       toast.error('AI unavailable — check API key in Settings')
@@ -181,7 +183,7 @@ export function FloatingToolbar({ editor }) {
     setAiLoading(true)
     setAiResult(null)
     try {
-      const result = await backendOnce(`Rephrase the following text in exactly 3 different ways. Number each variant (1. 2. 3.). Return only the 3 numbered variants, nothing else:\n\n"${text}"`)
+      const result = await backendOnce(`Rephrase the following text in exactly 3 different ways. Number each variant (1. 2. 3.). Return only the 3 numbered variants, nothing else:\n\n"${text}"`, abortRef)
       setAiResult(result)
     } catch {
       toast.error('AI unavailable — check API key in Settings')
@@ -202,7 +204,7 @@ export function FloatingToolbar({ editor }) {
     setAiLoading(true)
     setAiResult(null)
     try {
-      const result = await backendOnce(`Translate the following text to ${lang}. Return ONLY the translated text, no explanations or preamble:\n\n"${text}"`)
+      const result = await backendOnce(`Translate the following text to ${lang}. Return ONLY the translated text, no explanations or preamble:\n\n"${text}"`, abortRef)
       setAiResult(result)
     } catch {
       toast.error('AI unavailable — check API key in Settings')
@@ -234,8 +236,10 @@ export function FloatingToolbar({ editor }) {
   }
 
   const resetAI = () => {
+    if (abortRef.current) { abortRef.current(); abortRef.current = null }
     setAiMode(null)
     setAiResult(null)
+    setAiLoading(false)
     savedRange.current = null
     savedText.current = ''
   }

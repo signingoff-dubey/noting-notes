@@ -18,9 +18,28 @@ export function Notes() {
     activeFolderId, folders, notes, createNote,
   } = useNotesStore()
 
-  const [sortBy, setSortBy] = useState('updated')
+  const [sortBy, setSortBy] = useState(() => localStorage.getItem('noted_sort_by') || 'updated')
   const [sortOpen, setSortOpen] = useState(false)
   const sortRef = useRef(null)
+  const [localSearch, setLocalSearch] = useState(searchQuery)
+  const searchDebounce = useRef(null)
+
+  useEffect(() => {
+    return () => clearTimeout(searchDebounce.current)
+  }, [])
+
+  const handleSearchChange = (e) => {
+    const val = e.target.value
+    setLocalSearch(val)
+    clearTimeout(searchDebounce.current)
+    searchDebounce.current = setTimeout(() => setSearchQuery(val), 200)
+  }
+
+  const handleSortChange = (val) => {
+    setSortBy(val)
+    localStorage.setItem('noted_sort_by', val)
+    setSortOpen(false)
+  }
 
   useEffect(() => {
     fetchNotes()
@@ -76,15 +95,15 @@ export function Notes() {
             style={{ color: 'var(--color-text-muted)' }}
           />
           <input
-            value={searchQuery}
-            onChange={e => setSearchQuery(e.target.value)}
+            value={localSearch}
+            onChange={handleSearchChange}
             placeholder="Search notes..."
             className="ink-search w-full"
-            style={{ height: 34, paddingLeft: 34, paddingRight: searchQuery ? 32 : 12 }}
+            style={{ height: 34, paddingLeft: 34, paddingRight: localSearch ? 32 : 12 }}
           />
-          {searchQuery && (
+          {localSearch && (
             <button
-              onClick={() => setSearchQuery('')}
+              onClick={() => { setLocalSearch(''); setSearchQuery('') }}
               className="absolute right-3 top-1/2 -translate-y-1/2"
               style={{ color: 'var(--color-text-muted)' }}
             >
@@ -117,7 +136,7 @@ export function Notes() {
               {SORT_OPTIONS.map(opt => (
                 <button
                   key={opt.value}
-                  onClick={() => { setSortBy(opt.value); setSortOpen(false) }}
+                  onClick={() => handleSortChange(opt.value)}
                   className="flex items-center w-full px-3 h-8 text-left"
                   style={{
                     fontFamily: 'var(--font-body)',

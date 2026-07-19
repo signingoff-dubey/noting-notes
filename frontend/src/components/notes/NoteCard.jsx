@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { Star, Trash2, Archive, ArchiveRestore, Pin, MoreHorizontal, GripVertical, Lock, Folder } from 'lucide-react'
 import { Dropdown } from '@/components/ui/Dropdown'
 import { useNotesStore } from '@/store/notesStore'
@@ -28,6 +28,7 @@ function TagChip({ tag }) {
 
 export function NoteCard({ note, active, onClick, grid }) {
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const [acting, setActing] = useState(false)
   const updateNote  = useNotesStore(s => s.updateNote)
   const deleteNote  = useNotesStore(s => s.deleteNote)
   const archiveNote = useNotesStore(s => s.archiveNote)
@@ -40,38 +41,49 @@ export function NoteCard({ note, active, onClick, grid }) {
     : ''
 
   const handleDelete = async () => {
+    setActing(true)
     try { await deleteNote(note.id); toast.success('Note deleted') }
     catch { toast.error('Failed to delete note') }
+    setActing(false)
     setConfirmDelete(false)
   }
 
   const handleStar = async (e) => {
     e?.stopPropagation()
+    if (acting) return
+    setActing(true)
     try { await updateNote(note.id, { starred: !note.starred }) }
     catch { toast.error('Failed to update note') }
+    setActing(false)
   }
 
   const handlePin = async (e) => {
     e?.stopPropagation()
+    if (acting) return
+    setActing(true)
     try { await updateNote(note.id, { pinned: !note.pinned }) }
     catch { toast.error('Failed to update note') }
+    setActing(false)
   }
 
   const handleArchive = async (e) => {
     e?.stopPropagation()
+    if (acting) return
+    setActing(true)
     try {
       await archiveNote(note.id, !note.archived)
       toast.success(note.archived ? 'Note restored' : 'Note archived')
     } catch { toast.error('Failed to archive note') }
+    setActing(false)
   }
 
-  const menuItems = [
+  const menuItems = useMemo(() => [
     { label: note.pinned ? 'Unpin' : 'Pin', icon: <Pin size={12} strokeWidth={1.5} />, onClick: handlePin },
     { label: note.starred ? 'Unstar' : 'Star', icon: <Star size={12} strokeWidth={1.5} />, onClick: handleStar },
     { label: note.archived ? 'Restore' : 'Archive', icon: note.archived ? <ArchiveRestore size={12} strokeWidth={1.5} /> : <Archive size={12} strokeWidth={1.5} />, onClick: handleArchive },
     { separator: true },
     { label: 'Delete', icon: <Trash2 size={12} strokeWidth={1.5} />, destructive: true, onClick: (e) => { e?.stopPropagation(); setConfirmDelete(true) } },
-  ]
+  ], [note.pinned, note.starred, note.archived, handlePin, handleStar, handleArchive])
 
   // ── Grid / Card view ──
   if (grid) {
@@ -83,7 +95,7 @@ export function NoteCard({ note, active, onClick, grid }) {
             'ink-card group flex flex-col gap-3 cursor-pointer relative',
             active && 'ink-card-active',
           )}
-          style={{ height: 200, overflow: 'hidden' }}
+          style={{ minHeight: 200, overflow: 'hidden' }}
         >
           {/* Top: title + actions */}
           <div className="flex items-start justify-between gap-2">

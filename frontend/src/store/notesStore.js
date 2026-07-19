@@ -105,7 +105,7 @@ export const useNotesStore = create((set, get) => ({
   activeFolderId: null,
   searchQuery: '',
   viewMode: localStorage.getItem('noted_view_mode') || 'list',
-  isLoading: false,
+  isLoading: true,
   isSaving: false,
   error: null,
 

@@ -32,6 +32,7 @@ export default {
         editor: ['var(--font-editor)'],
       },
       fontSize: {
+        '2xs': 'var(--text-2xs)',
         xs: 'var(--text-xs)',
         sm: 'var(--text-sm)',
         base: 'var(--text-base)',

@@ -69,7 +69,7 @@ function ResultPanel({ mode, result, onInsert, onReplace, onClose }) {
                 key={i}
                 onClick={() => onReplace(v)}
                 className="text-left px-2 py-1.5 rounded font-mono transition-colors hover:bg-[var(--color-surface-hover)]"
-                style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}
+                style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-secondary)' }}
               >
                 <span style={{ color: 'var(--color-text-muted)', marginRight: 6 }}>{i + 1}.</span>
                 {v}
@@ -77,7 +77,7 @@ function ResultPanel({ mode, result, onInsert, onReplace, onClose }) {
             ))}
           </div>
         ) : (
-          <p className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>
+          <p className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>
             {isRephrase ? result : result}
           </p>
         )}
@@ -87,7 +87,7 @@ function ResultPanel({ mode, result, onInsert, onReplace, onClose }) {
           <button
             onClick={() => onInsert(result)}
             className="flex items-center gap-1 px-2 h-6 rounded font-mono transition-colors hover:bg-[var(--color-surface-hover)]"
-            style={{ fontSize: 10, color: 'var(--color-accent)' }}
+            style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-accent)' }}
           >
             <Check size={10} strokeWidth={1.5} />
             Insert below
@@ -95,7 +95,7 @@ function ResultPanel({ mode, result, onInsert, onReplace, onClose }) {
           <button
             onClick={() => onReplace(result)}
             className="flex items-center gap-1 px-2 h-6 rounded font-mono transition-colors hover:bg-[var(--color-surface-hover)]"
-            style={{ fontSize: 10, color: 'var(--color-text-secondary)' }}
+            style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-secondary)' }}
           >
             <RefreshCw size={10} strokeWidth={1.5} />
             Replace
@@ -104,7 +104,7 @@ function ResultPanel({ mode, result, onInsert, onReplace, onClose }) {
           <button
             onClick={onClose}
             className="flex items-center justify-center w-5 h-5 rounded font-mono transition-colors hover:bg-[var(--color-surface-hover)]"
-            style={{ fontSize: 11, color: 'var(--color-text-muted)' }}
+            style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}
           >
             ×
           </button>
@@ -115,7 +115,7 @@ function ResultPanel({ mode, result, onInsert, onReplace, onClose }) {
           <button
             onClick={onClose}
             className="flex items-center justify-center w-5 h-5 rounded font-mono transition-colors hover:bg-[var(--color-surface-hover)]"
-            style={{ fontSize: 11, color: 'var(--color-text-muted)' }}
+            style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}
           >
             ×
           </button>
@@ -368,7 +368,7 @@ export function FloatingToolbar({ editor }) {
         {aiLoading && !aiResult && (
           <div className="flex items-center gap-2 px-3 py-2" style={{ borderTop: '1px solid var(--color-border)' }}>
             <Loader2 size={11} strokeWidth={1.5} className="animate-spin" style={{ color: 'var(--color-text-muted)' }} />
-            <span className="font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+            <span className="font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
               {aiMode === 'summarize' ? 'Summarizing...' : aiMode === 'translate' ? 'Translating...' : 'Generating variants...'}
             </span>
           </div>
@@ -388,7 +388,7 @@ export function FloatingToolbar({ editor }) {
           style={{ width: 380, background: 'var(--color-surface)', border: '1px solid var(--color-border)', boxShadow: '0 24px 80px var(--color-shadow)' }}
         >
           <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid var(--color-border)' }}>
-            <span className="font-medium" style={{ fontSize: 14, color: 'var(--color-text-primary)' }}>
+            <span className="font-medium" style={{ fontSize: 'var(--text-base)', color: 'var(--color-text-primary)' }}>
               {linkInputUrl ? 'Edit Link' : 'Add Link'}
             </span>
             <button onClick={() => setShowLinkInput(false)} className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-[var(--color-surface-hover)]" style={{ color: 'var(--color-text-muted)' }}>
@@ -403,14 +403,14 @@ export function FloatingToolbar({ editor }) {
               onKeyDown={e => { if (e.key === 'Enter') confirmLink() }}
               placeholder="https://example.com"
               className="w-full px-3 py-2 rounded-lg font-mono"
-              style={{ fontSize: 12, background: 'var(--color-surface-2)', border: '1px solid var(--color-border)', color: 'var(--color-text-primary)', outline: 'none' }}
+              style={{ fontSize: 'var(--text-sm)', background: 'var(--color-surface-2)', border: '1px solid var(--color-border)', color: 'var(--color-text-primary)', outline: 'none' }}
             />
             <div className="flex gap-2">
               {linkInputUrl && (
                 <button
                   onClick={() => { setShowLinkInput(false); editor.chain().focus().extendMarkRange('link').unsetLink().run() }}
                   className="flex-1 h-9 rounded-lg font-mono font-medium transition-opacity"
-                  style={{ fontSize: 13, border: '1px solid var(--color-border)', color: 'var(--color-text-secondary)' }}
+                  style={{ fontSize: 'var(--text-sm)', border: '1px solid var(--color-border)', color: 'var(--color-text-secondary)' }}
                 >
                   Remove
                 </button>
@@ -419,7 +419,7 @@ export function FloatingToolbar({ editor }) {
                 onClick={confirmLink}
                 disabled={!linkInputUrl.trim()}
                 className="flex-1 h-9 rounded-lg font-mono font-medium transition-opacity disabled:opacity-40"
-                style={{ fontSize: 13, background: 'var(--color-accent)', color: 'var(--color-bg)' }}
+                style={{ fontSize: 'var(--text-sm)', background: 'var(--color-accent)', color: 'var(--color-bg)' }}
               >
                 {linkInputUrl ? 'Update' : 'Insert'}
               </button>
@@ -441,7 +441,7 @@ export function FloatingToolbar({ editor }) {
           style={{ width: 380, background: 'var(--color-surface)', border: '1px solid var(--color-border)', boxShadow: '0 24px 80px var(--color-shadow)' }}
         >
           <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid var(--color-border)' }}>
-            <span className="font-medium" style={{ fontSize: 14, color: 'var(--color-text-primary)' }}>
+            <span className="font-medium" style={{ fontSize: 'var(--text-base)', color: 'var(--color-text-primary)' }}>
               Translate to
             </span>
             <button onClick={() => setShowLangInput(false)} className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-[var(--color-surface-hover)]" style={{ color: 'var(--color-text-muted)' }}>
@@ -456,13 +456,13 @@ export function FloatingToolbar({ editor }) {
               onKeyDown={e => { if (e.key === 'Enter') confirmTranslate() }}
               placeholder="e.g. Spanish, French, Japanese..."
               className="w-full px-3 py-2 rounded-lg font-mono"
-              style={{ fontSize: 12, background: 'var(--color-surface-2)', border: '1px solid var(--color-border)', color: 'var(--color-text-primary)', outline: 'none' }}
+              style={{ fontSize: 'var(--text-sm)', background: 'var(--color-surface-2)', border: '1px solid var(--color-border)', color: 'var(--color-text-primary)', outline: 'none' }}
             />
             <button
               onClick={confirmTranslate}
               disabled={!langInput.trim()}
               className="h-9 rounded-lg font-mono font-medium transition-opacity disabled:opacity-40"
-              style={{ fontSize: 13, background: 'var(--color-accent)', color: 'var(--color-bg)' }}
+              style={{ fontSize: 'var(--text-sm)', background: 'var(--color-accent)', color: 'var(--color-bg)' }}
             >
               Translate
             </button>

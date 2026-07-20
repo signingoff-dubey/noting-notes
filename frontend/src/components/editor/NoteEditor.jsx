@@ -619,7 +619,7 @@ export function NoteEditor({ note, onBack }) {
                   key={item.label}
                   onClick={() => { item.action(); setShowExportMenu(false) }}
                   className="flex items-center gap-2 px-3 py-2 text-left transition-colors hover:bg-[var(--color-surface-hover)]"
-                  style={{ fontSize: 12, color: 'var(--color-text-secondary)', fontFamily: 'var(--font-body)' }}
+                  style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', fontFamily: 'var(--font-body)' }}
                 >
                   {item.icon}
                   {item.label}
@@ -671,7 +671,7 @@ export function NoteEditor({ note, onBack }) {
               <button
                 onClick={async () => { await updateNote(note.id, { folder_id: null }); setShowMoveFolder(false); toast.info('Removed from folder') }}
                 className="flex items-center gap-2 px-3 py-2 text-left transition-colors hover:bg-[var(--color-surface-hover)]"
-                style={{ fontSize: 12, color: !note.folder_id ? 'var(--color-accent)' : 'var(--color-text-secondary)', fontFamily: 'var(--font-body)' }}
+                style={{ fontSize: 'var(--text-sm)', color: !note.folder_id ? 'var(--color-accent)' : 'var(--color-text-secondary)', fontFamily: 'var(--font-body)' }}
               >
                 No folder
               </button>
@@ -680,14 +680,14 @@ export function NoteEditor({ note, onBack }) {
                   key={f.id}
                   onClick={async () => { await updateNote(note.id, { folder_id: f.id }); setShowMoveFolder(false); toast.success(`Moved to "${f.name}"`) }}
                   className="flex items-center gap-2 px-3 py-2 text-left transition-colors hover:bg-[var(--color-surface-hover)]"
-                  style={{ fontSize: 12, color: note.folder_id === f.id ? 'var(--color-accent)' : 'var(--color-text-secondary)', fontFamily: 'var(--font-body)' }}
+                  style={{ fontSize: 'var(--text-sm)', color: note.folder_id === f.id ? 'var(--color-accent)' : 'var(--color-text-secondary)', fontFamily: 'var(--font-body)' }}
                 >
                   <FolderOpen size={11} strokeWidth={1.5} />
                   {f.name}
                 </button>
               ))}
               {folders.length === 0 && (
-                <p className="px-3 py-2 font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+                <p className="px-3 py-2 font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
                   Create folders in sidebar first
                 </p>
               )}
@@ -752,7 +752,7 @@ export function NoteEditor({ note, onBack }) {
             style={{
               background: 'var(--color-surface-2)',
               border: '1px solid var(--color-border)',
-              fontSize: 11,
+              fontSize: 'var(--text-xs)',
               color: 'var(--color-text-secondary)',
               fontFamily: 'var(--font-body)',
               maxWidth: 180,
@@ -875,7 +875,7 @@ export function NoteEditor({ note, onBack }) {
               style={{ height: 48, borderColor: 'var(--color-border)' }}
             >
               <History size={14} strokeWidth={1.5} style={{ color: 'var(--color-text-muted)' }} />
-              <span className="flex-1 font-mono uppercase tracking-widest" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+              <span className="flex-1 font-mono uppercase tracking-widest" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
                 Version History
               </span>
               <button
@@ -889,7 +889,7 @@ export function NoteEditor({ note, onBack }) {
             <div className="flex-1 overflow-y-auto min-h-0 p-3 flex flex-col gap-2">
               {historyVersions.length === 0 ? (
                 <div className="flex items-center justify-center h-20">
-                  <p className="font-mono text-center" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+                  <p className="font-mono text-center" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
                     No snapshots yet.<br />Autosave creates one every 2s.
                   </p>
                 </div>
@@ -900,10 +900,10 @@ export function NoteEditor({ note, onBack }) {
                   style={{ background: 'var(--color-surface-2)', border: '1px solid var(--color-border)' }}
                 >
                   <div className="flex-1 min-w-0">
-                    <div className="font-mono truncate" style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>
+                    <div className="font-mono truncate" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-secondary)' }}>
                       {v.title || 'Untitled'}
                     </div>
-                    <div className="font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+                    <div className="font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
                       {format(new Date(v.ts), 'MMM d, h:mm:ss a')}
                     </div>
                   </div>
@@ -927,7 +927,7 @@ export function NoteEditor({ note, onBack }) {
               className="px-4 py-3 border-t shrink-0"
               style={{ borderColor: 'var(--color-border)' }}
             >
-              <p className="font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+              <p className="font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
                 Last 10 autosave snapshots stored locally.
               </p>
             </div>
@@ -954,18 +954,18 @@ export function NoteEditor({ note, onBack }) {
           >
             <div className="flex items-center gap-2">
               <Trash2 size={16} strokeWidth={1.5} style={{ color: 'var(--color-error, #ef4444)', flexShrink: 0 }} />
-              <span className="font-mono font-medium" style={{ fontSize: 13, color: 'var(--color-text-primary)' }}>
+              <span className="font-mono font-medium" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-primary)' }}>
                 Delete this note?
               </span>
             </div>
-            <p className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+            <p className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
               "{title || 'Untitled'}" will be permanently deleted. Cannot be undone.
             </p>
             <div className="flex gap-2 justify-end">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
                 className="px-3 h-7 rounded-md font-mono transition-colors hover:bg-[var(--color-surface-hover)]"
-                style={{ fontSize: 12, color: 'var(--color-text-muted)', border: '1px solid var(--color-border)' }}
+                style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)', border: '1px solid var(--color-border)' }}
               >
                 Cancel
               </button>
@@ -981,7 +981,7 @@ export function NoteEditor({ note, onBack }) {
                   setShowDeleteConfirm(false)
                 }}
                 className="px-3 h-7 rounded-md font-mono transition-colors"
-                style={{ fontSize: 12, background: 'var(--color-error, #ef4444)', color: 'var(--color-bg)', border: 'none' }}
+                style={{ fontSize: 'var(--text-sm)', background: 'var(--color-error, #ef4444)', color: 'var(--color-bg)', border: 'none' }}
               >
                 Delete
               </button>

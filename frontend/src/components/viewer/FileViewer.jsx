@@ -31,7 +31,7 @@ function PdfViewer({ dataUrl }) {
         >
           <ChevronLeft size={12} strokeWidth={1.5} />
         </button>
-        <span className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+        <span className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
           {page} / {numPages ?? '…'}
         </span>
         <button
@@ -50,7 +50,7 @@ function PdfViewer({ dataUrl }) {
         >
           <ZoomOut size={12} strokeWidth={1.5} />
         </button>
-        <span className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+        <span className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
           {Math.round(scale * 100)}%
         </span>
         <button
@@ -66,8 +66,8 @@ function PdfViewer({ dataUrl }) {
         <Document
           file={dataUrl}
           onLoadSuccess={({ numPages }) => setNumPages(numPages)}
-          loading={<span className="font-mono" style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>Loading PDF…</span>}
-          error={<span className="font-mono" style={{ fontSize: 12, color: 'var(--color-error, #ef4444)' }}>Failed to load PDF</span>}
+          loading={<span className="font-mono" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)' }}>Loading PDF…</span>}
+          error={<span className="font-mono" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-error, #ef4444)' }}>Failed to load PDF</span>}
         >
           <Page pageNumber={page} scale={scale} />
         </Document>
@@ -91,13 +91,13 @@ function DocxViewer({ dataUrl }) {
       .catch(() => setError('Failed to parse DOCX'))
   }, [dataUrl])
 
-  if (error) return <div className="p-6 font-mono" style={{ fontSize: 12, color: 'var(--color-error, #ef4444)' }}>{error}</div>
-  if (!html) return <div className="p-6 font-mono" style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>Converting…</div>
+  if (error) return <div className="p-6 font-mono" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-error, #ef4444)' }}>{error}</div>
+  if (!html) return <div className="p-6 font-mono" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)' }}>Converting…</div>
 
   return (
     <div
       className="flex-1 overflow-auto min-h-0 p-8"
-      style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: 'var(--color-text-primary)', lineHeight: 1.7 }}
+      style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-base)', color: 'var(--color-text-primary)', lineHeight: 1.7 }}
       dangerouslySetInnerHTML={{ __html: html }}
     />
   )
@@ -126,8 +126,8 @@ function XlsxViewer({ dataUrl }) {
     }
   }, [dataUrl])
 
-  if (error) return <div className="p-6 font-mono" style={{ fontSize: 12, color: 'var(--color-error, #ef4444)' }}>{error}</div>
-  if (!sheets) return <div className="p-6 font-mono" style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>Parsing…</div>
+  if (error) return <div className="p-6 font-mono" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-error, #ef4444)' }}>{error}</div>
+  if (!sheets) return <div className="p-6 font-mono" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)' }}>Parsing…</div>
 
   const current = sheets[activeSheet]
 
@@ -142,7 +142,7 @@ function XlsxViewer({ dataUrl }) {
               onClick={() => setActiveSheet(i)}
               className="px-4 py-2 font-mono shrink-0 transition-colors"
               style={{
-                fontSize: 11,
+                fontSize: 'var(--text-xs)',
                 color: activeSheet === i ? 'var(--color-accent)' : 'var(--color-text-muted)',
                 borderBottom: activeSheet === i ? '2px solid var(--color-accent)' : '2px solid transparent',
                 background: 'none',
@@ -154,7 +154,7 @@ function XlsxViewer({ dataUrl }) {
         </div>
       )}
       <div className="flex-1 overflow-auto min-h-0">
-        <table className="w-full border-collapse" style={{ fontFamily: 'var(--font-body)', fontSize: 12 }}>
+        <table className="w-full border-collapse" style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-sm)' }}>
           <tbody>
             {current.data.map((row, ri) => (
               <tr key={ri} style={{ borderBottom: '1px solid var(--color-border)' }}>
@@ -220,8 +220,8 @@ function PptxViewer({ dataUrl }) {
       .catch(() => setError('Failed to parse PPTX'))
   }, [dataUrl])
 
-  if (error) return <div className="p-6 font-mono" style={{ fontSize: 12, color: 'var(--color-error, #ef4444)' }}>{error}</div>
-  if (!slides) return <div className="p-6 font-mono" style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>Parsing slides…</div>
+  if (error) return <div className="p-6 font-mono" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-error, #ef4444)' }}>{error}</div>
+  if (!slides) return <div className="p-6 font-mono" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)' }}>Parsing slides…</div>
 
   const current = slides[activeSlide]
 
@@ -240,7 +240,7 @@ function PptxViewer({ dataUrl }) {
         >
           <ChevronLeft size={12} strokeWidth={1.5} />
         </button>
-        <span className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+        <span className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
           Slide {activeSlide + 1} / {slides.length}
         </span>
         <button
@@ -252,7 +252,7 @@ function PptxViewer({ dataUrl }) {
           <ChevronRight size={12} strokeWidth={1.5} />
         </button>
         <div className="flex-1" />
-        <span className="font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>Text only</span>
+        <span className="font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>Text only</span>
       </div>
 
       {/* Slide thumbnail strip */}
@@ -299,7 +299,7 @@ function PptxViewer({ dataUrl }) {
           <p
             style={{
               fontFamily: 'var(--font-body)',
-              fontSize: 14,
+              fontSize: 'var(--text-base)',
               color: 'var(--color-text-primary)',
               lineHeight: 1.6,
               textAlign: 'center',
@@ -334,7 +334,7 @@ export function FileViewer({ attachment, onClose }) {
     return (
       <div className="flex flex-col items-center justify-center h-full gap-3">
         <File size={32} strokeWidth={1} style={{ color: 'var(--color-text-muted)' }} />
-        <p className="font-mono" style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
+        <p className="font-mono" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)' }}>
           Preview not available for this file type
         </p>
       </div>
@@ -358,7 +358,7 @@ export function FileViewer({ attachment, onClose }) {
         <FileText size={14} strokeWidth={1.5} style={{ color: 'var(--color-text-muted)', flexShrink: 0 }} />
         <span
           className="flex-1 font-mono truncate"
-          style={{ fontSize: 12, color: 'var(--color-text-secondary)' }}
+          style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)' }}
         >
           {name}
         </span>

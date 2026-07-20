@@ -79,7 +79,7 @@ function TablePicker({ onInsert, onClose }) {
       </div>
       <p
         className="text-center font-mono mt-2"
-        style={{ fontSize: 10, color: 'var(--color-text-muted)' }}
+        style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}
       >
         {hovered.rows > 0 ? `${hovered.rows} × ${hovered.cols} table` : 'Hover to select size'}
       </p>
@@ -120,7 +120,7 @@ function LinkModal({ open, initialUrl, onSet, onRemove, onClose }) {
           className="flex items-center justify-between px-5 py-4"
           style={{ borderBottom: '1px solid var(--color-border)' }}
         >
-          <span className="font-medium" style={{ fontSize: 14, color: 'var(--color-text-primary)' }}>
+          <span className="font-medium" style={{ fontSize: 'var(--text-base)', color: 'var(--color-text-primary)' }}>
             {initialUrl ? 'Edit Link' : 'Add Link'}
           </span>
           <button
@@ -140,7 +140,7 @@ function LinkModal({ open, initialUrl, onSet, onRemove, onClose }) {
             placeholder="https://example.com"
             className="w-full px-3 py-2 rounded-lg font-mono"
             style={{
-              fontSize: 12,
+              fontSize: 'var(--text-sm)',
               background: 'var(--color-surface-2)',
               border: '1px solid var(--color-border)',
               color: 'var(--color-text-primary)',
@@ -152,7 +152,7 @@ function LinkModal({ open, initialUrl, onSet, onRemove, onClose }) {
               <button
                 onClick={() => { onRemove(); onClose() }}
                 className="flex-1 h-9 rounded-lg font-mono font-medium transition-opacity"
-                style={{ fontSize: 13, border: '1px solid var(--color-border)', color: 'var(--color-text-secondary)' }}
+                style={{ fontSize: 'var(--text-sm)', border: '1px solid var(--color-border)', color: 'var(--color-text-secondary)' }}
               >
                 Remove
               </button>
@@ -161,7 +161,7 @@ function LinkModal({ open, initialUrl, onSet, onRemove, onClose }) {
               onClick={() => { if (url.trim()) onSet(url.trim()); onClose() }}
               disabled={!url.trim()}
               className="flex-1 h-9 rounded-lg font-mono font-medium transition-opacity disabled:opacity-40"
-              style={{ fontSize: 13, background: 'var(--color-accent)', color: 'var(--color-bg)' }}
+              style={{ fontSize: 'var(--text-sm)', background: 'var(--color-accent)', color: 'var(--color-bg)' }}
             >
               {initialUrl ? 'Update' : 'Insert'}
             </button>
@@ -217,7 +217,7 @@ function ImageModal({ open, onInsertUrl, onInsertFile, onClose }) {
           className="flex items-center justify-between px-5 py-4"
           style={{ borderBottom: '1px solid var(--color-border)' }}
         >
-          <span className="font-medium" style={{ fontSize: 14, color: 'var(--color-text-primary)' }}>
+          <span className="font-medium" style={{ fontSize: 'var(--text-base)', color: 'var(--color-text-primary)' }}>
             Insert Image
           </span>
           <button
@@ -242,9 +242,9 @@ function ImageModal({ open, onInsertUrl, onInsertFile, onClose }) {
               key={t.key}
               onClick={() => setTab(t.key)}
               className="flex items-center gap-1.5 px-3 py-3 font-mono transition-colors"
-              style={{
-                fontSize: 11,
-                color: tab === t.key ? 'var(--color-accent)' : 'var(--color-text-muted)',
+                style={{
+                  fontSize: 'var(--text-xs)',
+                  color: tab === t.key ? 'var(--color-accent)' : 'var(--color-text-muted)',
                 borderBottom: tab === t.key ? '2px solid var(--color-accent)' : '2px solid transparent',
                 marginBottom: -1,
                 outline: 'none',
@@ -269,7 +269,7 @@ function ImageModal({ open, onInsertUrl, onInsertFile, onClose }) {
                 placeholder="https://example.com/image.png"
                 className="w-full px-3 py-2 rounded-lg font-mono"
                 style={{
-                  fontSize: 12,
+                  fontSize: 'var(--text-sm)',
                   background: 'var(--color-surface-2)',
                   border: '1px solid var(--color-border)',
                   color: 'var(--color-text-primary)',
@@ -280,7 +280,7 @@ function ImageModal({ open, onInsertUrl, onInsertFile, onClose }) {
                 onClick={handleUrl}
                 disabled={!url.trim()}
                 className="h-9 rounded-lg font-mono font-medium transition-opacity disabled:opacity-40"
-                style={{ fontSize: 13, background: 'var(--color-accent)', color: 'var(--color-bg)' }}
+                style={{ fontSize: 'var(--text-sm)', background: 'var(--color-accent)', color: 'var(--color-bg)' }}
               >
                 Insert
               </button>
@@ -300,11 +300,11 @@ function ImageModal({ open, onInsertUrl, onInsertFile, onClose }) {
                 style={{ border: '2px dashed var(--color-border)' }}
               >
                 <Upload size={22} strokeWidth={1} style={{ color: 'var(--color-text-muted)' }} />
-                <span className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
-                  Click to choose image from device
+<span className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
+                    Click to choose image from device
                 </span>
               </button>
-              <p className="font-mono text-center" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+              <p className="font-mono text-center" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
                 PNG, JPG, GIF, WebP supported
               </p>
             </div>
@@ -445,7 +445,7 @@ export function EditorToolbar({ editor, onAttach }) {
           <Quote size={14} strokeWidth={1.5} />
         </ToolBtn>
         <ToolBtn title="Code block" onClick={() => editor.chain().focus().toggleCodeBlock().run()} active={editor.isActive('codeBlock')}>
-          <span className="font-mono text-xs shrink-0" style={{ fontSize: 11 }}>{'<>'}</span>
+          <span className="font-mono text-xs shrink-0" style={{ fontSize: 'var(--text-xs)' }}>{'<>'}</span>
         </ToolBtn>
         <ToolBtn title="Horizontal rule" onClick={() => editor.chain().focus().setHorizontalRule().run()}>
           <Minus size={14} strokeWidth={1.5} />

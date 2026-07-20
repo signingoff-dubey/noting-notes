@@ -182,7 +182,7 @@ export function NoteCard({ note, active, onClick, grid }) {
                 <span
                   className="inline-flex items-center gap-0.5 font-mono px-1.5 rounded"
                   style={{
-                    fontSize: 10,
+                    fontSize: 'var(--text-2xs)',
                     height: 18,
                     color: 'var(--color-accent)',
                     background: 'var(--color-accent-dim)',
@@ -197,8 +197,8 @@ export function NoteCard({ note, active, onClick, grid }) {
               ))}
             </div>
             <span
-              className="shrink-0 font-mono"
-              style={{ fontSize: 10, color: 'var(--color-text-muted)', whiteSpace: 'nowrap' }}
+            className="shrink-0 font-mono"
+            style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)', whiteSpace: 'nowrap' }}
             >
               {timeAgo}
             </span>
@@ -265,7 +265,7 @@ export function NoteCard({ note, active, onClick, grid }) {
               </h3>
             </div>
             <div className="flex items-center gap-2 shrink-0">
-              <span className="font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+              <span className="font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
                 {timeAgo}
               </span>
               <div
@@ -310,7 +310,7 @@ export function NoteCard({ note, active, onClick, grid }) {
                 <span
                   className="inline-flex items-center gap-0.5 font-mono px-1.5 rounded"
                   style={{
-                    fontSize: 10,
+                    fontSize: 'var(--text-2xs)',
                     height: 18,
                     color: 'var(--color-accent)',
                     background: 'var(--color-accent-dim)',

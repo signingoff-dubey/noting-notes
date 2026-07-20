@@ -29,7 +29,7 @@ function PriorityBadge({ priority }) {
     <span
       className="inline-flex items-center gap-1 font-mono"
       style={{
-        fontSize: 10,
+        fontSize: 'var(--text-2xs)',
         color: PRIORITY_COLORS[priority],
         background: PRIORITY_COLORS[priority] + '18',
         border: `1px solid ${PRIORITY_COLORS[priority]}44`,
@@ -330,7 +330,7 @@ function AddTaskBar({ onSave, folders }) {
                 {filteredFolders.length === 0 && !folderSearch.trim() && (
                   <p
                     className="py-3 text-center font-mono"
-                    style={{ fontSize: 10, color: 'var(--color-text-muted)' }}
+                    style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}
                   >
                     Type to create a folder
                   </p>
@@ -445,7 +445,7 @@ function SubtaskList({ task }) {
               }}
             />
           </div>
-          <span className="font-mono" style={{ fontSize: 9, color: 'var(--color-text-muted)' }}>
+            <span className="font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
             {doneCount}/{total}
           </span>
         </div>
@@ -462,9 +462,10 @@ function SubtaskList({ task }) {
               : <Square size={12} strokeWidth={1.5} />}
           </button>
           <span
-            className="flex-1 font-mono truncate"
+            className="flex-1 truncate"
             style={{
-              fontSize: 11,
+              fontFamily: 'var(--font-body)',
+              fontSize: 'var(--text-xs)',
               color: s.done ? 'var(--color-text-muted)' : 'var(--color-text-secondary)',
               textDecoration: s.done ? 'line-through' : 'none',
             }}
@@ -488,8 +489,8 @@ function SubtaskList({ task }) {
             onChange={e => setNewTitle(e.target.value)}
             onKeyDown={e => { if (e.key === 'Enter') handleAdd(); if (e.key === 'Escape') setAdding(false) }}
             placeholder="Subtask title..."
-            className="flex-1 bg-transparent outline-none font-mono"
-            style={{ fontSize: 11, color: 'var(--color-text-secondary)', borderBottom: '1px solid var(--color-border)', paddingBottom: 2 }}
+            className="flex-1 bg-transparent outline-none"
+            style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-xs)', color: 'var(--color-text-secondary)', borderBottom: '1px solid var(--color-border)', paddingBottom: 2 }}
           />
           <button onClick={handleAdd} style={{ color: 'var(--color-accent)' }}>
             <Plus size={12} strokeWidth={1.5} />
@@ -501,8 +502,8 @@ function SubtaskList({ task }) {
       ) : (
         <button
           onClick={() => setAdding(true)}
-          className="flex items-center gap-1 font-mono mt-0.5 transition-colors hover:opacity-70"
-          style={{ fontSize: 10, color: 'var(--color-text-muted)' }}
+          className="flex items-center gap-1 mt-0.5 transition-colors hover:opacity-70"
+          style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}
         >
           <Plus size={10} strokeWidth={1.5} />
           Add subtask
@@ -571,7 +572,7 @@ function TaskRow({ task, showFolder }) {
               {task.title}
             </span>
             {subtaskCount > 0 && (
-              <span className="flex items-center gap-0.5 font-mono shrink-0" style={{ fontSize: 9, color: 'var(--color-text-muted)' }}>
+              <span className="flex items-center gap-0.5 font-mono shrink-0" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
                 <ListTree size={10} strokeWidth={1.5} />
                 {subtaskDone}/{subtaskCount}
               </span>
@@ -586,7 +587,7 @@ function TaskRow({ task, showFolder }) {
               <span
                 className="flex items-center gap-1 font-mono"
                 style={{
-                  fontSize: 10,
+                  fontSize: 'var(--text-2xs)',
                   color: 'var(--color-text-muted)',
                   background: 'var(--color-surface-2)',
                   border: '1px solid var(--color-border)',
@@ -602,7 +603,7 @@ function TaskRow({ task, showFolder }) {
             {task.due_date && (
               <span
                 className="flex items-center gap-1 font-mono"
-                style={{ fontSize: 10, color: 'var(--color-text-muted)' }}
+                style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}
               >
                 <Calendar size={9} strokeWidth={1.5} />
                 {format(new Date(task.due_date + 'T00:00:00'), 'MMM d')}
@@ -671,16 +672,17 @@ function ListFolderHeader({ label, count }) {
         style={{ color: isUnlabeled ? 'var(--color-text-muted)' : 'var(--color-accent)' }}
       />
       <span
-        className="font-mono uppercase tracking-widest"
+        className="uppercase tracking-widest"
         style={{
-          fontSize: 10,
+          fontFamily: 'var(--font-body)',
+          fontSize: 'var(--text-2xs)',
           color: isUnlabeled ? 'var(--color-text-muted)' : 'var(--color-text-secondary)',
           letterSpacing: '0.1em',
         }}
       >
         {label}
       </span>
-      <span className="font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+      <span className="font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
         {count}
       </span>
       <div className="flex-1 h-px" style={{ background: 'var(--color-border)' }} />
@@ -728,7 +730,7 @@ function FolderTaskRow({ task }) {
       <div className="flex items-center gap-2 shrink-0">
         <PriorityBadge priority={task.priority} />
         {task.due_date && (
-          <span className="font-mono" style={{ fontSize: 9, color: 'var(--color-text-muted)' }}>
+          <span className="font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
             {format(new Date(task.due_date + 'T00:00:00'), 'MMM d')}
           </span>
         )}
@@ -822,7 +824,7 @@ function FolderCard({ label, tasks }) {
           </span>
         )}
 
-        <span className="font-mono mr-1" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+        <span className="font-mono mr-1" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
           {doneCount}/{tasks.length}
         </span>
 
@@ -841,7 +843,7 @@ function FolderCard({ label, tasks }) {
       {expanded && (
         <div className="py-1">
           {tasks.length === 0 ? (
-            <p className="font-mono py-3 text-center" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+            <p className="font-mono py-3 text-center" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
               No tasks
             </p>
           ) : (
@@ -960,11 +962,11 @@ export function Tasks() {
           {(() => {
             const pending = totalCount - doneCount
             return pending > 0 ? (
-              <span className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+              <span className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
                 {pending} left
               </span>
             ) : totalCount > 0 ? (
-              <span className="font-mono" style={{ fontSize: 11, color: 'var(--color-success)' }}>
+              <span className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-success)' }}>
                 all done
               </span>
             ) : null
@@ -1127,17 +1129,17 @@ function KanbanColumn({ column, tasks, onDrop }) {
     >
       <div className="flex items-center gap-2 px-3 py-2.5 border-b" style={{ borderColor: 'var(--color-border)' }}>
         <span className="w-2 h-2 rounded-full shrink-0" style={{ background: column.color }} />
-        <span className="font-mono uppercase tracking-widest flex-1" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+        <span className="uppercase tracking-widest flex-1" style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
           {column.label}
         </span>
-        <span className="font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>{tasks.length}</span>
+        <span className="font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>{tasks.length}</span>
       </div>
       <div className="flex flex-col gap-1.5 p-2 overflow-y-auto flex-1" style={{ maxHeight: 'calc(100vh - 260px)' }}>
         {tasks.map(task => (
           <KanbanCard key={task.id} task={task} />
         ))}
         {tasks.length === 0 && (
-          <p className="text-center font-mono py-6" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+          <p className="text-center font-mono py-6" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
             Drop tasks here
           </p>
         )}
@@ -1163,7 +1165,7 @@ function KanbanCard({ task }) {
           className="font-medium flex-1"
           style={{
             fontFamily: 'var(--font-body)',
-            fontSize: 12,
+            fontSize: 'var(--text-sm)',
             color: isDone ? 'var(--color-text-muted)' : 'var(--color-text-primary)',
             textDecoration: isDone ? 'line-through' : 'none',
             lineHeight: 1.4,
@@ -1175,13 +1177,13 @@ function KanbanCard({ task }) {
       </div>
       <div className="flex items-center gap-2">
         {task.due_date && (
-          <span className="flex items-center gap-1 font-mono" style={{ fontSize: 9, color: 'var(--color-text-muted)' }}>
+          <span className="flex items-center gap-1 font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
             <Calendar size={9} strokeWidth={1.5} />
             {format(new Date(task.due_date + 'T00:00:00'), 'MMM d')}
           </span>
         )}
         {subtasks.length > 0 && (
-          <span className="flex items-center gap-0.5 font-mono" style={{ fontSize: 9, color: 'var(--color-text-muted)' }}>
+          <span className="flex items-center gap-0.5 font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
             <ListTree size={9} strokeWidth={1.5} />
             {subtaskDone}/{subtasks.length}
           </span>
@@ -1224,7 +1226,7 @@ function EmptyState({ filter }) {
         <p style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--text-base)', color: 'var(--color-text-secondary)' }}>
           {filter.status === 'all' ? 'No tasks yet' : `No ${filter.status.replace('_', ' ')} tasks`}
         </p>
-        <p className="mt-1 font-mono" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+        <p className="mt-1 font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
           {filter.status === 'all' ? 'Add a task above to get started' : 'Try a different filter'}
         </p>
       </div>

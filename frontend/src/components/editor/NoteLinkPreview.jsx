@@ -137,7 +137,7 @@ export function NoteLinkPreview({ editorContainer }) {
             className="font-medium truncate flex-1"
             style={{
               fontFamily: 'var(--font-body)',
-              fontSize: 13,
+              fontSize: 'var(--text-sm)',
               color: 'var(--color-text-primary)',
             }}
           >
@@ -149,7 +149,7 @@ export function NoteLinkPreview({ editorContainer }) {
           <p
             className="font-mono line-clamp-3"
             style={{
-              fontSize: 11,
+              fontSize: 'var(--text-xs)',
               color: 'var(--color-text-secondary)',
               lineHeight: 1.5,
             }}
@@ -160,11 +160,11 @@ export function NoteLinkPreview({ editorContainer }) {
 
         <div className="flex items-center gap-1.5 pt-1" style={{ borderTop: '1px solid var(--color-border)' }}>
           <Clock size={10} strokeWidth={1.5} style={{ color: 'var(--color-text-muted)' }} />
-          <span className="font-mono" style={{ fontSize: 9, color: 'var(--color-text-muted)' }}>
+          <span className="font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
             {timeAgo}
           </span>
           <span className="flex-1" />
-          <span className="font-mono" style={{ fontSize: 9, color: 'var(--color-text-muted)' }}>
+          <span className="font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
             {preview.word_count || 0} words
           </span>
         </div>

@@ -31,7 +31,7 @@ function TabButton({ label, active, onClick, count }) {
         <span
           className="font-mono px-1.5"
           style={{
-            fontSize: 10,
+            fontSize: 'var(--text-2xs)',
             background: 'var(--color-surface-2)',
             borderRadius: 99,
             color: 'var(--color-text-muted)',

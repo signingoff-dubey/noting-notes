@@ -20,7 +20,7 @@ function SectionHeader({ label, action, onAction }) {
     <div className="flex items-center justify-between mb-3">
       <span
         className="font-mono uppercase tracking-widest"
-        style={{ fontSize: 10, color: 'var(--color-text-muted)' }}
+        style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}
       >
         {label}
       </span>
@@ -28,7 +28,7 @@ function SectionHeader({ label, action, onAction }) {
         <button
           onClick={onAction}
           className="flex items-center gap-1 font-mono transition-opacity hover:opacity-70"
-          style={{ fontSize: 10, color: 'var(--color-text-muted)' }}
+          style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}
         >
           {action}
           <ArrowRight size={10} strokeWidth={1.5} />
@@ -67,7 +67,7 @@ function RecentNoteCard({ note, onClick }) {
       </div>
       <div className="flex items-center gap-1.5">
         <Clock size={10} strokeWidth={1.5} style={{ color: 'var(--color-text-muted)' }} />
-        <span className="font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+        <span className="font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
           {timeAgo}
         </span>
       </div>
@@ -116,7 +116,7 @@ function UpcomingTaskCard({ task, onClick }) {
         <span
           className="font-mono shrink-0"
           style={{
-            fontSize: 10,
+            fontSize: 'var(--text-2xs)',
             color: overdue ? 'var(--color-error)' : 'var(--color-text-muted)',
           }}
         >
@@ -171,7 +171,7 @@ export function Dashboard() {
       <div className="ink-page-header">
         <div>
           <h1 className="ink-page-title">{getGreeting()}</h1>
-          <p className="font-mono mt-0.5" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+          <p className="font-mono mt-0.5" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
             {format(new Date(), 'EEEE, MMMM d')}
           </p>
         </div>
@@ -212,7 +212,7 @@ export function Dashboard() {
                   style={{ borderStyle: 'dashed' }}
                 >
                   <FileText size={24} strokeWidth={1} style={{ color: 'var(--color-text-muted)' }} />
-                  <p className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+                  <p className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
                     No notes yet
                   </p>
                 </div>
@@ -238,7 +238,7 @@ export function Dashboard() {
                   style={{ borderStyle: 'dashed' }}
                 >
                   <CheckSquare size={24} strokeWidth={1} style={{ color: 'var(--color-text-muted)' }} />
-                  <p className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+                  <p className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
                     No tasks yet
                   </p>
                 </div>

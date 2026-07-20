@@ -28,7 +28,7 @@ function NavItem({ icon, label, active, onClick, badge }) {
       </span>
       <span className="flex-1 text-left">{label}</span>
       {badge != null && (
-        <span className="font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+        <span className="font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
           {badge}
         </span>
       )}
@@ -46,7 +46,7 @@ function SectionLabel({ label, collapsible, collapsed, onToggle }) {
     >
       <span
         className="font-mono uppercase tracking-[0.1em] flex-1 text-left"
-        style={{ fontSize: 10, color: 'var(--color-text-muted)' }}
+        style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}
       >
         {label}
       </span>
@@ -123,7 +123,7 @@ function VaultModal({ open, onClose, hasPIN }) {
         }
       >
         <div className="mt-3 flex flex-col gap-4">
-          <p className="font-mono" style={{ fontSize: 12, color: 'var(--color-text-secondary)' }}>
+          <p className="font-mono" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)' }}>
             Vault protects your private notes. Set a PIN to get started.
           </p>
           <div className="flex flex-col gap-2">
@@ -269,7 +269,7 @@ export function Sidebar() {
           <span
             style={{
               fontFamily: 'var(--font-display)',
-              fontSize: 22,
+              fontSize: 'var(--text-2xl)',
               fontWeight: 700,
               color: 'var(--color-accent)',
               letterSpacing: '0.12em',
@@ -279,7 +279,7 @@ export function Sidebar() {
           </span>
           <span
             className="font-mono"
-            style={{ fontSize: 10, color: 'var(--color-text-muted)', letterSpacing: '0.08em' }}
+            style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)', letterSpacing: '0.08em' }}
           >
             notes
           </span>
@@ -330,13 +330,13 @@ export function Sidebar() {
         <div className="flex flex-col min-w-0">
           <span
             className="font-medium truncate"
-            style={{ fontSize: 13, color: 'var(--color-text-primary)', lineHeight: 1.3 }}
+            style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-primary)', lineHeight: 1.3 }}
           >
             {user ? `Welcome, ${user.displayName?.split(' ')[0] || 'User'}` : greeting}
           </span>
           <span
             className="font-mono truncate"
-            style={{ fontSize: 10, color: 'var(--color-text-muted)' }}
+            style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}
           >
             {noteCount} note{noteCount !== 1 ? 's' : ''}
           </span>
@@ -463,7 +463,7 @@ export function Sidebar() {
           <Sparkles size={13} strokeWidth={1.5} style={{ color: 'var(--color-accent)', flexShrink: 0 }} />
           <span
             style={{
-              fontSize: 12,
+              fontSize: 'var(--text-sm)',
               fontWeight: 700,
               color: 'var(--color-accent)',
               letterSpacing: '0.02em',

@@ -62,7 +62,7 @@ function MiniCalendar({ selectedDate, onSelect, journalDates }) {
         >
           <ChevronLeft size={13} strokeWidth={1.5} />
         </button>
-        <span className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>
+        <span className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-secondary)' }}>
           {format(viewMonth, 'MMMM yyyy')}
         </span>
         <button
@@ -76,7 +76,7 @@ function MiniCalendar({ selectedDate, onSelect, journalDates }) {
       {/* Day headers */}
       <div className="grid grid-cols-7 gap-0.5 text-center">
         {['Su','Mo','Tu','We','Th','Fr','Sa'].map(d => (
-          <span key={d} className="font-mono" style={{ fontSize: 9, color: 'var(--color-text-muted)' }}>{d}</span>
+          <span key={d} className="font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>{d}</span>
         ))}
       </div>
       {/* Days */}
@@ -96,7 +96,7 @@ function MiniCalendar({ selectedDate, onSelect, journalDates }) {
               disabled={future}
               className="w-7 h-7 flex items-center justify-center rounded-md font-mono transition-colors"
               style={{
-                fontSize: 10,
+                fontSize: 'var(--text-2xs)',
                 color: future
                   ? 'var(--color-text-muted)'
                   : selected
@@ -147,7 +147,7 @@ function StreakDisplay({ journalDates }) {
   return (
     <div className="flex items-center gap-2 px-3 py-2 rounded-lg" style={{ background: 'var(--color-accent-dim)' }}>
       <Flame size={14} strokeWidth={1.5} style={{ color: 'var(--color-accent)' }} />
-      <span className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-primary)' }}>
+      <span className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-primary)' }}>
         {streak} day streak
       </span>
     </div>
@@ -178,7 +178,7 @@ function MoodPicker({ value, onChange }) {
             >
               <Icon size={18} strokeWidth={1.5} style={{ color: opt.color }} />
             </div>
-            <span className="font-mono" style={{ fontSize: 9, color: opt.color }}>{opt.label}</span>
+            <span className="font-mono" style={{ fontSize: 'var(--text-2xs)', color: opt.color }}>{opt.label}</span>
           </button>
         )
       })}
@@ -320,7 +320,7 @@ export function Journal() {
 
             {/* Today's mood */}
             <div className="border p-4 flex flex-col gap-3" style={{ borderRadius: 10, borderColor: 'var(--color-border)' }}>
-              <span className="font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              <span className="font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                 {isToday(selectedDate) ? "Today's mood" : format(selectedDate, 'MMM d') + ' mood'}
               </span>
               <MoodPicker value={mood} onChange={handleMoodChange} />
@@ -329,12 +329,12 @@ export function Journal() {
             {/* Quick stats */}
             <div className="flex flex-col gap-2">
               <div className="flex items-center justify-between px-1">
-                <span className="font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>Total entries</span>
-                <span className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-primary)' }}>{journalDates.size}</span>
+                <span className="font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>Total entries</span>
+                <span className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-primary)' }}>{journalDates.size}</span>
               </div>
               <div className="flex items-center justify-between px-1">
-                <span className="font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>This month</span>
-                <span className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-primary)' }}>
+                <span className="font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>This month</span>
+                <span className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-primary)' }}>
                   {[...journalDates].filter(d => d.startsWith(format(selectedDate, 'yyyy-MM'))).length}
                 </span>
               </div>
@@ -357,7 +357,7 @@ export function Journal() {
                 onClick={handleOpenEntry}
                 className="flex items-center gap-2 px-4 h-9 rounded-lg font-mono transition-colors"
                 style={{
-                  fontSize: 12,
+                  fontSize: 'var(--text-sm)',
                   background: 'var(--color-accent)',
                   color: 'var(--color-bg)',
                   fontWeight: 600,
@@ -385,7 +385,7 @@ export function Journal() {
                       const Icon = m.icon
                       return <>
                         <Icon size={12} strokeWidth={1.5} style={{ color: m.color }} />
-                        <span className="font-mono" style={{ fontSize: 10, color: m.color }}>{m.label}</span>
+                        <span className="font-mono" style={{ fontSize: 'var(--text-2xs)', color: m.color }}>{m.label}</span>
                       </>
                     })()}
                   </div>
@@ -404,7 +404,7 @@ export function Journal() {
                   onClick={handleOpenEntry}
                   className="font-mono px-4 h-8 rounded-md transition-colors"
                   style={{
-                    fontSize: 11,
+                    fontSize: 'var(--text-xs)',
                     color: 'var(--color-accent)',
                     background: 'var(--color-accent-dim)',
                   }}
@@ -416,7 +416,7 @@ export function Journal() {
 
             {/* Recent entries */}
             <div className="flex flex-col gap-2 mt-4">
-              <span className="font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              <span className="font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                 Recent entries
               </span>
               {recentEntries.length === 0 ? (
@@ -432,10 +432,10 @@ export function Journal() {
                     style={{ borderRadius: 8, borderColor: 'var(--color-border)' }}
                   >
                     <div className="flex flex-col gap-0.5 flex-1 min-w-0">
-                      <span className="font-mono truncate" style={{ fontSize: 11, color: 'var(--color-text-primary)' }}>
+                      <span className="font-mono truncate" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-primary)' }}>
                         {entry.title?.replace('Journal — ', '') || 'Untitled'}
                       </span>
-                      <span className="font-mono truncate" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+                      <span className="font-mono truncate" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
                         {extractPreview(entry.content, 60) || 'Empty entry'}
                       </span>
                     </div>

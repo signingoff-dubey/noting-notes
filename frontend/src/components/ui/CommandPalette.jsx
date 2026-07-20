@@ -214,12 +214,12 @@ export function CommandPalette() {
               onKeyDown={handleKeyDown}
               placeholder="Search notes, actions..."
               className="flex-1 bg-transparent outline-none font-mono"
-              style={{ fontSize: 14, color: 'var(--color-text-primary)' }}
+              style={{ fontSize: 'var(--text-base)', color: 'var(--color-text-primary)' }}
             />
             <kbd
               className="font-mono shrink-0 px-1.5 py-0.5 rounded"
               style={{
-                fontSize: 10,
+                fontSize: 'var(--text-2xs)',
                 color: 'var(--color-text-muted)',
                 background: 'var(--color-surface-2)',
                 border: '1px solid var(--color-border)',
@@ -235,7 +235,7 @@ export function CommandPalette() {
             style={{ maxHeight: 320 }}
           >
             {results.length === 0 && (
-              <p className="px-4 py-6 text-center font-mono" style={{ fontSize: 12, color: 'var(--color-text-muted)' }}>
+              <p className="px-4 py-6 text-center font-mono" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)' }}>
                 No results
               </p>
             )}
@@ -258,7 +258,7 @@ export function CommandPalette() {
                     className="truncate font-medium"
                     style={{
                       fontFamily: 'var(--font-body)',
-                      fontSize: 13,
+                      fontSize: 'var(--text-sm)',
                       color: 'var(--color-text-primary)',
                     }}
                   >
@@ -267,13 +267,13 @@ export function CommandPalette() {
                   {item.sub && (
                     <p
                       className="truncate font-mono"
-                      style={{ fontSize: 10, color: 'var(--color-text-muted)' }}
+                      style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}
                     >
                       {item.sub}
                     </p>
                   )}
                 </div>
-                <span className="font-mono shrink-0" style={{ fontSize: 9, color: 'var(--color-text-muted)' }}>
+                <span className="font-mono shrink-0" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
                   {item.type === 'note' ? 'Note' : 'Action'}
                 </span>
               </button>

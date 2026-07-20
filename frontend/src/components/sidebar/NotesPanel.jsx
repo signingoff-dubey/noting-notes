@@ -75,7 +75,7 @@ function NoteRow({ note, active, onClick, folderName }) {
         </span>
         <span
           className="font-mono shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
-          style={{ fontSize: 9, color: 'var(--color-text-muted)' }}
+          style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}
         >
           {timeAgo}
         </span>
@@ -98,7 +98,7 @@ function NoteRow({ note, active, onClick, folderName }) {
           <span
             className="inline-flex items-center gap-0.5 font-mono px-1 rounded"
             style={{
-              fontSize: 9,
+              fontSize: 'var(--text-2xs)',
               height: 14,
               color: 'var(--color-accent)',
               background: 'var(--color-accent-dim)',
@@ -109,7 +109,7 @@ function NoteRow({ note, active, onClick, folderName }) {
           </span>
         )}
         {(note.tags || []).slice(0, 2).map(tag => (
-          <span key={tag} className="ink-tag" style={{ fontSize: 9, height: 14 }}>
+          <span key={tag} className="ink-tag" style={{ fontSize: 'var(--text-2xs)', height: 14 }}>
             {tag}
           </span>
         ))}
@@ -257,13 +257,13 @@ export function NotesPanel({ collapsed, onToggle }) {
       >
         <span
           className="flex-1 font-mono uppercase tracking-widest"
-          style={{ fontSize: 10, color: 'var(--color-text-muted)' }}
+          style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}
         >
           Notes
         </span>
         <span
           className="font-mono px-1.5 py-0.5 rounded"
-          style={{ fontSize: 10, background: 'var(--color-surface-2)', color: 'var(--color-text-muted)' }}
+          style={{ fontSize: 'var(--text-2xs)', background: 'var(--color-surface-2)', color: 'var(--color-text-muted)' }}
         >
           {filtered.length}
         </span>
@@ -383,18 +383,18 @@ export function NotesPanel({ collapsed, onToggle }) {
           >
             <div className="flex items-center gap-2">
               <Trash2 size={16} strokeWidth={1.5} style={{ color: 'var(--color-error, #ef4444)', flexShrink: 0 }} />
-              <span id="delete-confirm-title" className="font-mono font-medium" style={{ fontSize: 13, color: 'var(--color-text-primary)' }}>
+              <span id="delete-confirm-title" className="font-mono font-medium" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-primary)' }}>
                 Delete all notes?
               </span>
             </div>
-            <p className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-muted)' }}>
+            <p className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}>
               This will permanently delete {notes.filter(n => !n.archived && n._source !== 'journal').length} note{notes.filter(n => !n.archived && n._source !== 'journal').length !== 1 ? 's' : ''}. Cannot be undone.
             </p>
             <div className="flex gap-2 justify-end">
               <button
                 onClick={() => setConfirmDelete(false)}
                 className="px-3 h-7 rounded-md font-mono transition-colors hover:bg-[var(--color-surface-hover)]"
-                style={{ fontSize: 12, color: 'var(--color-text-muted)', border: '1px solid var(--color-border)' }}
+                style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)', border: '1px solid var(--color-border)' }}
               >
                 Cancel
               </button>
@@ -402,7 +402,7 @@ export function NotesPanel({ collapsed, onToggle }) {
                 onClick={handleDeleteAll}
                 className="px-3 h-7 rounded-md font-mono transition-colors"
                 style={{
-                  fontSize: 12,
+                  fontSize: 'var(--text-sm)',
                   background: 'var(--color-error, #ef4444)',
                   color: 'var(--color-bg)',
                   border: 'none',

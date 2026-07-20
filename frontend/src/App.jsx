@@ -111,7 +111,7 @@ export default function App() {
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[9999] focus:px-3 focus:py-1.5 focus:rounded"
-        style={{ background: 'var(--color-accent)', color: 'var(--color-bg)', fontFamily: 'var(--font-mono)', fontSize: 12 }}
+        style={{ background: 'var(--color-accent)', color: 'var(--color-bg)', fontFamily: 'var(--font-mono)', fontSize: 'var(--text-sm)' }}
       >
         Skip to content
       </a>

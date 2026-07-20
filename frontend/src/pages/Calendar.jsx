@@ -54,7 +54,7 @@ function DayCell({ day, isCurrentMonth, isCurrentDay, isSelected, tasks, notes, 
             key={task.id}
             className="flex items-center gap-1 truncate font-mono px-1 py-0.5"
             style={{
-              fontSize: 10,
+              fontSize: 'var(--text-2xs)',
               background: 'var(--color-surface-2)',
               borderRadius: 3,
               color: 'var(--color-text-secondary)',
@@ -69,7 +69,7 @@ function DayCell({ day, isCurrentMonth, isCurrentDay, isSelected, tasks, notes, 
             key={note.id}
             className="flex items-center gap-1 truncate font-mono px-1 py-0.5"
             style={{
-              fontSize: 10,
+              fontSize: 'var(--text-2xs)',
               background: 'var(--color-accent-dim)',
               borderRadius: 3,
               color: 'var(--color-text-muted)',
@@ -80,7 +80,7 @@ function DayCell({ day, isCurrentMonth, isCurrentDay, isSelected, tasks, notes, 
           </span>
         ))}
         {(tasks.length + notes.length) > 2 && (
-          <span className="font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+          <span className="font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
             +{tasks.length + notes.length - 2} more
           </span>
         )}
@@ -254,7 +254,7 @@ export function Calendar() {
                     placeholder="Task title..."
                     className="w-full px-2 py-1.5 rounded-md font-mono"
                     style={{
-                      fontSize: 12,
+                      fontSize: 'var(--text-sm)',
                       background: 'var(--color-surface-2)',
                       border: '1px solid var(--color-border)',
                       color: 'var(--color-text-primary)',
@@ -267,7 +267,7 @@ export function Calendar() {
                       onChange={e => setNewTaskPriority(e.target.value)}
                       className="flex-1 px-2 py-1 rounded-md font-mono"
                       style={{
-                        fontSize: 11,
+                        fontSize: 'var(--text-xs)',
                         background: 'var(--color-surface-2)',
                         border: '1px solid var(--color-border)',
                         color: 'var(--color-text-secondary)',
@@ -284,7 +284,7 @@ export function Calendar() {
                       onClick={handleCreateTask}
                       disabled={!newTaskTitle.trim()}
                       className="px-3 h-7 rounded-md font-mono transition-opacity disabled:opacity-40"
-                      style={{ fontSize: 11, background: 'var(--color-accent)', color: 'var(--color-bg)' }}
+                      style={{ fontSize: 'var(--text-xs)', background: 'var(--color-accent)', color: 'var(--color-bg)' }}
                     >
                       Add
                     </button>
@@ -299,7 +299,7 @@ export function Calendar() {
                 <div>
                   <div
                     className="px-4 py-2 font-mono uppercase tracking-widest"
-                    style={{ fontSize: 10, color: 'var(--color-text-muted)', background: 'var(--color-surface)' }}
+                    style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)', background: 'var(--color-surface)' }}
                   >
                     Tasks
                   </div>
@@ -337,7 +337,7 @@ export function Calendar() {
                 <div>
                   <div
                     className="px-4 py-2 font-mono uppercase tracking-widest"
-                    style={{ fontSize: 10, color: 'var(--color-text-muted)', background: 'var(--color-surface)' }}
+                    style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)', background: 'var(--color-surface)' }}
                   >
                     Notes created
                   </div>

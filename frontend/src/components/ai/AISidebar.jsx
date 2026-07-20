@@ -29,10 +29,10 @@ function NoLLMBanner({ onInstall, onAddKey }) {
     >
       <AlertTriangle size={14} strokeWidth={1.5} style={{ color: 'var(--color-accent)', flexShrink: 0 }} />
       <div className="flex-1 min-w-0">
-        <p className="font-mono font-medium" style={{ fontSize: 11, color: 'var(--color-accent)' }}>
+        <p className="font-mono font-medium" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-accent)' }}>
           No LLM detected
         </p>
-        <p className="font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)', lineHeight: 1.4 }}>
+        <p className="font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)', lineHeight: 1.4 }}>
           Install Ollama and pull a model, or connect a cloud API key.
         </p>
       </div>
@@ -41,7 +41,7 @@ function NoLLMBanner({ onInstall, onAddKey }) {
           onClick={onInstall}
           className="flex items-center gap-1 px-2 h-6 rounded-md font-mono transition-colors hover:opacity-80"
           style={{
-            fontSize: 10,
+            fontSize: 'var(--text-2xs)',
             background: 'oklch(72% 0.17 65 / 0.15)',
             border: '1px solid oklch(72% 0.17 65 / 0.3)',
             color: 'var(--color-accent)',
@@ -54,7 +54,7 @@ function NoLLMBanner({ onInstall, onAddKey }) {
           onClick={onAddKey}
           className="flex items-center gap-1 px-2 h-6 rounded-md font-mono transition-colors hover:opacity-80"
           style={{
-            fontSize: 10,
+            fontSize: 'var(--text-2xs)',
             background: 'var(--color-accent)',
             color: 'var(--color-bg)',
           }}
@@ -115,7 +115,7 @@ function CustomAPIModal({ open, onClose, initial, onSave }) {
         >
           <div className="flex items-center gap-2">
             <KeyRound size={15} strokeWidth={1.5} style={{ color: 'var(--color-accent)' }} />
-            <span className="font-medium" style={{ fontSize: 15, color: 'var(--color-text-primary)' }}>
+            <span className="font-medium" style={{ fontSize: 'var(--text-base)', color: 'var(--color-text-primary)' }}>
               Custom API
             </span>
           </div>
@@ -131,12 +131,12 @@ function CustomAPIModal({ open, onClose, initial, onSave }) {
 
         {/* Body */}
         <div className="flex flex-col gap-4 px-5 py-4">
-          <p className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-muted)', lineHeight: 1.5 }}>
+          <p className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)', lineHeight: 1.5 }}>
             Connect any OpenAI-compatible API (OpenAI, Together, Groq, etc.)
           </p>
 
           <div className="flex flex-col gap-1.5">
-            <label className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>
+            <label className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-secondary)' }}>
               Base URL
             </label>
             <input
@@ -145,7 +145,7 @@ function CustomAPIModal({ open, onClose, initial, onSave }) {
               placeholder="https://api.openai.com/v1"
               className="w-full px-3 py-2 rounded-lg font-mono"
               style={{
-                fontSize: 12,
+                fontSize: 'var(--text-sm)',
                 background: 'var(--color-surface-2)',
                 border: '1px solid var(--color-border)',
                 color: 'var(--color-text-primary)',
@@ -155,7 +155,7 @@ function CustomAPIModal({ open, onClose, initial, onSave }) {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>
+            <label className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-secondary)' }}>
               API Key
             </label>
             <input
@@ -165,7 +165,7 @@ function CustomAPIModal({ open, onClose, initial, onSave }) {
               placeholder="sk-..."
               className="w-full px-3 py-2 rounded-lg font-mono"
               style={{
-                fontSize: 12,
+                fontSize: 'var(--text-sm)',
                 background: 'var(--color-surface-2)',
                 border: '1px solid var(--color-border)',
                 color: 'var(--color-text-primary)',
@@ -175,7 +175,7 @@ function CustomAPIModal({ open, onClose, initial, onSave }) {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>
+            <label className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-secondary)' }}>
               Model name
             </label>
             <input
@@ -184,7 +184,7 @@ function CustomAPIModal({ open, onClose, initial, onSave }) {
               placeholder="gpt-4o-mini"
               className="w-full px-3 py-2 rounded-lg font-mono"
               style={{
-                fontSize: 12,
+                fontSize: 'var(--text-sm)',
                 background: 'var(--color-surface-2)',
                 border: '1px solid var(--color-border)',
                 color: 'var(--color-text-primary)',
@@ -202,7 +202,7 @@ function CustomAPIModal({ open, onClose, initial, onSave }) {
           <button
             onClick={onClose}
             className="flex-1 h-9 rounded-lg font-mono transition-colors hover:bg-[var(--color-surface-hover)]"
-            style={{ fontSize: 13, color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)' }}
+            style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)' }}
           >
             Cancel
           </button>
@@ -210,7 +210,7 @@ function CustomAPIModal({ open, onClose, initial, onSave }) {
             onClick={handleSave}
             disabled={saving}
             className="flex-1 h-9 rounded-lg font-mono font-medium transition-opacity disabled:opacity-50"
-            style={{ fontSize: 13, background: 'var(--color-accent)', color: 'var(--color-bg)' }}
+            style={{ fontSize: 'var(--text-sm)', background: 'var(--color-accent)', color: 'var(--color-bg)' }}
           >
             {saving ? 'Saving...' : 'Save & use'}
           </button>
@@ -241,7 +241,7 @@ function InstallOllamaModal({ open, onClose }) {
         <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid var(--color-border)' }}>
           <div className="flex items-center gap-2">
             <Server size={15} strokeWidth={1.5} style={{ color: 'var(--color-accent)' }} />
-            <span className="font-medium" style={{ fontSize: 15, color: 'var(--color-text-primary)' }}>
+            <span className="font-medium" style={{ fontSize: 'var(--text-base)', color: 'var(--color-text-primary)' }}>
               Install a local model
             </span>
           </div>
@@ -250,22 +250,22 @@ function InstallOllamaModal({ open, onClose }) {
           </button>
         </div>
         <div className="flex flex-col gap-3 px-5 py-4">
-          <p className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>
+          <p className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>
             1. Install Ollama from <span style={{ color: 'var(--color-accent)' }}>ollama.com</span>
           </p>
-          <p className="font-mono" style={{ fontSize: 11, color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>
+          <p className="font-mono" style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-secondary)', lineHeight: 1.6 }}>
             2. Open a terminal and run one of these:
           </p>
           {['ollama pull mistral:7b', 'ollama pull llama3.2:3b', 'ollama pull qwen2.5-coder:7b'].map(cmd => (
             <div
               key={cmd}
               className="px-3 py-2 rounded-lg font-mono"
-              style={{ fontSize: 11, background: 'var(--color-surface-2)', border: '1px solid var(--color-border)', color: 'var(--color-text-primary)' }}
+              style={{ fontSize: 'var(--text-xs)', background: 'var(--color-surface-2)', border: '1px solid var(--color-border)', color: 'var(--color-text-primary)' }}
             >
               {cmd}
             </div>
           ))}
-          <p className="font-mono" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+          <p className="font-mono" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
             3. Restart NOTING — the model will appear automatically.
           </p>
         </div>
@@ -273,7 +273,7 @@ function InstallOllamaModal({ open, onClose }) {
           <button
             onClick={onClose}
             className="w-full h-9 rounded-lg font-mono transition-colors hover:bg-[var(--color-surface-hover)]"
-            style={{ fontSize: 13, color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)' }}
+            style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)' }}
           >
             Got it
           </button>
@@ -318,7 +318,7 @@ function ModelDropdown({ models, activeModel, apiConfig, onSelectModel, onCustom
           ? <KeyRound size={11} strokeWidth={1.5} style={{ color: 'var(--color-accent)', flexShrink: 0 }} />
           : <Sparkles size={11} strokeWidth={1.5} style={{ flexShrink: 0 }} />
         }
-        <span className="flex-1 text-left truncate" style={{ fontSize: 11 }}>{displayLabel}</span>
+        <span className="flex-1 text-left truncate" style={{ fontSize: 'var(--text-xs)' }}>{displayLabel}</span>
         <ChevronDown size={10} strokeWidth={1.5} style={{ flexShrink: 0 }} />
       </button>
 
@@ -338,7 +338,7 @@ function ModelDropdown({ models, activeModel, apiConfig, onSelectModel, onCustom
             <>
               <div
                 className="px-3 pt-2.5 pb-1 font-mono uppercase tracking-widest"
-                style={{ fontSize: 9, color: 'var(--color-text-muted)', letterSpacing: '0.12em' }}
+                style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)', letterSpacing: '0.12em' }}
               >
                 Cloud Models (Groq)
               </div>
@@ -356,10 +356,10 @@ function ModelDropdown({ models, activeModel, apiConfig, onSelectModel, onCustom
                       style={{ background: selected ? 'var(--color-accent)' : 'var(--color-border)' }}
                     />
                     <div className="flex-1 min-w-0 text-left">
-                      <p style={{ fontSize: 12, color: 'var(--color-text-primary)', fontFamily: 'var(--font-body)' }}>
+                      <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-primary)', fontFamily: 'var(--font-body)' }}>
                         {m.id.split(':')[0].replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
                       </p>
-                      <p className="font-mono truncate" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+                      <p className="font-mono truncate" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
                         {m.id}
                       </p>
                     </div>
@@ -368,7 +368,7 @@ function ModelDropdown({ models, activeModel, apiConfig, onSelectModel, onCustom
                         <span
                           className="font-mono"
                           style={{
-                            fontSize: 10,
+                            fontSize: 'var(--text-2xs)',
                             color: 'var(--color-text-muted)',
                             background: 'var(--color-surface-2)',
                             border: '1px solid var(--color-border)',
@@ -393,7 +393,7 @@ function ModelDropdown({ models, activeModel, apiConfig, onSelectModel, onCustom
               <div
                 className="px-3 pt-2.5 pb-1 font-mono uppercase tracking-widest"
                 style={{
-                  fontSize: 9,
+                  fontSize: 'var(--text-2xs)',
                   color: 'var(--color-text-muted)',
                   letterSpacing: '0.12em',
                   borderTop: models.length > 0 ? '1px solid var(--color-border)' : 'none',
@@ -410,17 +410,17 @@ function ModelDropdown({ models, activeModel, apiConfig, onSelectModel, onCustom
                 >
                   <div className="w-2 h-2 rounded-full shrink-0" style={{ background: 'var(--color-border)' }} />
                   <div className="flex-1 min-w-0 text-left">
-                    <p style={{ fontSize: 12, color: 'var(--color-text-primary)', fontFamily: 'var(--font-body)' }}>
+                    <p style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-primary)', fontFamily: 'var(--font-body)' }}>
                       {m.name}
                     </p>
-                    <p className="font-mono truncate" style={{ fontSize: 10, color: 'var(--color-text-muted)' }}>
+                    <p className="font-mono truncate" style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}>
                       {m.id}
                     </p>
                   </div>
                   <span
                     className="font-mono shrink-0 flex items-center gap-0.5"
                     style={{
-                      fontSize: 10,
+                      fontSize: 'var(--text-2xs)',
                       color: 'var(--color-text-muted)',
                       background: 'var(--color-surface-2)',
                       border: '1px solid var(--color-border)',
@@ -450,7 +450,7 @@ function ModelDropdown({ models, activeModel, apiConfig, onSelectModel, onCustom
               />
               <span
                 style={{
-                  fontSize: 12,
+                  fontSize: 'var(--text-sm)',
                   fontFamily: 'var(--font-body)',
                   color: isCustomActive ? 'var(--color-accent)' : 'var(--color-text-secondary)',
                 }}
@@ -501,7 +501,7 @@ function ChatBubble({ msg, streaming, onAddToNote }) {
             onClick={() => onAddToNote(textContent)}
             title="Add this to current note"
             className="flex items-center gap-1 font-mono transition-opacity opacity-0 group-hover:opacity-100 hover:opacity-100 focus:opacity-100"
-            style={{ fontSize: 9, color: 'var(--color-text-muted)' }}
+            style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-muted)' }}
           >
             <PenLine size={9} strokeWidth={1.5} />
             add to note
@@ -766,7 +766,7 @@ export function AISidebar() {
               <PenLine size={12} strokeWidth={1.5} style={{ color: 'var(--color-accent)', flexShrink: 0 }} />
               <span
                 className="font-mono font-medium flex-1"
-                style={{ fontSize: 11, color: 'var(--color-accent)' }}
+                style={{ fontSize: 'var(--text-xs)', color: 'var(--color-accent)' }}
               >
                 AI wants to write to your note
               </span>
@@ -776,7 +776,7 @@ export function AISidebar() {
               <p
                 className="font-mono line-clamp-4 whitespace-pre-wrap"
                 style={{
-                  fontSize: 10,
+                  fontSize: 'var(--text-2xs)',
                   color: 'var(--color-text-secondary)',
                   lineHeight: 1.6,
                   maxHeight: 80,
@@ -794,7 +794,7 @@ export function AISidebar() {
                 onClick={() => { denyNoteWrite(); toast.info('Write denied') }}
                 className="flex items-center gap-1.5 px-3 h-7 rounded-md font-mono transition-colors hover:opacity-80"
                 style={{
-                  fontSize: 11,
+                  fontSize: 'var(--text-xs)',
                   color: 'var(--color-text-muted)',
                   border: '1px solid var(--color-border)',
                   background: 'var(--color-surface)',
@@ -807,7 +807,7 @@ export function AISidebar() {
                 onClick={() => { confirmNoteWrite(); toast.success('Added to note') }}
                 className="flex items-center gap-1.5 px-3 h-7 rounded-md font-mono font-medium transition-colors hover:opacity-90"
                 style={{
-                  fontSize: 11,
+                  fontSize: 'var(--text-xs)',
                   background: 'var(--color-accent)',
                   color: 'var(--color-bg)',
                 }}

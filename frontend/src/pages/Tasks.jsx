@@ -166,7 +166,7 @@ function AddTaskBar({ onSave, folders }) {
                   borderColor: 'var(--color-border)',
                   borderRadius: 8,
                   minWidth: 120,
-                  boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+                  boxShadow: '0 8px 24px var(--color-shadow)',
                 }}
               >
                 {PRIORITY_OPTIONS.map(p => (
@@ -239,7 +239,7 @@ function AddTaskBar({ onSave, folders }) {
                   borderColor: 'var(--color-border)',
                   borderRadius: 8,
                   minWidth: 180,
-                  boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+                  boxShadow: '0 8px 24px var(--color-shadow)',
                   overflow: 'hidden',
                 }}
               >
@@ -363,7 +363,7 @@ function AddTaskBar({ onSave, folders }) {
                   borderColor: 'var(--color-border)',
                   borderRadius: 8,
                   minWidth: 140,
-                  boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+                  boxShadow: '0 8px 24px var(--color-shadow)',
                 }}
               >
                 {RECURRENCE_OPTIONS.map(r => (

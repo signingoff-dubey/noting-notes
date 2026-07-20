@@ -89,6 +89,7 @@ function ThemeSwatch({ themeKey, active, onClick }) {
   return (
     <button
       onClick={onClick}
+      aria-label={`${THEME_LABELS[themeKey]} theme`}
       className="flex flex-col gap-2 p-3 border text-left transition-all duration-[150ms]"
       style={{
         borderRadius: 8,
@@ -178,10 +179,14 @@ function SettingRow({ label, description, children }) {
   )
 }
 
-function Toggle({ checked, onChange }) {
+function Toggle({ checked, onChange, label }) {
   return (
     <button
       onClick={() => onChange(!checked)}
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      aria-label={label}
       className="relative w-9 h-5 transition-colors duration-200"
       style={{
         borderRadius: 99,
@@ -204,7 +209,7 @@ function Toggle({ checked, onChange }) {
   )
 }
 
-function RangeSlider({ value, onChange, min, max, step, label }) {
+function RangeSlider({ value, onChange, min, max, step, label, name }) {
   const pct = ((value - min) / (max - min)) * 100
   return (
     <div className="flex items-center gap-3">
@@ -215,6 +220,7 @@ function RangeSlider({ value, onChange, min, max, step, label }) {
         step={step}
         value={value}
         onChange={e => onChange(Number(e.target.value))}
+        aria-label={name}
         className="ink-slider w-32"
         style={{ '--pct': `${pct}%` }}
       />
@@ -251,7 +257,7 @@ function AppearanceTab({ theme, setTheme, themes, accent, setAccent, deepContras
 
       <Section title="Display">
         <SettingRow label="Deep contrast dividers" description="Show borders in high-contrast white for clearer visual separation">
-          <Toggle checked={deepContrast} onChange={setDeepContrast} />
+          <Toggle checked={deepContrast} onChange={setDeepContrast} label="Deep contrast dividers" />
         </SettingRow>
       </Section>
     </div>
@@ -272,25 +278,25 @@ function EditorTab() {
     <div className="flex flex-col gap-6">
       <Section title="Typography">
         <SettingRow label="Font size" description="Base editor font size">
-          <RangeSlider value={fontSize} onChange={setFontSize} min={12} max={24} step={1} label="px" />
+          <RangeSlider value={fontSize} onChange={setFontSize} min={12} max={24} step={1} label="px" name="Font size" />
         </SettingRow>
         <SettingRow label="Line height" description="Line spacing multiplier">
-          <RangeSlider value={lineHeight} onChange={setLineHeight} min={1.2} max={2.4} step={0.1} label="×" />
+          <RangeSlider value={lineHeight} onChange={setLineHeight} min={1.2} max={2.4} step={0.1} label="×" name="Line height" />
         </SettingRow>
       </Section>
 
       <Section title="Behaviour">
         <SettingRow label="Autosave delay" description="Seconds before auto-saving">
-          <RangeSlider value={autosave} onChange={setAutosave} min={1} max={10} step={1} label="s" />
+          <RangeSlider value={autosave} onChange={setAutosave} min={1} max={10} step={1} label="s" name="Autosave delay" />
         </SettingRow>
         <SettingRow label="Spellcheck" description="Underline misspelled words">
-          <Toggle checked={spellcheck} onChange={setSpellcheck} />
+          <Toggle checked={spellcheck} onChange={setSpellcheck} label="Spellcheck" />
         </SettingRow>
         <SettingRow label="Typewriter mode" description="Keep cursor centred vertically while typing">
-          <Toggle checked={typewriterMode} onChange={setTypewriter} />
+          <Toggle checked={typewriterMode} onChange={setTypewriter} label="Typewriter mode" />
         </SettingRow>
         <SettingRow label="Focus mode" description="Dim all text except the current paragraph">
-          <Toggle checked={focusMode} onChange={setFocusMode} />
+          <Toggle checked={focusMode} onChange={setFocusMode} label="Focus mode" />
         </SettingRow>
       </Section>
     </div>
@@ -318,10 +324,10 @@ function AITab() {
 
       <Section title="Behaviour">
         <SettingRow label="Streaming" description="Show AI response token by token">
-          <Toggle checked={streaming} onChange={setStreaming} />
+          <Toggle checked={streaming} onChange={setStreaming} label="Streaming" />
         </SettingRow>
         <SettingRow label="Note memory" description="AI remembers context from current note">
-          <Toggle checked={memory} onChange={setMemory} />
+          <Toggle checked={memory} onChange={setMemory} label="Note memory" />
         </SettingRow>
       </Section>
     </div>
@@ -413,11 +419,11 @@ function SecurityTab() {
           </span>
         </SettingRow>
         <SettingRow label="Auto-lock" description="Lock vault after idle timeout">
-          <Toggle checked={autoLockEnabled} onChange={setAutoLockEnabled} />
+          <Toggle checked={autoLockEnabled} onChange={setAutoLockEnabled} label="Auto-lock vault" />
         </SettingRow>
         {autoLockEnabled && (
           <SettingRow label="Lock after" description="Minutes of inactivity before vault locks">
-            <RangeSlider value={autoLockMinutes} onChange={setAutoLockMinutes} min={1} max={30} step={1} label="m" />
+            <RangeSlider value={autoLockMinutes} onChange={setAutoLockMinutes} min={1} max={30} step={1} label="m" name="Auto-lock minutes" />
           </SettingRow>
         )}
       </Section>

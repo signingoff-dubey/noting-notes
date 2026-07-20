@@ -28,15 +28,15 @@ function FolderItem({ folder, depth = 0, onSelect, activeId }) {
 
   return (
     <>
-      <div
+      <button
+        onClick={() => onSelect(folder.id)}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onSelect(folder.id) }}}
         className={cn(
-          'group flex items-center gap-1 h-8 cursor-pointer select-none transition-colors',
+          'group flex items-center gap-1 h-8 w-full cursor-pointer select-none transition-colors text-left',
           'hover:bg-sidebar-hover',
-          isActive && 'bg-sidebar-active border-l-2 border-l-accent',
-          !isActive && 'border-l-2 border-l-transparent',
+          isActive && 'bg-sidebar-active',
         )}
         style={{ paddingLeft: `${12 + depth * 12}px`, paddingRight: '8px' }}
-        onClick={() => onSelect(folder.id)}
       >
         <button
           onClick={(e) => { e.stopPropagation(); setExpanded(o => !o) }}
@@ -74,7 +74,7 @@ function FolderItem({ folder, depth = 0, onSelect, activeId }) {
             ]}
           />
         </div>
-      </div>
+        </button>
       {expanded && children.map(child => (
         <FolderItem key={child.id} folder={child} depth={depth + 1} onSelect={onSelect} activeId={activeId} />
       ))}

@@ -23,6 +23,9 @@
   --radius-sm: 2px;
   --radius-md: 2px;
   --radius-lg: 3px;
+
+  --color-overlay: color-mix(in oklch, var(--color-bg) 75%, transparent);
+  --color-shadow: color-mix(in oklch, var(--color-bg) 50%, transparent);
 }
 
 /* ─── Nothing Dark (default) ─── */
@@ -387,8 +390,8 @@ body {
 
 /* ─── Deep contrast mode ─── */
 [data-deep-contrast="true"] {
-  --color-border:        rgba(255, 255, 255, 0.30);
-  --color-border-strong: rgba(255, 255, 255, 0.60);
+  --color-border:        color-mix(in oklch, var(--color-text-primary) 30%, transparent);
+  --color-border-strong: color-mix(in oklch, var(--color-text-primary) 60%, transparent);
 }
 
 /* ─── Focus Ring ─── */
@@ -593,7 +596,7 @@ textarea.ink-search:focus-visible {
 
 .editor-content img { max-width: 100%; border-radius: 2px; margin: 12px 0; display: block; }
 .editor-content hr { border: none; border-top: 1px solid var(--color-border); margin: 24px 0; }
-.editor-content mark { background: rgba(255, 230, 0, 0.15); color: inherit; padding: 0 2px; border-radius: 1px; }
+.editor-content mark { background: color-mix(in oklch, var(--color-accent) 20%, transparent); color: inherit; padding: 0 2px; border-radius: 1px; }
 /* AI-inserted content uses accent highlight */
 .editor-content mark[data-color="null"],
 .editor-content mark:not([data-color]) {
@@ -659,14 +662,14 @@ textarea.ink-search:focus-visible {
   from { opacity: 0; transform: translateY(-4px) scale(0.97); }
   to   { opacity: 1; transform: translateY(0)   scale(1); }
 }
-.dropdown-in { animation: dropdown-in 120ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.dropdown-in { animation: dropdown-in 120ms ease-out forwards; }
 
 /* ─── Panel fade-in ─── */
 @keyframes panel-enter {
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.panel-enter { animation: panel-enter 180ms cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.panel-enter { animation: panel-enter 180ms ease-out forwards; }
 
 /* ─── Streaming cursor ─── */
 @keyframes blink {
@@ -716,7 +719,7 @@ textarea.ink-search:focus-visible {
 }
 .ink-card:hover {
   border-color: var(--color-border-strong);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 20px color-mix(in oklch, var(--color-text-muted) 30%, transparent);
 }
 .ink-card-active {
   border-color: var(--color-border-strong);

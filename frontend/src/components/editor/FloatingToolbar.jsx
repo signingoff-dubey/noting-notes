@@ -27,6 +27,7 @@ function FloatBtn({ onClick, active, title, children, ai, loading }) {
       onClick={onClick}
       title={title}
       disabled={loading}
+      aria-pressed={active}
       className={cn(
         'flex items-center justify-center gap-1 h-full px-2 font-mono text-xs transition-colors duration-[100ms]',
         'text-text-secondary hover:text-text-primary',
@@ -379,12 +380,12 @@ export function FloatingToolbar({ editor }) {
     {showLinkInput && (
       <div
         className="fixed inset-0 z-50 flex items-center justify-center"
-        style={{ background: 'rgba(0,0,0,0.55)' }}
+        style={{ background: 'var(--color-overlay)' }}
         onClick={(e) => { if (e.target === e.currentTarget) setShowLinkInput(false) }}
       >
         <div
           className="flex flex-col rounded-xl overflow-hidden"
-          style={{ width: 380, background: 'var(--color-surface)', border: '1px solid var(--color-border)', boxShadow: '0 24px 80px rgba(0,0,0,0.5)' }}
+          style={{ width: 380, background: 'var(--color-surface)', border: '1px solid var(--color-border)', boxShadow: '0 24px 80px var(--color-shadow)' }}
         >
           <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid var(--color-border)' }}>
             <span className="font-medium" style={{ fontSize: 14, color: 'var(--color-text-primary)' }}>
@@ -432,12 +433,12 @@ export function FloatingToolbar({ editor }) {
     {showLangInput && (
       <div
         className="fixed inset-0 z-50 flex items-center justify-center"
-        style={{ background: 'rgba(0,0,0,0.55)' }}
+        style={{ background: 'var(--color-overlay)' }}
         onClick={(e) => { if (e.target === e.currentTarget) setShowLangInput(false) }}
       >
         <div
           className="flex flex-col rounded-xl overflow-hidden"
-          style={{ width: 380, background: 'var(--color-surface)', border: '1px solid var(--color-border)', boxShadow: '0 24px 80px rgba(0,0,0,0.5)' }}
+          style={{ width: 380, background: 'var(--color-surface)', border: '1px solid var(--color-border)', boxShadow: '0 24px 80px var(--color-shadow)' }}
         >
           <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid var(--color-border)' }}>
             <span className="font-medium" style={{ fontSize: 14, color: 'var(--color-text-primary)' }}>

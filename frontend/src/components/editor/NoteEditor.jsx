@@ -605,7 +605,7 @@ export function NoteEditor({ note, onBack }) {
               style={{
                 background: 'var(--color-surface)',
                 border: '1px solid var(--color-border)',
-                boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+                boxShadow: '0 8px 24px var(--color-shadow)',
                 minWidth: 160,
               }}
               onMouseLeave={() => setShowExportMenu(false)}
@@ -663,7 +663,7 @@ export function NoteEditor({ note, onBack }) {
               style={{
                 background: 'var(--color-surface)',
                 border: '1px solid var(--color-border)',
-                boxShadow: '0 8px 24px rgba(0,0,0,0.4)',
+                boxShadow: '0 8px 24px var(--color-shadow)',
                 minWidth: 160,
               }}
               onMouseLeave={() => setShowMoveFolder(false)}
@@ -856,7 +856,7 @@ export function NoteEditor({ note, onBack }) {
       {showHistory && (
         <div
           className="fixed inset-0 z-50 flex"
-          style={{ background: 'rgba(0,0,0,0.5)' }}
+          style={{ background: 'var(--color-overlay)' }}
           onClick={() => setShowHistory(false)}
         >
           <div
@@ -866,7 +866,7 @@ export function NoteEditor({ note, onBack }) {
               height: '100%',
               background: 'var(--color-surface)',
               borderLeft: '1px solid var(--color-border)',
-              boxShadow: '-16px 0 48px rgba(0,0,0,0.4)',
+              boxShadow: '-16px 0 48px var(--color-shadow)',
             }}
             onClick={e => e.stopPropagation()}
           >
@@ -939,7 +939,7 @@ export function NoteEditor({ note, onBack }) {
       {showDeleteConfirm && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center"
-          style={{ background: 'rgba(0,0,0,0.6)' }}
+          style={{ background: 'var(--color-overlay)' }}
           onClick={() => setShowDeleteConfirm(false)}
         >
           <div
@@ -948,7 +948,7 @@ export function NoteEditor({ note, onBack }) {
               background: 'var(--color-surface)',
               border: '1px solid var(--color-border)',
               width: 300,
-              boxShadow: '0 16px 48px rgba(0,0,0,0.6)',
+              boxShadow: '0 16px 48px var(--color-shadow)',
             }}
             onClick={e => e.stopPropagation()}
           >
@@ -981,7 +981,7 @@ export function NoteEditor({ note, onBack }) {
                   setShowDeleteConfirm(false)
                 }}
                 className="px-3 h-7 rounded-md font-mono transition-colors"
-                style={{ fontSize: 12, background: 'var(--color-error, #ef4444)', color: '#fff', border: 'none' }}
+                style={{ fontSize: 12, background: 'var(--color-error, #ef4444)', color: 'var(--color-bg)', border: 'none' }}
               >
                 Delete
               </button>

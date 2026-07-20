@@ -13,48 +13,7 @@ function getGreeting() {
   return 'Good evening'
 }
 
-function StatCard({ label, value, sub, accent, onClick }) {
-  const Tag = onClick ? 'button' : 'div'
-  return (
-    <Tag
-      onClick={onClick}
-      className={cn(
-        'flex-1 flex flex-col justify-between py-4 px-5 [&:not(:last-child)]:border-r text-left',
-        onClick && 'transition-colors hover:bg-[var(--color-surface-hover)] cursor-pointer',
-      )}
-      style={{ borderColor: 'var(--color-border)' }}
-    >
-      <span
-        className="font-mono uppercase tracking-widest"
-        style={{ fontSize: 9, color: accent ? 'var(--color-accent)' : 'var(--color-text-muted)' }}
-      >
-        {label}
-      </span>
-      <div className="mt-2">
-        <span
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 36,
-            fontWeight: 700,
-            color: accent ? 'var(--color-accent)' : 'var(--color-text-primary)',
-            lineHeight: 1,
-            letterSpacing: '-0.03em',
-          }}
-        >
-          {value}
-        </span>
-        {sub && (
-          <p
-            className="font-mono mt-1"
-            style={{ fontSize: 10, color: accent ? 'var(--color-accent)' : 'var(--color-text-muted)' }}
-          >
-            {sub}
-          </p>
-        )}
-      </div>
-    </Tag>
-  )
-}
+
 
 function SectionHeader({ label, action, onAction }) {
   return (
@@ -222,36 +181,20 @@ export function Dashboard() {
       <div className="ink-content-area">
         <div className="ink-content-inner">
 
-          {/* Stats strip */}
-          <div
-            className="flex mb-8 overflow-hidden rounded-xl"
-            style={{ border: '1px solid var(--color-border)', background: 'var(--color-surface)' }}
-          >
-            <StatCard
-              label="Notes"
-              value={activeNotes.length}
-              sub={`${archivedNotes.length} archived`}
-              onClick={() => setActivePanel('notes')}
-            />
-            <StatCard
-              label="Open Tasks"
-              value={activeTasks.length}
-              sub={`${doneTasks.length} done`}
-              onClick={() => setActivePanel('tasks')}
-            />
-            <StatCard
-              label="Favourites"
-              value={starredNotes.length}
-              sub="starred"
-              onClick={() => setActivePanel('favourites')}
-            />
-            <StatCard
-              label="Words"
-              value={totalWords > 999 ? `${(totalWords / 1000).toFixed(1)}k` : totalWords}
-              sub="total written"
-              accent
-            />
-          </div>
+          {/* Stats summary */}
+          <p className="font-mono text-sm mb-8" style={{ color: 'var(--color-text-secondary)' }}>
+            <button onClick={() => setActivePanel('notes')} className="hover:text-text-primary transition-colors cursor-pointer bg-transparent border-none font-mono text-sm" style={{ color: 'inherit' }}>
+              <strong className="text-text-primary">{activeNotes.length}</strong> note{activeNotes.length !== 1 ? 's' : ''}{archivedNotes.length > 0 && <span className="text-text-muted"> ({archivedNotes.length} archived)</span>}
+            </button>
+            <span className="text-text-muted mx-2">·</span>
+            <button onClick={() => setActivePanel('tasks')} className="hover:text-text-primary transition-colors cursor-pointer bg-transparent border-none font-mono text-sm" style={{ color: 'inherit' }}>
+              <strong className="text-text-primary">{activeTasks.length}</strong> task{activeTasks.length !== 1 ? 's' : ''}{doneTasks.length > 0 && <span className="text-text-muted"> ({doneTasks.length} done)</span>}
+            </button>
+            <span className="text-text-muted mx-2">·</span>
+            <span><strong className="text-text-primary">{starredNotes.length}</strong> starred</span>
+            <span className="text-text-muted mx-2">·</span>
+            <span className="text-text-muted">{totalWords > 999 ? `${(totalWords / 1000).toFixed(1)}k` : totalWords} words written</span>
+          </p>
 
           {/* Recent Notes + Upcoming Tasks */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

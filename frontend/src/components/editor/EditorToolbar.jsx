@@ -13,6 +13,7 @@ function ToolBtn({ onClick, active, disabled, title, children }) {
       onClick={onClick}
       disabled={disabled}
       title={title}
+      aria-pressed={active}
       className={cn(
         'flex items-center justify-center w-7 h-7 transition-colors duration-[100ms] shrink-0',
         'text-text-secondary hover:bg-surface-hover hover:text-text-primary',
@@ -103,7 +104,7 @@ function LinkModal({ open, initialUrl, onSet, onRemove, onClose }) {
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center"
-      style={{ background: 'rgba(0,0,0,0.55)' }}
+      style={{ background: 'var(--color-overlay)' }}
       onClick={e => { if (e.target === e.currentTarget) onClose() }}
     >
       <div
@@ -112,7 +113,7 @@ function LinkModal({ open, initialUrl, onSet, onRemove, onClose }) {
           width: 380,
           background: 'var(--color-surface)',
           border: '1px solid var(--color-border)',
-          boxShadow: '0 24px 80px rgba(0,0,0,0.5)',
+          boxShadow: '0 24px 80px var(--color-shadow)',
         }}
       >
         <div
@@ -199,7 +200,7 @@ function ImageModal({ open, onInsertUrl, onInsertFile, onClose }) {
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center"
-      style={{ background: 'rgba(0,0,0,0.55)' }}
+      style={{ background: 'var(--color-overlay)' }}
       onClick={e => { if (e.target === e.currentTarget) onClose() }}
     >
       <div
@@ -208,7 +209,7 @@ function ImageModal({ open, onInsertUrl, onInsertFile, onClose }) {
           width: 380,
           background: 'var(--color-surface)',
           border: '1px solid var(--color-border)',
-          boxShadow: '0 24px 80px rgba(0,0,0,0.5)',
+          boxShadow: '0 24px 80px var(--color-shadow)',
         }}
       >
         {/* Header */}

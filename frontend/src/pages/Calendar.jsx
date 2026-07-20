@@ -7,7 +7,6 @@ import {
 } from 'date-fns'
 import { useTasksStore } from '@/store/tasksStore'
 import { useNotesStore } from '@/store/notesStore'
-import { useRipple } from '@/lib/useRipple'
 
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
@@ -20,27 +19,22 @@ const PRIORITY_COLOR = {
 }
 
 function DayCell({ day, isCurrentMonth, isCurrentDay, isSelected, tasks, notes, onClick }) {
-  const ripple = useRipple()
   const hasItems = tasks.length > 0 || notes.length > 0
   const isEmpty = !hasItems
-
-  const stripeStyle = (isEmpty || !isCurrentMonth) ? {
-    backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(128,128,128,0.04) 5px, rgba(128,128,128,0.04) 10px)',
-  } : {}
 
   return (
     <button
       onClick={onClick}
-      onMouseDown={ripple.onMouseDown}
-      className={`${ripple.className || ''} flex flex-col p-1.5 border-b border-r border-border text-left transition-colors min-h-[80px]`}
+      aria-label={format(day, 'EEEE, MMMM d, yyyy')}
+      className={cn(
+        'flex flex-col p-1.5 border-b border-r text-left transition-colors min-h-[80px] hover:bg-surface-hover',
+        isSelected && 'bg-surface-active',
+        !isCurrentMonth && 'opacity-40',
+        isEmpty && !isCurrentMonth && 'bg-[image:repeating-linear-gradient(45deg,transparent,transparent_5px,color-mix(in_oklch,var(--color-text-muted)_4%,transparent)_5px,color-mix(in_oklch,var(--color-text-muted)_4%,transparent)_10px)]',
+      )}
       style={{
         borderColor: 'var(--color-border)',
-        background: isSelected ? 'var(--color-surface-active)' : 'transparent',
-        opacity: isCurrentMonth ? 1 : 0.4,
-        ...stripeStyle,
       }}
-      onMouseEnter={e => { if (!isSelected) e.currentTarget.style.background = 'var(--color-surface-hover)' }}
-      onMouseLeave={e => { e.currentTarget.style.background = isSelected ? 'var(--color-surface-active)' : 'transparent' }}
     >
       <span
         className="font-mono w-6 h-6 flex items-center justify-center shrink-0"
@@ -151,37 +145,30 @@ export function Calendar() {
           {format(currentDate, 'MMMM yyyy')}
         </h2>
         <div className="flex items-center gap-1">
-          {[
-            { icon: <ChevronLeft size={14} strokeWidth={1.5} />, action: () => setCurrentDate(d => subMonths(d, 1)) },
-            { label: 'Today', action: () => { setCurrentDate(new Date()); setSelectedDate(new Date()) } },
-            { icon: <ChevronRight size={14} strokeWidth={1.5} />, action: () => setCurrentDate(d => addMonths(d, 1)) },
-          ].map((btn, i) => (
-            <button
-              key={i}
-              onClick={btn.action}
-              className="ripple-root flex items-center justify-center h-7 font-mono transition-colors"
-              style={{
-                width: btn.label ? 'auto' : 28,
-                padding: btn.label ? '0 8px' : 0,
-                fontSize: 'var(--text-xs)',
-                color: 'var(--color-text-muted)',
-                borderRadius: 6,
-              }}
-              onMouseEnter={e => e.currentTarget.style.background = 'var(--color-surface-hover)'}
-              onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
-              onMouseDown={e => {
-                const el = e.currentTarget, rect = el.getBoundingClientRect()
-                const size = Math.max(rect.width, rect.height)
-                const wave = document.createElement('span')
-                wave.className = 'ripple-wave'
-                wave.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px`
-                el.appendChild(wave)
-                wave.addEventListener('animationend', () => wave.remove(), { once: true })
-              }}
-            >
-              {btn.icon || btn.label}
-            </button>
-          ))}
+          <button
+            onClick={() => setCurrentDate(d => subMonths(d, 1))}
+            aria-label="Previous month"
+            className="flex items-center justify-center w-7 h-7 font-mono transition-colors hover:bg-surface-hover rounded-sm"
+            style={{ color: 'var(--color-text-muted)' }}
+          >
+            <ChevronLeft size={14} strokeWidth={1.5} />
+          </button>
+          <button
+            onClick={() => { setCurrentDate(new Date()); setSelectedDate(new Date()) }}
+            aria-label="Go to today"
+            className="flex items-center justify-center h-7 px-2 font-mono transition-colors hover:bg-surface-hover rounded-sm"
+            style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}
+          >
+            Today
+          </button>
+          <button
+            onClick={() => setCurrentDate(d => addMonths(d, 1))}
+            aria-label="Next month"
+            className="flex items-center justify-center w-7 h-7 font-mono transition-colors hover:bg-surface-hover rounded-sm"
+            style={{ color: 'var(--color-text-muted)' }}
+          >
+            <ChevronRight size={14} strokeWidth={1.5} />
+          </button>
         </div>
         <div className="flex-1" />
         {selectedDate && (
@@ -213,9 +200,9 @@ export function Calendar() {
             className="grid grid-cols-7 flex-1 border overflow-hidden"
             style={{ borderColor: 'var(--color-border)', borderRadius: 8 }}
           >
-            {days.map((day, i) => (
-              <DayCell
-                key={i}
+        {days.map(day => (
+          <DayCell
+            key={format(day, 'yyyy-MM-dd')}
                 day={day}
                 isCurrentMonth={isSameMonth(day, currentDate)}
                 isCurrentDay={isToday(day)}

@@ -130,7 +130,7 @@ export function Notes() {
                 borderColor: 'var(--color-border)',
                 borderRadius: 10,
                 minWidth: 140,
-                boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
+                boxShadow: '0 8px 32px var(--color-shadow)',
               }}
             >
               {SORT_OPTIONS.map(opt => (

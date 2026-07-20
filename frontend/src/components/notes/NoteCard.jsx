@@ -89,10 +89,11 @@ export function NoteCard({ note, active, onClick, grid }) {
   if (grid) {
     return (
       <>
-        <div
+        <button
           onClick={onClick}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick?.() }}}
           className={cn(
-            'ink-card group flex flex-col gap-3 cursor-pointer relative',
+            'ink-card group flex flex-col gap-3 cursor-pointer relative text-left w-full',
             active && 'ink-card-active',
           )}
           style={{ minHeight: 200, overflow: 'hidden' }}
@@ -138,7 +139,9 @@ export function NoteCard({ note, active, onClick, grid }) {
                   note.starred ? 'opacity-100' : 'opacity-0 group-hover:opacity-100',
                 )}
                 style={{ color: note.starred ? 'var(--color-warning)' : 'var(--color-text-muted)' }}
-                title="Star"
+                title={note.starred ? 'Unstar note' : 'Star note'}
+                aria-label={note.starred ? 'Unstar note' : 'Star note'}
+                aria-pressed={note.starred}
               >
                 <Star size={12} strokeWidth={1.5} fill={note.starred ? 'currentColor' : 'none'} />
               </button>
@@ -200,7 +203,7 @@ export function NoteCard({ note, active, onClick, grid }) {
               {timeAgo}
             </span>
           </div>
-        </div>
+        </button>
 
         <ConfirmModal
           open={confirmDelete}
@@ -218,10 +221,11 @@ export function NoteCard({ note, active, onClick, grid }) {
   // ── List view ──
   return (
     <>
-      <div
+      <button
         onClick={onClick}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick?.() }}}
         className={cn(
-          'ink-card group flex items-start gap-2 cursor-pointer',
+          'ink-card group flex items-start gap-2 cursor-pointer text-left w-full',
           active && 'ink-card-active',
         )}
         style={{ borderRadius: 10, padding: '12px 14px' }}
@@ -322,7 +326,7 @@ export function NoteCard({ note, active, onClick, grid }) {
             </div>
           )}
         </div>
-      </div>
+      </button>
 
       <ConfirmModal
         open={confirmDelete}

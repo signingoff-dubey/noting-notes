@@ -96,7 +96,7 @@ function CustomAPIModal({ open, onClose, initial, onSave }) {
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center"
-      style={{ background: 'rgba(0,0,0,0.6)' }}
+      style={{ background: 'var(--color-overlay)' }}
       onClick={e => { if (e.target === e.currentTarget) onClose() }}
     >
       <div
@@ -105,7 +105,7 @@ function CustomAPIModal({ open, onClose, initial, onSave }) {
           width: 380,
           background: 'var(--color-surface)',
           border: '1px solid var(--color-border)',
-          boxShadow: '0 24px 80px rgba(0,0,0,0.5)',
+          boxShadow: '0 24px 80px var(--color-shadow)',
         }}
       >
         {/* Header */}
@@ -226,7 +226,7 @@ function InstallOllamaModal({ open, onClose }) {
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center"
-      style={{ background: 'rgba(0,0,0,0.6)' }}
+      style={{ background: 'var(--color-overlay)' }}
       onClick={e => { if (e.target === e.currentTarget) onClose() }}
     >
       <div
@@ -235,7 +235,7 @@ function InstallOllamaModal({ open, onClose }) {
           width: 360,
           background: 'var(--color-surface)',
           border: '1px solid var(--color-border)',
-          boxShadow: '0 24px 80px rgba(0,0,0,0.5)',
+          boxShadow: '0 24px 80px var(--color-shadow)',
         }}
       >
         <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid var(--color-border)' }}>
@@ -330,7 +330,7 @@ function ModelDropdown({ models, activeModel, apiConfig, onSelectModel, onCustom
             background: 'var(--color-surface)',
             border: '1px solid var(--color-border)',
             borderRadius: 10,
-            boxShadow: '0 12px 40px rgba(0,0,0,0.5)',
+            boxShadow: '0 12px 40px var(--color-shadow)',
           }}
         >
           {/* Cloud models (Groq) */}

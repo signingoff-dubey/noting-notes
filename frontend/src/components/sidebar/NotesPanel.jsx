@@ -365,7 +365,7 @@ export function NotesPanel({ collapsed, onToggle }) {
       {confirmDelete && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center"
-          style={{ background: 'rgba(0,0,0,0.6)' }}
+          style={{ background: 'var(--color-overlay)' }}
           onClick={() => setConfirmDelete(false)}
         >
           <div
@@ -377,7 +377,7 @@ export function NotesPanel({ collapsed, onToggle }) {
               background: 'var(--color-surface)',
               border: '1px solid var(--color-border)',
               width: 300,
-              boxShadow: '0 16px 48px rgba(0,0,0,0.6)',
+              boxShadow: '0 16px 48px var(--color-shadow)',
             }}
             onClick={e => e.stopPropagation()}
           >
@@ -404,7 +404,7 @@ export function NotesPanel({ collapsed, onToggle }) {
                 style={{
                   fontSize: 12,
                   background: 'var(--color-error, #ef4444)',
-                  color: '#fff',
+                  color: 'var(--color-bg)',
                   border: 'none',
                 }}
               >

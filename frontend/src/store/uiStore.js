@@ -4,11 +4,11 @@ const THEMES = ['nothing-dark', 'nothing-light', 'midnight', 'terminal', 'warm-p
 
 export const ACCENT_MAP = {
   amber:  { color: 'oklch(72% 0.17 65)',  dim: 'oklch(72% 0.10 65 / 0.15)', label: 'Amber' },
-  white:  { color: '#f0f0f0',             dim: '#f0f0f018',                  label: 'White' },
-  red:    { color: '#eb0029',             dim: '#eb002918',                  label: 'Red' },
-  green:  { color: '#00d26a',             dim: '#00d26a18',                  label: 'Green' },
-  blue:   { color: '#58a6ff',             dim: '#58a6ff18',                  label: 'Blue' },
-  purple: { color: '#a78bfa',             dim: '#a78bfa18',                  label: 'Purple' },
+  white:  { color: 'oklch(93% 0.007 65)', dim: 'oklch(93% 0.007 65 / 0.15)', label: 'White' },
+  red:    { color: 'oklch(58% 0.22 25)',  dim: 'oklch(58% 0.22 25 / 0.15)', label: 'Red' },
+  green:  { color: 'oklch(62% 0.20 145)', dim: 'oklch(62% 0.20 145 / 0.15)', label: 'Green' },
+  blue:   { color: 'oklch(62% 0.18 250)', dim: 'oklch(62% 0.18 250 / 0.15)', label: 'Blue' },
+  purple: { color: 'oklch(62% 0.18 300)', dim: 'oklch(62% 0.18 300 / 0.15)', label: 'Purple' },
 }
 
 const applyTheme = (theme) => {

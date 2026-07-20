@@ -24,6 +24,9 @@ export function Modal({ open, onClose, title, children, footer, size = 'md' }) {
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
     >
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modal-title"
         className={cn(
           'bg-surface border border-border-strong rounded-sm p-6 w-full mx-4 shadow-2xl',
           'animate-[scale-in_150ms_ease]',
@@ -32,7 +35,7 @@ export function Modal({ open, onClose, title, children, footer, size = 'md' }) {
         style={{ animation: 'modal-in 150ms ease forwards' }}
       >
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-mono text-lg text-text-primary">{title}</h2>
+          <h2 id="modal-title" className="font-mono text-lg text-text-primary">{title}</h2>
           <button
             onClick={onClose}
             className="text-text-muted hover:text-text-secondary transition-colors"
@@ -45,12 +48,6 @@ export function Modal({ open, onClose, title, children, footer, size = 'md' }) {
           <div className="flex justify-end gap-2 mt-6">{footer}</div>
         )}
       </div>
-      <style>{`
-        @keyframes modal-in {
-          from { opacity: 0; transform: scale(0.97); }
-          to   { opacity: 1; transform: scale(1); }
-        }
-      `}</style>
     </div>
   )
 }

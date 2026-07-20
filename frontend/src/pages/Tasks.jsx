@@ -867,7 +867,9 @@ const VIEW_OPTIONS = [
 ]
 
 export function Tasks() {
-  const { fetchTasks, createTask, getFilteredTasks, filter, setFilter, tasks } = useTasksStore()
+  const { fetchTasks, createTask, getFilteredTasks, filter, setFilter, tasks, isLoading, error, clearError } = useTasksStore()
+
+  useEffect(() => { if (error) { toast.error(error); clearError() } }, [error])
 
   const [viewMode, setViewMode] = useState(() => {
     const saved = localStorage.getItem('ink_tasks_view')
@@ -1008,7 +1010,13 @@ export function Tasks() {
           ))}
         </div>
 
-        {isEmpty ? (
+        {isLoading && !tasks.length ? (
+          <div className="max-w-2xl mx-auto px-5 pb-5 flex flex-col gap-3">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="h-14 rounded-lg skeleton" />
+            ))}
+          </div>
+        ) : isEmpty ? (
           <EmptyState filter={filter} />
         ) : (
           <>

@@ -556,11 +556,11 @@ export function AISidebar() {
   const imageInputRef = useRef(null)
   const textareaRef = useRef(null)
 
-  useEffect(() => { if (isOpen) fetchModels() }, [isOpen])
+  useEffect(() => { if (isOpen) fetchModels() }, [isOpen, fetchModels])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages, streamingMessage])
+  }, [messages?.length, streamingMessage])
 
   useEffect(() => {
     if (error) { toast.error(error); clearError() }
@@ -629,7 +629,7 @@ export function AISidebar() {
   ], [notes])
   const contextNote = notes.find(n => n.id === contextNoteId)
 
-  const noLLM = false // Groq always available via built-in key
+  const noLLM = models.length === 0
 
   return (
     <>

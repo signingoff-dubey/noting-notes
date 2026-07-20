@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { BubbleMenu } from '@tiptap/react'
-import { Bold, Italic, Underline, Strikethrough, Highlighter, Code, Link, Zap, AlignLeft, MessageSquare, RefreshCw, Loader2, Check, Languages } from 'lucide-react'
+import { Bold, Italic, Underline, Strikethrough, Highlighter, Code, Link, Zap, AlignLeft, MessageSquare, RefreshCw, Loader2, Check, Languages, X } from 'lucide-react'
 import { cn } from '@/lib/cn'
 import { useAIStore } from '@/store/aiStore'
 import { api } from '@/lib/api'
@@ -132,15 +132,22 @@ export function FloatingToolbar({ editor }) {
   const savedRange = useRef(null)
   const savedText = useRef('')
   const abortRef = useRef(null)
+  const [showLinkInput, setShowLinkInput] = useState(false)
+  const [linkInputUrl, setLinkInputUrl] = useState('')
+  const [showLangInput, setShowLangInput] = useState(false)
+  const [langInput, setLangInput] = useState('')
 
   if (!editor) return null
 
   const setLink = () => {
-    const prev = editor.getAttributes('link').href
-    const url = window.prompt('URL:', prev)
-    if (url === null) return
-    if (url === '') { editor.chain().focus().extendMarkRange('link').unsetLink().run(); return }
-    editor.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+    setLinkInputUrl(editor.getAttributes('link').href || '')
+    setShowLinkInput(true)
+  }
+
+  const confirmLink = () => {
+    setShowLinkInput(false)
+    if (linkInputUrl === '') { editor.chain().focus().extendMarkRange('link').unsetLink().run(); return }
+    editor.chain().focus().extendMarkRange('link').setLink({ href: linkInputUrl }).run()
   }
 
   const getSelected = () => {
@@ -193,11 +200,9 @@ export function FloatingToolbar({ editor }) {
     }
   }
 
-  const handleTranslate = async (targetLang = null) => {
+  const doTranslate = async (lang) => {
     const { from, to, text } = getSelected()
-    if (!text.trim()) return
-    const lang = targetLang || window.prompt('Translate to which language?', 'Spanish')
-    if (!lang) return
+    if (!text.trim() || !lang) return
     savedRange.current = { from, to }
     savedText.current = text
     setAiMode('translate')
@@ -212,6 +217,18 @@ export function FloatingToolbar({ editor }) {
     } finally {
       setAiLoading(false)
     }
+  }
+
+  const handleTranslate = (targetLang = null) => {
+    if (targetLang) { doTranslate(targetLang); return }
+    setLangInput('')
+    setShowLangInput(true)
+  }
+
+  const confirmTranslate = () => {
+    if (!langInput.trim()) return
+    setShowLangInput(false)
+    doTranslate(langInput.trim())
   }
 
   const handleAskAI = () => {
@@ -245,7 +262,7 @@ export function FloatingToolbar({ editor }) {
   }
 
   return (
-    <BubbleMenu
+    <><BubbleMenu
       editor={editor}
       tippyOptions={{
         duration: 100,
@@ -357,5 +374,101 @@ export function FloatingToolbar({ editor }) {
         )}
       </div>
     </BubbleMenu>
+
+    {/* Link input modal */}
+    {showLinkInput && (
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center"
+        style={{ background: 'rgba(0,0,0,0.55)' }}
+        onClick={(e) => { if (e.target === e.currentTarget) setShowLinkInput(false) }}
+      >
+        <div
+          className="flex flex-col rounded-xl overflow-hidden"
+          style={{ width: 380, background: 'var(--color-surface)', border: '1px solid var(--color-border)', boxShadow: '0 24px 80px rgba(0,0,0,0.5)' }}
+        >
+          <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid var(--color-border)' }}>
+            <span className="font-medium" style={{ fontSize: 14, color: 'var(--color-text-primary)' }}>
+              {linkInputUrl ? 'Edit Link' : 'Add Link'}
+            </span>
+            <button onClick={() => setShowLinkInput(false)} className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-[var(--color-surface-hover)]" style={{ color: 'var(--color-text-muted)' }}>
+              <X size={14} strokeWidth={1.5} />
+            </button>
+          </div>
+          <div className="px-5 py-5 flex flex-col gap-3">
+            <input
+              autoFocus
+              value={linkInputUrl}
+              onChange={e => setLinkInputUrl(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter') confirmLink() }}
+              placeholder="https://example.com"
+              className="w-full px-3 py-2 rounded-lg font-mono"
+              style={{ fontSize: 12, background: 'var(--color-surface-2)', border: '1px solid var(--color-border)', color: 'var(--color-text-primary)', outline: 'none' }}
+            />
+            <div className="flex gap-2">
+              {linkInputUrl && (
+                <button
+                  onClick={() => { setShowLinkInput(false); editor.chain().focus().extendMarkRange('link').unsetLink().run() }}
+                  className="flex-1 h-9 rounded-lg font-mono font-medium transition-opacity"
+                  style={{ fontSize: 13, border: '1px solid var(--color-border)', color: 'var(--color-text-secondary)' }}
+                >
+                  Remove
+                </button>
+              )}
+              <button
+                onClick={confirmLink}
+                disabled={!linkInputUrl.trim()}
+                className="flex-1 h-9 rounded-lg font-mono font-medium transition-opacity disabled:opacity-40"
+                style={{ fontSize: 13, background: 'var(--color-accent)', color: 'var(--color-bg)' }}
+              >
+                {linkInputUrl ? 'Update' : 'Insert'}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+
+    {/* Language input modal */}
+    {showLangInput && (
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center"
+        style={{ background: 'rgba(0,0,0,0.55)' }}
+        onClick={(e) => { if (e.target === e.currentTarget) setShowLangInput(false) }}
+      >
+        <div
+          className="flex flex-col rounded-xl overflow-hidden"
+          style={{ width: 380, background: 'var(--color-surface)', border: '1px solid var(--color-border)', boxShadow: '0 24px 80px rgba(0,0,0,0.5)' }}
+        >
+          <div className="flex items-center justify-between px-5 py-4" style={{ borderBottom: '1px solid var(--color-border)' }}>
+            <span className="font-medium" style={{ fontSize: 14, color: 'var(--color-text-primary)' }}>
+              Translate to
+            </span>
+            <button onClick={() => setShowLangInput(false)} className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-[var(--color-surface-hover)]" style={{ color: 'var(--color-text-muted)' }}>
+              <X size={14} strokeWidth={1.5} />
+            </button>
+          </div>
+          <div className="px-5 py-5 flex flex-col gap-3">
+            <input
+              autoFocus
+              value={langInput}
+              onChange={e => setLangInput(e.target.value)}
+              onKeyDown={e => { if (e.key === 'Enter') confirmTranslate() }}
+              placeholder="e.g. Spanish, French, Japanese..."
+              className="w-full px-3 py-2 rounded-lg font-mono"
+              style={{ fontSize: 12, background: 'var(--color-surface-2)', border: '1px solid var(--color-border)', color: 'var(--color-text-primary)', outline: 'none' }}
+            />
+            <button
+              onClick={confirmTranslate}
+              disabled={!langInput.trim()}
+              className="h-9 rounded-lg font-mono font-medium transition-opacity disabled:opacity-40"
+              style={{ fontSize: 13, background: 'var(--color-accent)', color: 'var(--color-bg)' }}
+            >
+              Translate
+            </button>
+          </div>
+        </div>
+      </div>
+    )}
+    </>
   )
 }

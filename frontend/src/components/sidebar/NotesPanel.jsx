@@ -51,8 +51,8 @@ function NoteRow({ note, active, onClick, folderName }) {
       className={cn(
         'flex flex-col gap-0.5 w-full px-3 py-2.5 text-left border-b transition-colors group',
         active
-          ? 'bg-[var(--color-surface-active)]'
-          : 'hover:bg-[var(--color-surface-hover)]',
+          ? 'bg-surface-active'
+          : 'hover:bg-surface-hover',
       )}
       style={{
         borderColor: 'var(--color-border)',
@@ -231,7 +231,7 @@ export function NotesPanel({ collapsed, onToggle }) {
           onClick={onToggle}
           title="Expand notes panel"
           aria-label="Expand notes panel"
-          className="w-7 h-7 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
+          className="w-7 h-7 flex items-center justify-center rounded-md transition-colors hover:bg-surface-hover"
           style={{ color: 'var(--color-text-muted)' }}
         >
           <ChevronsRight size={13} strokeWidth={1.5} />
@@ -272,7 +272,7 @@ export function NotesPanel({ collapsed, onToggle }) {
             onClick={() => setConfirmDelete(true)}
             title="Delete all notes"
             aria-label="Delete all notes"
-            className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
+            className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-surface-hover"
             style={{ color: 'var(--color-error, #ef4444)' }}
           >
             <Trash2 size={12} strokeWidth={1.5} />
@@ -282,7 +282,7 @@ export function NotesPanel({ collapsed, onToggle }) {
           onClick={handleNewNote}
           title="New note (Ctrl+N)"
           aria-label="New note"
-          className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
+          className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-surface-hover"
           style={{ color: 'var(--color-text-muted)' }}
         >
           <Plus size={13} strokeWidth={1.5} />
@@ -291,7 +291,7 @@ export function NotesPanel({ collapsed, onToggle }) {
           onClick={onToggle}
           title="Collapse notes panel"
           aria-label="Collapse notes panel"
-          className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
+          className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-surface-hover"
           style={{ color: 'var(--color-text-muted)' }}
         >
           <PanelLeftClose size={13} strokeWidth={1.5} />
@@ -393,7 +393,7 @@ export function NotesPanel({ collapsed, onToggle }) {
             <div className="flex gap-2 justify-end">
               <button
                 onClick={() => setConfirmDelete(false)}
-                className="px-3 h-7 rounded-md font-mono transition-colors hover:bg-[var(--color-surface-hover)]"
+                className="px-3 h-7 rounded-md font-mono transition-colors hover:bg-surface-hover"
                 style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)', border: '1px solid var(--color-border)' }}
               >
                 Cancel

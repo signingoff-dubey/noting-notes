@@ -3,11 +3,11 @@ import { Spinner } from './Spinner'
 import { useRipple } from '@/lib/useRipple'
 
 const variants = {
-  primary:     'bg-accent text-bg hover:opacity-85 border-transparent',
-  secondary:   'bg-transparent text-text-primary border border-border hover:bg-surface-hover',
-  ghost:       'bg-transparent text-text-secondary border-transparent hover:bg-surface-hover hover:text-text-primary',
-  destructive: 'bg-error text-white border-transparent hover:opacity-85',
-  accent:      'bg-accent-dim text-text-primary border border-border hover:bg-surface-hover',
+  primary:     'bg-accent text-bg hover:opacity-85 active:opacity-70 border-transparent',
+  secondary:   'bg-transparent text-text-primary border border-border hover:bg-surface-hover active:bg-surface',
+  ghost:       'bg-transparent text-text-secondary border-transparent hover:bg-surface-hover hover:text-text-primary active:bg-surface',
+  destructive: 'bg-error text-white border-transparent hover:opacity-85 active:opacity-70',
+  accent:      'bg-accent-dim text-text-primary border border-border hover:bg-surface-hover active:bg-surface',
 }
 
 const sizes = {
@@ -46,7 +46,7 @@ export function Button({
       }}
       className={cn(
         'inline-flex items-center justify-center gap-2 font-mono transition-all duration-[150ms] cursor-pointer select-none',
-        'rounded border',
+        'rounded border focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-accent',
         ripple.className,
         variants[variant],
         sizes[size],

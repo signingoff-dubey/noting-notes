@@ -7,6 +7,7 @@ import {
 } from 'date-fns'
 import { useTasksStore } from '@/store/tasksStore'
 import { useNotesStore } from '@/store/notesStore'
+import { toast } from '@/store/uiStore'
 
 const WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
@@ -124,7 +125,7 @@ export function Calendar() {
       setNewTaskPriority('none')
       setAddingTask(false)
     } catch {
-      console.error('Failed to create task')
+      toast.error('Failed to create task')
     }
   }
 
@@ -174,10 +175,8 @@ export function Calendar() {
         {selectedDate && (
           <button
             onClick={() => setSelectedDate(null)}
-            className="font-mono transition-colors"
+            className="font-mono transition-colors hover:text-text-secondary"
             style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}
-            onMouseEnter={e => e.currentTarget.style.color = 'var(--color-text-secondary)'}
-            onMouseLeave={e => e.currentTarget.style.color = 'var(--color-text-muted)'}
           >
             Clear selection
           </button>
@@ -235,7 +234,7 @@ export function Calendar() {
                 <button
                   onClick={() => setAddingTask(v => !v)}
                   title="New task on this day"
-                  className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
+                  className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-surface-hover"
                   style={{ color: 'var(--color-text-muted)', marginTop: 2 }}
                 >
                   <Plus size={13} strokeWidth={1.5} />

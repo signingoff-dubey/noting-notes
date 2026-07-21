@@ -26,7 +26,7 @@ function PdfViewer({ dataUrl }) {
         <button
           onClick={() => setPage(p => Math.max(1, p - 1))}
           disabled={page <= 1}
-          className="w-6 h-6 flex items-center justify-center rounded transition-colors hover:bg-[var(--color-surface-hover)] disabled:opacity-30"
+          className="w-6 h-6 flex items-center justify-center rounded transition-colors hover:bg-surface-hover disabled:opacity-30"
           style={{ color: 'var(--color-text-muted)' }}
         >
           <ChevronLeft size={12} strokeWidth={1.5} />
@@ -37,7 +37,7 @@ function PdfViewer({ dataUrl }) {
         <button
           onClick={() => setPage(p => Math.min(numPages || p, p + 1))}
           disabled={page >= (numPages || 1)}
-          className="w-6 h-6 flex items-center justify-center rounded transition-colors hover:bg-[var(--color-surface-hover)] disabled:opacity-30"
+          className="w-6 h-6 flex items-center justify-center rounded transition-colors hover:bg-surface-hover disabled:opacity-30"
           style={{ color: 'var(--color-text-muted)' }}
         >
           <ChevronRight size={12} strokeWidth={1.5} />
@@ -45,7 +45,7 @@ function PdfViewer({ dataUrl }) {
         <div className="w-px h-4 mx-1" style={{ background: 'var(--color-border)' }} />
         <button
           onClick={() => setScale(s => Math.max(0.5, +(s - 0.25).toFixed(2)))}
-          className="w-6 h-6 flex items-center justify-center rounded transition-colors hover:bg-[var(--color-surface-hover)]"
+          className="w-6 h-6 flex items-center justify-center rounded transition-colors hover:bg-surface-hover"
           style={{ color: 'var(--color-text-muted)' }}
         >
           <ZoomOut size={12} strokeWidth={1.5} />
@@ -55,7 +55,7 @@ function PdfViewer({ dataUrl }) {
         </span>
         <button
           onClick={() => setScale(s => Math.min(3, +(s + 0.25).toFixed(2)))}
-          className="w-6 h-6 flex items-center justify-center rounded transition-colors hover:bg-[var(--color-surface-hover)]"
+          className="w-6 h-6 flex items-center justify-center rounded transition-colors hover:bg-surface-hover"
           style={{ color: 'var(--color-text-muted)' }}
         >
           <ZoomIn size={12} strokeWidth={1.5} />
@@ -235,7 +235,7 @@ function PptxViewer({ dataUrl }) {
         <button
           onClick={() => setActiveSlide(s => Math.max(0, s - 1))}
           disabled={activeSlide === 0}
-          className="w-6 h-6 flex items-center justify-center rounded transition-colors hover:bg-[var(--color-surface-hover)] disabled:opacity-30"
+          className="w-6 h-6 flex items-center justify-center rounded transition-colors hover:bg-surface-hover disabled:opacity-30"
           style={{ color: 'var(--color-text-muted)' }}
         >
           <ChevronLeft size={12} strokeWidth={1.5} />
@@ -246,7 +246,7 @@ function PptxViewer({ dataUrl }) {
         <button
           onClick={() => setActiveSlide(s => Math.min(slides.length - 1, s + 1))}
           disabled={activeSlide >= slides.length - 1}
-          className="w-6 h-6 flex items-center justify-center rounded transition-colors hover:bg-[var(--color-surface-hover)] disabled:opacity-30"
+          className="w-6 h-6 flex items-center justify-center rounded transition-colors hover:bg-surface-hover disabled:opacity-30"
           style={{ color: 'var(--color-text-muted)' }}
         >
           <ChevronRight size={12} strokeWidth={1.5} />
@@ -364,7 +364,7 @@ export function FileViewer({ attachment, onClose }) {
         </span>
         <button
           onClick={onClose}
-          className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-[var(--color-surface-hover)]"
+          className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-surface-hover"
           style={{ color: 'var(--color-text-muted)', flexShrink: 0 }}
         >
           <X size={14} strokeWidth={1.5} />

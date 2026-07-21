@@ -95,7 +95,7 @@ function UpcomingTaskCard({ task, onClick }) {
   return (
     <button
       onClick={onClick}
-      className="w-full flex items-center gap-3 py-2.5 px-3 text-left transition-colors hover:bg-[var(--color-surface-hover)] rounded-lg"
+      className="w-full flex items-center gap-3 py-2.5 px-3 text-left transition-colors hover:bg-surface-hover rounded-lg"
     >
       <span
         className="w-1.5 h-1.5 rounded-full shrink-0"

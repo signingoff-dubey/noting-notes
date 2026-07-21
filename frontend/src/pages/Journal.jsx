@@ -1,10 +1,8 @@
-import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
+import { useState, useMemo } from 'react'
 import { useNotesStore } from '@/store/notesStore'
-import { useUIStore } from '@/store/uiStore'
 import { toast } from '@/store/uiStore'
 import { format, subDays, addDays, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday, isBefore, getDay } from 'date-fns'
-import { ChevronLeft, ChevronRight, Flame, BookOpen, Sun, Moon, CloudRain, Zap, Heart, Frown, Meh, Smile, SmilePlus } from 'lucide-react'
-import { cn } from '@/lib/cn'
+import { ChevronLeft, ChevronRight, Flame, BookOpen, Frown, Meh, Smile, SmilePlus } from 'lucide-react'
 
 const MOOD_OPTIONS = [
   { value: 'great',   icon: SmilePlus, label: 'Great',   color: 'var(--color-accent)' },
@@ -57,7 +55,7 @@ function MiniCalendar({ selectedDate, onSelect, journalDates }) {
       <div className="flex items-center justify-between">
         <button
           onClick={() => setViewMonth(d => startOfMonth(subDays(d, 1)))}
-          className="w-6 h-6 flex items-center justify-center rounded transition-colors hover:bg-[var(--color-surface-hover)]"
+          className="w-6 h-6 flex items-center justify-center rounded transition-colors hover:bg-surface-hover"
           style={{ color: 'var(--color-text-muted)' }}
         >
           <ChevronLeft size={13} strokeWidth={1.5} />
@@ -67,7 +65,7 @@ function MiniCalendar({ selectedDate, onSelect, journalDates }) {
         </span>
         <button
           onClick={() => setViewMonth(d => startOfMonth(addDays(endOfMonth(d), 1)))}
-          className="w-6 h-6 flex items-center justify-center rounded transition-colors hover:bg-[var(--color-surface-hover)]"
+          className="w-6 h-6 flex items-center justify-center rounded transition-colors hover:bg-surface-hover"
           style={{ color: 'var(--color-text-muted)' }}
         >
           <ChevronRight size={13} strokeWidth={1.5} />
@@ -371,7 +369,7 @@ export function Journal() {
             {todayEntry ? (
               <button
                 onClick={handleOpenEntry}
-                className="border p-5 text-left transition-colors hover:bg-[var(--color-surface-hover)]"
+                className="border p-5 text-left transition-colors hover:bg-surface-hover"
                 style={{ borderRadius: 10, borderColor: 'var(--color-border)' }}
               >
                 <p className="font-body" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', lineHeight: 1.7 }}>
@@ -428,7 +426,7 @@ export function Journal() {
                   <button
                     key={entry.id}
                     onClick={() => setActiveNote(entry.id)}
-                    className="flex items-center gap-3 px-3 py-2.5 border text-left transition-colors hover:bg-[var(--color-surface-hover)]"
+                    className="flex items-center gap-3 px-3 py-2.5 border text-left transition-colors hover:bg-surface-hover"
                     style={{ borderRadius: 8, borderColor: 'var(--color-border)' }}
                   >
                     <div className="flex flex-col gap-0.5 flex-1 min-w-0">

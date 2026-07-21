@@ -30,6 +30,7 @@ import { NoteLinkPreview } from './NoteLinkPreview'
 import { createNoteLinkPlugin } from './NoteLinkExtension'
 import { TagChips } from '@/components/notes/TagChips'
 import { format } from 'date-fns'
+import { cn } from '@/lib/cn'
 
 const lowlight = createLowlight(common)
 
@@ -531,10 +532,7 @@ export function NoteEditor({ note, onBack }) {
           onClick={onBack}
           title="Back to notes (Esc)"
           aria-label="Back to notes"
-          className="transition-colors shrink-0"
-          style={{ color: 'var(--color-text-muted)' }}
-          onMouseEnter={e => e.currentTarget.style.color = 'var(--color-text-secondary)'}
-          onMouseLeave={e => e.currentTarget.style.color = 'var(--color-text-muted)'}
+          className="transition-colors shrink-0 text-text-muted hover:text-text-secondary"
         >
           <ArrowLeft size={16} strokeWidth={1.5} />
         </button>
@@ -561,13 +559,10 @@ export function NoteEditor({ note, onBack }) {
           onClick={() => setShowPreview(v => !v)}
           title={showPreview ? 'Back to editor' : 'Markdown preview'}
           aria-label={showPreview ? 'Back to editor' : 'Markdown preview'}
-          className="w-7 h-7 flex items-center justify-center rounded-lg transition-all"
-          style={{
-            color: showPreview ? 'var(--color-accent)' : 'var(--color-text-muted)',
-            background: showPreview ? 'var(--color-accent-dim)' : 'transparent',
-          }}
-          onMouseEnter={e => { if (!showPreview) e.currentTarget.style.color = 'var(--color-text-secondary)' }}
-          onMouseLeave={e => { if (!showPreview) e.currentTarget.style.color = 'var(--color-text-muted)' }}
+          className={cn(
+            'w-7 h-7 flex items-center justify-center rounded-lg transition-all',
+            showPreview ? 'text-accent bg-accent-dim' : 'text-text-muted hover:text-text-secondary',
+          )}
         >
           {showPreview ? <EyeOff size={14} strokeWidth={1.5} /> : <Eye size={14} strokeWidth={1.5} />}
         </button>
@@ -577,10 +572,7 @@ export function NoteEditor({ note, onBack }) {
           onClick={() => importRef.current?.click()}
           title="Import .md or .txt file"
           aria-label="Import file"
-          className="w-7 h-7 flex items-center justify-center rounded-lg transition-all"
-          style={{ color: 'var(--color-text-muted)' }}
-          onMouseEnter={e => e.currentTarget.style.color = 'var(--color-text-secondary)'}
-          onMouseLeave={e => e.currentTarget.style.color = 'var(--color-text-muted)'}
+          className="w-7 h-7 flex items-center justify-center rounded-lg transition-all text-text-muted hover:text-text-secondary"
         >
           <Upload size={14} strokeWidth={1.5} />
         </button>
@@ -588,17 +580,14 @@ export function NoteEditor({ note, onBack }) {
 
         {/* Export button */}
         <div className="relative">
-          <button
-            onClick={() => setShowExportMenu(v => !v)}
-            title="Export note"
-            aria-label="Export note"
-            className="w-7 h-7 flex items-center justify-center rounded-lg transition-all"
-            style={{ color: 'var(--color-text-muted)' }}
-            onMouseEnter={e => e.currentTarget.style.color = 'var(--color-text-secondary)'}
-            onMouseLeave={e => e.currentTarget.style.color = 'var(--color-text-muted)'}
-          >
-            <Download size={14} strokeWidth={1.5} />
-          </button>
+        <button
+          onClick={handleExport}
+          title="Export"
+          aria-label="Export"
+          className="w-7 h-7 flex items-center justify-center rounded-lg transition-all text-text-muted hover:text-text-secondary"
+        >
+          <Download size={14} strokeWidth={1.5} />
+        </button>
           {showExportMenu && (
             <div
               className="absolute right-0 top-full mt-1 z-50 flex flex-col overflow-hidden rounded-lg"
@@ -618,7 +607,7 @@ export function NoteEditor({ note, onBack }) {
                 <button
                   key={item.label}
                   onClick={() => { item.action(); setShowExportMenu(false) }}
-                  className="flex items-center gap-2 px-3 py-2 text-left transition-colors hover:bg-[var(--color-surface-hover)]"
+                  className="flex items-center gap-2 px-3 py-2 text-left transition-colors hover:bg-surface-hover"
                   style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', fontFamily: 'var(--font-body)' }}
                 >
                   {item.icon}
@@ -634,10 +623,7 @@ export function NoteEditor({ note, onBack }) {
           onClick={() => { setHistoryVersions(getVersions(note.id)); setShowHistory(true) }}
           title="Version history"
           aria-label="Version history"
-          className="w-7 h-7 flex items-center justify-center rounded-lg transition-all"
-          style={{ color: 'var(--color-text-muted)' }}
-          onMouseEnter={e => e.currentTarget.style.color = 'var(--color-text-secondary)'}
-          onMouseLeave={e => e.currentTarget.style.color = 'var(--color-text-muted)'}
+          className="w-7 h-7 flex items-center justify-center rounded-lg transition-all text-text-muted hover:text-text-secondary"
         >
           <History size={14} strokeWidth={1.5} />
         </button>
@@ -648,12 +634,10 @@ export function NoteEditor({ note, onBack }) {
             onClick={() => setShowMoveFolder(v => !v)}
             title="Move to folder"
             aria-label="Move to folder"
-            className="w-7 h-7 flex items-center justify-center rounded-lg transition-all"
-            style={{
-              color: note.folder_id ? 'var(--color-accent)' : 'var(--color-text-muted)',
-            }}
-            onMouseEnter={e => { if (!note.folder_id) e.currentTarget.style.color = 'var(--color-text-secondary)' }}
-            onMouseLeave={e => { if (!note.folder_id) e.currentTarget.style.color = 'var(--color-text-muted)' }}
+            className={cn(
+              'w-7 h-7 flex items-center justify-center rounded-lg transition-all',
+              note.folder_id ? 'text-accent' : 'text-text-muted hover:text-text-secondary',
+            )}
           >
             <FolderOpen size={14} strokeWidth={1.5} />
           </button>
@@ -670,7 +654,7 @@ export function NoteEditor({ note, onBack }) {
             >
               <button
                 onClick={async () => { await updateNote(note.id, { folder_id: null }); setShowMoveFolder(false); toast.info('Removed from folder') }}
-                className="flex items-center gap-2 px-3 py-2 text-left transition-colors hover:bg-[var(--color-surface-hover)]"
+                className="flex items-center gap-2 px-3 py-2 text-left transition-colors hover:bg-surface-hover"
                 style={{ fontSize: 'var(--text-sm)', color: !note.folder_id ? 'var(--color-accent)' : 'var(--color-text-secondary)', fontFamily: 'var(--font-body)' }}
               >
                 No folder
@@ -679,7 +663,7 @@ export function NoteEditor({ note, onBack }) {
                 <button
                   key={f.id}
                   onClick={async () => { await updateNote(note.id, { folder_id: f.id }); setShowMoveFolder(false); toast.success(`Moved to "${f.name}"`) }}
-                  className="flex items-center gap-2 px-3 py-2 text-left transition-colors hover:bg-[var(--color-surface-hover)]"
+                  className="flex items-center gap-2 px-3 py-2 text-left transition-colors hover:bg-surface-hover"
                   style={{ fontSize: 'var(--text-sm)', color: note.folder_id === f.id ? 'var(--color-accent)' : 'var(--color-text-secondary)', fontFamily: 'var(--font-body)' }}
                 >
                   <FolderOpen size={11} strokeWidth={1.5} />
@@ -700,10 +684,7 @@ export function NoteEditor({ note, onBack }) {
           onClick={() => setShowDeleteConfirm(true)}
           title="Delete note"
           aria-label="Delete note"
-          className="w-7 h-7 flex items-center justify-center rounded-lg transition-all"
-          style={{ color: 'var(--color-text-muted)' }}
-          onMouseEnter={e => e.currentTarget.style.color = 'var(--color-error, #ef4444)'}
-          onMouseLeave={e => e.currentTarget.style.color = 'var(--color-text-muted)'}
+          className="w-7 h-7 flex items-center justify-center rounded-lg transition-all text-text-muted hover:text-error"
         >
           <Trash2 size={14} strokeWidth={1.5} />
         </button>
@@ -723,13 +704,10 @@ export function NoteEditor({ note, onBack }) {
           }}
           title={note.is_vault ? 'Remove from vault' : 'Move to vault'}
           aria-label={note.is_vault ? 'Remove from vault' : 'Move to vault'}
-          className="w-7 h-7 flex items-center justify-center rounded-lg transition-all"
-          style={{
-            color: note.is_vault ? 'var(--color-accent)' : 'var(--color-text-muted)',
-            background: note.is_vault ? 'var(--color-accent-dim)' : 'transparent',
-          }}
-          onMouseEnter={e => { if (!note.is_vault) e.currentTarget.style.color = 'var(--color-text-secondary)' }}
-          onMouseLeave={e => { if (!note.is_vault) e.currentTarget.style.color = 'var(--color-text-muted)' }}
+          className={cn(
+            'w-7 h-7 flex items-center justify-center rounded-lg transition-all',
+            note.is_vault ? 'text-accent bg-accent-dim' : 'text-text-muted hover:text-text-secondary',
+          )}
         >
           {note.is_vault
             ? <Unlock size={14} strokeWidth={1.5} />
@@ -748,7 +726,7 @@ export function NoteEditor({ note, onBack }) {
           <button
             key={att.id}
             onClick={() => setActiveFileViewer(att)}
-            className="flex items-center gap-1.5 px-2 py-0.5 rounded-md transition-colors hover:bg-[var(--color-surface-hover)] group"
+            className="flex items-center gap-1.5 px-2 py-0.5 rounded-md transition-colors hover:bg-surface-hover group"
             style={{
               background: 'var(--color-surface-2)',
               border: '1px solid var(--color-border)',
@@ -761,7 +739,7 @@ export function NoteEditor({ note, onBack }) {
             <Paperclip size={10} strokeWidth={1.5} style={{ flexShrink: 0 }} />
             <span className="truncate">{att.name}</span>
             <span
-              className="opacity-0 group-hover:opacity-100 transition-opacity ml-0.5 flex items-center justify-center rounded-sm hover:bg-[var(--color-surface-hover)]"
+              className="opacity-0 group-hover:opacity-100 transition-opacity ml-0.5 flex items-center justify-center rounded-sm hover:bg-surface-hover"
               style={{ flexShrink: 0 }}
               onClick={async (e) => {
                 e.stopPropagation()
@@ -880,7 +858,7 @@ export function NoteEditor({ note, onBack }) {
               </span>
               <button
                 onClick={() => setShowHistory(false)}
-                className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
+                className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-surface-hover"
                 style={{ color: 'var(--color-text-muted)' }}
               >
                 ×
@@ -915,7 +893,7 @@ export function NoteEditor({ note, onBack }) {
                       setShowHistory(false)
                     }}
                     title="Restore this version"
-                    className="w-7 h-7 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--color-surface-hover)] shrink-0"
+                    className="w-7 h-7 flex items-center justify-center rounded-md transition-colors hover:bg-surface-hover shrink-0"
                     style={{ color: 'var(--color-accent)' }}
                   >
                     <RotateCcw size={12} strokeWidth={1.5} />
@@ -964,7 +942,7 @@ export function NoteEditor({ note, onBack }) {
             <div className="flex gap-2 justify-end">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
-                className="px-3 h-7 rounded-md font-mono transition-colors hover:bg-[var(--color-surface-hover)]"
+                className="px-3 h-7 rounded-md font-mono transition-colors hover:bg-surface-hover"
                 style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-muted)', border: '1px solid var(--color-border)' }}
               >
                 Cancel

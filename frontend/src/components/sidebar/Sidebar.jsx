@@ -242,7 +242,7 @@ export function Sidebar() {
           onClick={toggleSidebar}
           title="Expand sidebar"
           aria-label="Expand sidebar"
-          className="w-7 h-7 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
+          className="w-7 h-7 flex items-center justify-center rounded-md transition-colors hover:bg-surface-hover"
           style={{ color: 'var(--color-text-muted)' }}
         >
           <ChevronsRight size={13} strokeWidth={1.5} />
@@ -290,7 +290,7 @@ export function Sidebar() {
             onClick={toggleAI}
             title="Toggle AI Sidebar (Ctrl+Shift+A)"
             aria-label="Toggle AI sidebar"
-            className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-[var(--color-surface-hover)]"
+            className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-surface-hover"
             style={{ color: 'var(--color-text-muted)' }}
           >
             <Sparkles size={14} strokeWidth={1.5} />
@@ -299,7 +299,7 @@ export function Sidebar() {
             onClick={toggleSidebar}
             title="Collapse sidebar"
             aria-label="Collapse sidebar"
-            className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-[var(--color-surface-hover)]"
+            className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-surface-hover"
             style={{ color: 'var(--color-text-muted)' }}
           >
             <ChevronsLeft size={14} strokeWidth={1.5} />

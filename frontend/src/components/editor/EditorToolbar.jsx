@@ -125,7 +125,7 @@ function LinkModal({ open, initialUrl, onSet, onRemove, onClose }) {
           </span>
           <button
             onClick={onClose}
-            className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-[var(--color-surface-hover)]"
+            className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-surface-hover"
             style={{ color: 'var(--color-text-muted)' }}
           >
             <X size={14} strokeWidth={1.5} />
@@ -222,7 +222,7 @@ function ImageModal({ open, onInsertUrl, onInsertFile, onClose }) {
           </span>
           <button
             onClick={onClose}
-            className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-[var(--color-surface-hover)]"
+            className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-surface-hover"
             style={{ color: 'var(--color-text-muted)' }}
           >
             <X size={14} strokeWidth={1.5} />
@@ -296,7 +296,7 @@ function ImageModal({ open, onInsertUrl, onInsertFile, onClose }) {
               />
               <button
                 onClick={() => fileRef.current?.click()}
-                className="flex flex-col items-center justify-center gap-3 h-28 rounded-lg border-dashed transition-colors hover:bg-[var(--color-surface-hover)]"
+                className="flex flex-col items-center justify-center gap-3 h-28 rounded-lg border-dashed transition-colors hover:bg-surface-hover"
                 style={{ border: '2px dashed var(--color-border)' }}
               >
                 <Upload size={22} strokeWidth={1} style={{ color: 'var(--color-text-muted)' }} />

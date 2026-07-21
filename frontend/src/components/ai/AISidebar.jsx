@@ -122,7 +122,7 @@ function CustomAPIModal({ open, onClose, initial, onSave }) {
           <button
             onClick={onClose}
             aria-label="Close"
-            className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-[var(--color-surface-hover)]"
+            className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-surface-hover"
             style={{ color: 'var(--color-text-muted)' }}
           >
             <X size={14} strokeWidth={1.5} />
@@ -201,7 +201,7 @@ function CustomAPIModal({ open, onClose, initial, onSave }) {
         >
           <button
             onClick={onClose}
-            className="flex-1 h-9 rounded-lg font-mono transition-colors hover:bg-[var(--color-surface-hover)]"
+            className="flex-1 h-9 rounded-lg font-mono transition-colors hover:bg-surface-hover"
             style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)' }}
           >
             Cancel
@@ -245,7 +245,7 @@ function InstallOllamaModal({ open, onClose }) {
               Install a local model
             </span>
           </div>
-          <button onClick={onClose} className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-[var(--color-surface-hover)]" style={{ color: 'var(--color-text-muted)' }}>
+          <button onClick={onClose} className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-surface-hover" style={{ color: 'var(--color-text-muted)' }}>
             <X size={14} strokeWidth={1.5} />
           </button>
         </div>
@@ -272,7 +272,7 @@ function InstallOllamaModal({ open, onClose }) {
         <div className="px-5 py-4" style={{ borderTop: '1px solid var(--color-border)' }}>
           <button
             onClick={onClose}
-            className="w-full h-9 rounded-lg font-mono transition-colors hover:bg-[var(--color-surface-hover)]"
+            className="w-full h-9 rounded-lg font-mono transition-colors hover:bg-surface-hover"
             style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)', border: '1px solid var(--color-border)' }}
           >
             Got it
@@ -304,7 +304,7 @@ function ModelDropdown({ models, activeModel, apiConfig, onSelectModel, onCustom
     <div ref={ref} className="relative w-full min-w-0">
       <button
         onClick={() => setOpen(o => !o)}
-        className="flex items-center gap-1.5 w-full px-2.5 h-7 rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
+        className="flex items-center gap-1.5 w-full px-2.5 h-7 rounded-md transition-colors hover:bg-surface-hover"
         style={{
           background: 'var(--color-surface-2)',
           border: '1px solid var(--color-border)',
@@ -348,7 +348,7 @@ function ModelDropdown({ models, activeModel, apiConfig, onSelectModel, onCustom
                   <button
                     key={m.id}
                     onClick={() => { onSelectModel(m.id); setOpen(false) }}
-                    className="flex items-center gap-2.5 w-full px-3 py-2 transition-colors hover:bg-[var(--color-surface-hover)]"
+                    className="flex items-center gap-2.5 w-full px-3 py-2 transition-colors hover:bg-surface-hover"
                     style={{ outline: 'none' }}
                   >
                     <div
@@ -440,7 +440,7 @@ function ModelDropdown({ models, activeModel, apiConfig, onSelectModel, onCustom
           <div style={{ borderTop: '1px solid var(--color-border)', padding: '4px 0' }}>
             <button
               onClick={() => { onCustomAPI(); setOpen(false) }}
-              className="flex items-center gap-2 w-full px-3 py-2 transition-colors hover:bg-[var(--color-surface-hover)]"
+              className="flex items-center gap-2 w-full px-3 py-2 transition-colors hover:bg-surface-hover"
               style={{ outline: 'none' }}
             >
               <KeyRound
@@ -853,7 +853,7 @@ export function AISidebar() {
             title="Attach image"
             className={cn(
               'flex items-center justify-center w-7 h-7 rounded-sm transition-colors',
-              'hover:bg-[var(--color-surface-hover)]',
+              'hover:bg-surface-hover',
               isStreaming && 'opacity-40 cursor-not-allowed',
             )}
             style={{ color: 'var(--color-text-muted)', flexShrink: 0 }}

@@ -149,7 +149,7 @@ export function NoteCard({ note, active, onClick, grid }) {
                 align="right"
                 trigger={
                   <button
-                    className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
+                    className="w-6 h-6 flex items-center justify-center rounded-md transition-colors hover:bg-surface-hover"
                     style={{ color: 'var(--color-text-muted)' }}
                   >
                     <MoreHorizontal size={13} strokeWidth={1.5} />

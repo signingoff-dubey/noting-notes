@@ -68,7 +68,7 @@ function ResultPanel({ mode, result, onInsert, onReplace, onClose }) {
               <button
                 key={i}
                 onClick={() => onReplace(v)}
-                className="text-left px-2 py-1.5 rounded font-mono transition-colors hover:bg-[var(--color-surface-hover)]"
+                className="text-left px-2 py-1.5 rounded font-mono transition-colors hover:bg-surface-hover"
                 style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-secondary)' }}
               >
                 <span style={{ color: 'var(--color-text-muted)', marginRight: 6 }}>{i + 1}.</span>
@@ -86,7 +86,7 @@ function ResultPanel({ mode, result, onInsert, onReplace, onClose }) {
         <div className="flex items-center gap-1 px-2 pb-2">
           <button
             onClick={() => onInsert(result)}
-            className="flex items-center gap-1 px-2 h-6 rounded font-mono transition-colors hover:bg-[var(--color-surface-hover)]"
+            className="flex items-center gap-1 px-2 h-6 rounded font-mono transition-colors hover:bg-surface-hover"
             style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-accent)' }}
           >
             <Check size={10} strokeWidth={1.5} />
@@ -94,7 +94,7 @@ function ResultPanel({ mode, result, onInsert, onReplace, onClose }) {
           </button>
           <button
             onClick={() => onReplace(result)}
-            className="flex items-center gap-1 px-2 h-6 rounded font-mono transition-colors hover:bg-[var(--color-surface-hover)]"
+            className="flex items-center gap-1 px-2 h-6 rounded font-mono transition-colors hover:bg-surface-hover"
             style={{ fontSize: 'var(--text-2xs)', color: 'var(--color-text-secondary)' }}
           >
             <RefreshCw size={10} strokeWidth={1.5} />
@@ -103,7 +103,7 @@ function ResultPanel({ mode, result, onInsert, onReplace, onClose }) {
           <div className="flex-1" />
           <button
             onClick={onClose}
-            className="flex items-center justify-center w-5 h-5 rounded font-mono transition-colors hover:bg-[var(--color-surface-hover)]"
+            className="flex items-center justify-center w-5 h-5 rounded font-mono transition-colors hover:bg-surface-hover"
             style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}
           >
             ×
@@ -114,7 +114,7 @@ function ResultPanel({ mode, result, onInsert, onReplace, onClose }) {
         <div className="flex justify-end px-2 pb-2">
           <button
             onClick={onClose}
-            className="flex items-center justify-center w-5 h-5 rounded font-mono transition-colors hover:bg-[var(--color-surface-hover)]"
+            className="flex items-center justify-center w-5 h-5 rounded font-mono transition-colors hover:bg-surface-hover"
             style={{ fontSize: 'var(--text-xs)', color: 'var(--color-text-muted)' }}
           >
             ×
@@ -391,7 +391,7 @@ export function FloatingToolbar({ editor }) {
             <span className="font-medium" style={{ fontSize: 'var(--text-base)', color: 'var(--color-text-primary)' }}>
               {linkInputUrl ? 'Edit Link' : 'Add Link'}
             </span>
-            <button onClick={() => setShowLinkInput(false)} className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-[var(--color-surface-hover)]" style={{ color: 'var(--color-text-muted)' }}>
+            <button onClick={() => setShowLinkInput(false)} className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-surface-hover" style={{ color: 'var(--color-text-muted)' }}>
               <X size={14} strokeWidth={1.5} />
             </button>
           </div>
@@ -444,7 +444,7 @@ export function FloatingToolbar({ editor }) {
             <span className="font-medium" style={{ fontSize: 'var(--text-base)', color: 'var(--color-text-primary)' }}>
               Translate to
             </span>
-            <button onClick={() => setShowLangInput(false)} className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-[var(--color-surface-hover)]" style={{ color: 'var(--color-text-muted)' }}>
+            <button onClick={() => setShowLangInput(false)} className="w-7 h-7 flex items-center justify-center rounded-lg transition-colors hover:bg-surface-hover" style={{ color: 'var(--color-text-muted)' }}>
               <X size={14} strokeWidth={1.5} />
             </button>
           </div>

@@ -47,10 +47,8 @@ export function TagsView() {
           <>
             <button
               onClick={() => { setSelectedTag(null); setActiveNote(null) }}
+              className="transition-colors hover:text-text-secondary"
               style={{ color: 'var(--color-text-muted)' }}
-              className="transition-colors"
-              onMouseEnter={e => e.currentTarget.style.color = 'var(--color-text-secondary)'}
-              onMouseLeave={e => e.currentTarget.style.color = 'var(--color-text-muted)'}
             >
               <ArrowLeft size={15} strokeWidth={1.5} />
             </button>
@@ -92,10 +90,8 @@ export function TagsView() {
                 <button
                   key={tag}
                   onClick={() => setSelectedTag(tag)}
-                  className="ink-card flex flex-col items-start gap-2 p-3 cursor-pointer transition-colors"
+                  className="ink-card flex flex-col items-start gap-2 p-3 cursor-pointer transition-colors hover:bg-surface-hover"
                   style={{ minHeight: 80 }}
-                  onMouseEnter={e => e.currentTarget.style.background = 'var(--color-surface-hover)'}
-                  onMouseLeave={e => e.currentTarget.style.background = 'var(--color-surface)'}
                 >
                   <span
                     className="font-mono px-2 py-1"

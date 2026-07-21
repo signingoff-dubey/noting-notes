@@ -147,7 +147,7 @@ function AddTaskBar({ onSave, folders }) {
             <button
               onMouseDown={e => e.preventDefault()}
               onClick={() => { setPriorityOpen(o => !o); setFolderOpen(false) }}
-              className="flex items-center gap-1.5 px-2 h-7 rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
+              className="flex items-center gap-1.5 px-2 h-7 rounded-md transition-colors hover:bg-surface-hover"
               style={{
                 fontFamily: 'var(--font-body)',
                 fontSize: 'var(--text-xs)',
@@ -174,7 +174,7 @@ function AddTaskBar({ onSave, folders }) {
                     key={p}
                     onMouseDown={e => e.preventDefault()}
                     onClick={() => { setPriority(p); setPriorityOpen(false) }}
-                    className="flex items-center gap-2 w-full px-3 h-7 transition-colors hover:bg-[var(--color-surface-hover)]"
+                    className="flex items-center gap-2 w-full px-3 h-7 transition-colors hover:bg-surface-hover"
                     style={{
                       fontFamily: 'var(--font-body)',
                       fontSize: 'var(--text-xs)',
@@ -195,7 +195,7 @@ function AddTaskBar({ onSave, folders }) {
           <button
             onMouseDown={e => e.preventDefault()}
             onClick={() => dateInputRef.current?.showPicker()}
-            className="flex items-center gap-1.5 px-2 h-7 rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
+            className="flex items-center gap-1.5 px-2 h-7 rounded-md transition-colors hover:bg-surface-hover"
             style={{
               fontFamily: 'var(--font-body)',
               fontSize: 'var(--text-xs)',
@@ -219,7 +219,7 @@ function AddTaskBar({ onSave, folders }) {
             <button
               onMouseDown={e => e.preventDefault()}
               onClick={() => { setFolderOpen(o => !o); setPriorityOpen(false); setFolderSearch('') }}
-              className="flex items-center gap-1.5 px-2 h-7 rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
+              className="flex items-center gap-1.5 px-2 h-7 rounded-md transition-colors hover:bg-surface-hover"
               style={{
                 fontFamily: 'var(--font-body)',
                 fontSize: 'var(--text-xs)',
@@ -273,7 +273,7 @@ function AddTaskBar({ onSave, folders }) {
                   <button
                     onMouseDown={e => e.preventDefault()}
                     onClick={() => { setFolder(''); setFolderOpen(false) }}
-                    className="flex items-center gap-2 w-full px-3 h-7 transition-colors hover:bg-[var(--color-surface-hover)]"
+                    className="flex items-center gap-2 w-full px-3 h-7 transition-colors hover:bg-surface-hover"
                     style={{
                       fontFamily: 'var(--font-body)',
                       fontSize: 'var(--text-xs)',
@@ -293,7 +293,7 @@ function AddTaskBar({ onSave, folders }) {
                         key={f}
                         onMouseDown={e => e.preventDefault()}
                         onClick={() => { setFolder(f); setFolderOpen(false) }}
-                        className="flex items-center gap-2 w-full px-3 h-7 transition-colors hover:bg-[var(--color-surface-hover)]"
+                        className="flex items-center gap-2 w-full px-3 h-7 transition-colors hover:bg-surface-hover"
                         style={{
                           fontFamily: 'var(--font-body)',
                           fontSize: 'var(--text-xs)',
@@ -313,7 +313,7 @@ function AddTaskBar({ onSave, folders }) {
                   <button
                     onMouseDown={e => e.preventDefault()}
                     onClick={() => { setFolder(folderSearch.trim()); setFolderOpen(false) }}
-                    className="flex items-center gap-2 w-full px-3 h-7 transition-colors hover:bg-[var(--color-surface-hover)]"
+                    className="flex items-center gap-2 w-full px-3 h-7 transition-colors hover:bg-surface-hover"
                     style={{
                       fontFamily: 'var(--font-body)',
                       fontSize: 'var(--text-xs)',
@@ -344,7 +344,7 @@ function AddTaskBar({ onSave, folders }) {
             <button
               onMouseDown={e => e.preventDefault()}
               onClick={() => { setRecurrenceOpen(o => !o); setPriorityOpen(false); setFolderOpen(false) }}
-              className="flex items-center gap-1.5 px-2 h-7 rounded-md transition-colors hover:bg-[var(--color-surface-hover)]"
+              className="flex items-center gap-1.5 px-2 h-7 rounded-md transition-colors hover:bg-surface-hover"
               style={{
                 fontFamily: 'var(--font-body)',
                 fontSize: 'var(--text-xs)',
@@ -371,7 +371,7 @@ function AddTaskBar({ onSave, folders }) {
                     key={r.value || 'none'}
                     onMouseDown={e => e.preventDefault()}
                     onClick={() => { setRecurrence(r.value); setRecurrenceOpen(false) }}
-                    className="flex items-center gap-2 w-full px-3 h-7 transition-colors hover:bg-[var(--color-surface-hover)]"
+                    className="flex items-center gap-2 w-full px-3 h-7 transition-colors hover:bg-surface-hover"
                     style={{
                       fontFamily: 'var(--font-body)',
                       fontSize: 'var(--text-xs)',
@@ -614,7 +614,7 @@ function TaskRow({ task, showFolder }) {
                 align="right"
                 trigger={
                   <button
-                    className="w-6 h-6 flex items-center justify-center rounded hover:bg-[var(--color-surface-hover)]"
+                    className="w-6 h-6 flex items-center justify-center rounded hover:bg-surface-hover"
                     style={{ color: 'var(--color-text-muted)', outline: 'none' }}
                   >
                     <MoreHorizontal size={13} strokeWidth={1.5} />
@@ -703,7 +703,7 @@ function FolderTaskRow({ task }) {
   return (
     <div
       className={cn(
-        'flex items-center gap-2.5 px-3 py-2 rounded-lg transition-colors hover:bg-[var(--color-surface-hover)]',
+        'flex items-center gap-2.5 px-3 py-2 rounded-lg transition-colors hover:bg-surface-hover',
         isDone && 'opacity-50',
       )}
     >
@@ -831,7 +831,7 @@ function FolderCard({ label, tasks }) {
         {!isUnlabeled && !editing && (
           <button
             onClick={() => setEditing(true)}
-            className="w-6 h-6 flex items-center justify-center rounded opacity-0 group-hover:opacity-100 transition-colors hover:bg-[var(--color-surface-hover)]"
+            className="w-6 h-6 flex items-center justify-center rounded opacity-0 group-hover:opacity-100 transition-colors hover:bg-surface-hover"
             style={{ color: 'var(--color-text-muted)', outline: 'none' }}
             title="Rename folder"
           >
@@ -1157,7 +1157,7 @@ function KanbanCard({ task }) {
     <div
       draggable
       onDragStart={(e) => e.dataTransfer.setData('text/plain', task.id)}
-      className="flex flex-col gap-1.5 p-2.5 rounded-lg cursor-grab transition-colors hover:bg-[var(--color-surface-hover)]"
+      className="flex flex-col gap-1.5 p-2.5 rounded-lg cursor-grab transition-colors hover:bg-surface-hover"
       style={{ border: '1px solid var(--color-border)' }}
     >
       <div className="flex items-start gap-2">

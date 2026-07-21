@@ -246,8 +246,8 @@ export function CommandPalette() {
                 className={cn(
                   'w-full flex items-center gap-3 px-4 py-2 text-left transition-colors',
                   i === selectedIndex
-                    ? 'bg-[var(--color-surface-active)]'
-                    : 'hover:bg-[var(--color-surface-hover)]',
+                    ? 'bg-surface-active'
+                    : 'hover:bg-surface-hover',
                 )}
               >
                 <span style={{ color: item.type === 'note' ? 'var(--color-text-muted)' : 'var(--color-accent)', flexShrink: 0 }}>

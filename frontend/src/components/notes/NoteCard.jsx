@@ -13,7 +13,8 @@ function extractPreview(content) {
   if (content.content) {
     const texts = []
     const walk = (node) => {
-      if (node.type === 'text') texts.push(node.text)
+      if (!node) return
+      if (node.type === 'text') texts.push(node.text || '')
       if (node.content) node.content.forEach(walk)
     }
     walk(content)

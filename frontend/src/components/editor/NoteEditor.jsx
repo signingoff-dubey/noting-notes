@@ -603,35 +603,37 @@ export function NoteEditor({ note, onBack }) {
     <div className="flex flex-col h-full">
       {/* ── Header ── */}
       <div
-        className="flex items-center gap-3 px-6 shrink-0 border-b"
+        className="flex items-center px-6 shrink-0 border-b"
         style={{ height: 48, borderColor: 'var(--color-border)' }}
       >
-        <button
-          onClick={onBack}
-          title="Back to notes (Esc)"
-          aria-label="Back to notes"
-          className="transition-colors shrink-0 text-text-muted hover:text-text-secondary"
-        >
-          <ArrowLeft size={16} strokeWidth={1.5} />
-        </button>
-        <input
-          ref={titleRef}
-          value={title}
-          onChange={handleTitleChange}
-          onFocus={(e) => {
-            if (!e.target.value || e.target.value === 'Untitled') {
-              e.target.select()
-            }
-          }}
-          placeholder="Untitled"
-          className="flex-1 bg-transparent font-body outline-none font-medium"
-          style={{
-            fontSize: 'var(--text-xl)',
-            color: 'var(--color-text-primary)',
-          }}
-        />
-        <SaveStatus saving={isSaving} lastSaved={lastSaved} />
-
+        <div className="flex items-center gap-2 flex-1 min-w-0">
+          <button
+            onClick={onBack}
+            title="Back to notes (Esc)"
+            aria-label="Back to notes"
+            className="transition-colors shrink-0 text-text-muted hover:text-text-secondary"
+          >
+            <ArrowLeft size={16} strokeWidth={1.5} />
+          </button>
+          <input
+            ref={titleRef}
+            value={title}
+            onChange={handleTitleChange}
+            onFocus={(e) => {
+              if (!e.target.value || e.target.value === 'Untitled') {
+                e.target.select()
+              }
+            }}
+            placeholder="Untitled"
+            className="flex-1 min-w-0 bg-transparent font-body outline-none font-medium"
+            style={{
+              fontSize: 'var(--text-xl)',
+              color: 'var(--color-text-primary)',
+            }}
+          />
+        </div>
+        <div className="flex items-center gap-2 shrink-0">
+          <SaveStatus saving={isSaving} lastSaved={lastSaved} />
         {/* Markdown preview toggle */}
         <button
           onClick={() => setShowPreview(v => !v)}
@@ -792,6 +794,7 @@ export function NoteEditor({ note, onBack }) {
             : <Lock size={14} strokeWidth={1.5} />
           }
         </button>
+        </div>
       </div>
 
       {/* ── Tags + Attachments ── */}

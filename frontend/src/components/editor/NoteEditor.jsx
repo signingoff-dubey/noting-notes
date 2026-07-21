@@ -566,8 +566,35 @@ export function NoteEditor({ note, onBack }) {
 
   if (!note) {
     return (
-      <div className="flex items-center justify-center h-full">
-        <p style={{ color: 'var(--color-text-muted)' }}>Loading note...</p>
+      <div className="flex flex-col items-center justify-center h-full gap-4 px-6">
+        <div
+          className="w-12 h-12 rounded-xl flex items-center justify-center"
+          style={{ background: 'var(--color-surface-2)', border: '1px solid var(--color-border)' }}
+        >
+          <FileText size={20} strokeWidth={1} style={{ color: 'var(--color-text-muted)' }} />
+        </div>
+        <p className="font-mono text-center" style={{ fontSize: 'var(--text-sm)', color: 'var(--color-text-secondary)' }}>
+          Select a note or create a new one
+        </p>
+        <div className="flex flex-col gap-1.5 items-center">
+          {[
+            { keys: 'Ctrl+N', label: 'New note' },
+            { keys: 'Ctrl+F', label: 'Search notes' },
+            { keys: 'Ctrl+Shift+F', label: 'Toggle focus mode' },
+          ].map(item => (
+            <div key={item.keys} className="flex items-center gap-2">
+              <kbd
+                className="font-mono px-1.5 py-0.5 rounded text-xs"
+                style={{ background: 'var(--color-surface-2)', border: '1px solid var(--color-border)', color: 'var(--color-text-muted)' }}
+              >
+                {item.keys}
+              </kbd>
+              <span className="font-mono text-xs" style={{ color: 'var(--color-text-muted)' }}>
+                {item.label}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     )
   }
@@ -819,7 +846,7 @@ export function NoteEditor({ note, onBack }) {
         type="file"
         className="hidden"
         multiple
-        accept="image/*,.pdf,.docx,.xlsx,.pptx,.txt,.csv"
+        accept="image/*,.pdf,.docx,.xlsx,.pptx,.txt,.csv,audio/*"
         onChange={async (e) => {
           const files = Array.from(e.target.files || [])
           if (!files.length) return
@@ -831,7 +858,8 @@ export function NoteEditor({ note, onBack }) {
               if (file.type.startsWith('image/')) {
                 editor?.chain().focus().setImage({ src: dataUrl }).run()
               } else {
-                const attachment = { id: nanoid(), name: file.name, type: file.type, dataUrl }
+                const attType = file.type.startsWith('video/') ? 'video' : file.type.startsWith('audio/') ? 'voice' : file.type
+                const attachment = { id: nanoid(), name: file.name, type: attType, dataUrl }
                 const existing = note.attachments || []
                 await updateNote(note.id, { attachments: [...existing, attachment] })
                 toast.success(`Attached: ${file.name}`)

@@ -1,6 +1,26 @@
 import { useRef, useState, useCallback, useEffect } from 'react'
-import { Mic, Square, Play, Pause, Check, Trash2, Loader2 } from 'lucide-react'
+import { Mic, Square, Play, Pause, Check, Trash2 } from 'lucide-react'
 import { formatDuration } from './utils'
+
+function useWaveform(active) {
+  const [heights, setHeights] = useState(() =>
+    Array.from({ length: 32 }, () => 20 + Math.random() * 60)
+  )
+  useEffect(() => {
+    if (!active) return
+    let frame
+    const tick = () => {
+      setHeights(h => h.map(v => {
+        const delta = (Math.random() - 0.5) * 24
+        return Math.max(10, Math.min(90, v + delta))
+      }))
+      frame = requestAnimationFrame(tick)
+    }
+    frame = requestAnimationFrame(tick)
+    return () => cancelAnimationFrame(frame)
+  }, [active])
+  return heights
+}
 
 export function VoiceRecorder({ onSave, onCancel }) {
   const [state, setState] = useState('idle')
@@ -15,6 +35,7 @@ export function VoiceRecorder({ onSave, onCancel }) {
   const audioRef = useRef(null)
   const seekRef = useRef(null)
   const [scrubbing, setScrubbing] = useState(false)
+  const waveformHeights = useWaveform(state === 'recording')
 
   useEffect(() => {
     return () => {
@@ -168,16 +189,15 @@ export function VoiceRecorder({ onSave, onCancel }) {
 
       {state === 'recording' && (
         <div className="flex items-center gap-2">
-          {/* Simple waveform simulation */}
-          <div className="flex-1 flex items-center gap-0.5 h-8">
-            {Array.from({ length: 32 }, (_, i) => (
+          <div className="flex-1 flex items-center gap-px h-10">
+            {waveformHeights.map((h, i) => (
               <div
                 key={i}
-                className="flex-1 rounded-full animate-pulse"
+                className="flex-1 rounded-full transition-all duration-75"
                 style={{
-                  height: `${20 + Math.sin(Date.now() / 200 + i * 0.8) * 20 + Math.random() * 10}%`,
+                  height: `${h}%`,
                   background: 'var(--color-error, #ef4444)',
-                  opacity: 0.6 + Math.random() * 0.4,
+                  opacity: 0.4 + (h / 90) * 0.6,
                 }}
               />
             ))}

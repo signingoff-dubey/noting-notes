@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import {
   Bold, Italic, Underline, Strikethrough, Highlighter, Code, List, ListOrdered,
   CheckSquare, Quote, Minus, Table, Link, Image, Paperclip, Heading1, Heading2, Heading3,
-  X, Upload, Globe, Undo2, Redo2, Loader2,
+  X, Upload, Globe, Undo2, Redo2, Loader2, Video, Mic,
 } from 'lucide-react'
 import { cn } from '@/lib/cn'
 
@@ -315,7 +315,7 @@ function ImageModal({ open, onInsertUrl, onInsertFile, onClose }) {
   )
 }
 
-export function EditorToolbar({ editor, onAttach }) {
+export function EditorToolbar({ editor, onAttach, onAttachVideo, onVoiceNote }) {
   const [tablePicker, setTablePicker] = useState(false)
   const [imageModal, setImageModal] = useState(false)
   const [linkModal, setLinkModal] = useState(false)
@@ -472,6 +472,12 @@ export function EditorToolbar({ editor, onAttach }) {
         </ToolBtn>
         <ToolBtn title="Insert image" onClick={() => setImageModal(true)} disabled={uploadingImage}>
           {uploadingImage ? <Loader2 size={14} strokeWidth={1.5} className="animate-spin" /> : <Image size={14} strokeWidth={1.5} />}
+        </ToolBtn>
+        <ToolBtn title="Attach video" onClick={onAttachVideo}>
+          <Video size={14} strokeWidth={1.5} />
+        </ToolBtn>
+        <ToolBtn title="Record voice note" onClick={onVoiceNote}>
+          <Mic size={14} strokeWidth={1.5} />
         </ToolBtn>
 
         <div className="flex-1 shrink-0 min-w-2" />

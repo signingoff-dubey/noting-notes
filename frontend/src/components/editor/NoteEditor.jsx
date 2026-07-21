@@ -29,6 +29,8 @@ import { FloatingToolbar } from './FloatingToolbar'
 import { NoteLinkPreview } from './NoteLinkPreview'
 import { createNoteLinkPlugin } from './NoteLinkExtension'
 import { TagChips } from '@/components/notes/TagChips'
+import { VoiceRecorder } from '@/components/media/VoiceRecorder'
+import { MediaAttachments } from '@/components/media/MediaAttachments'
 import { format } from 'date-fns'
 import { cn } from '@/lib/cn'
 
@@ -272,9 +274,11 @@ export function NoteEditor({ note, onBack }) {
   const [showMoveFolder, setShowMoveFolder] = useState(false)
   const [activeFileViewer, setActiveFileViewer] = useState(null)
   const [showPreview, setShowPreview] = useState(false)
+  const [showVoiceRecorder, setShowVoiceRecorder] = useState(false)
   const importRef = useRef(null)
   const autosaveTimer = useRef(null)
   const fileInputRef = useRef(null)
+  const videoInputRef = useRef(null)
   const scrollContainerRef = useRef(null)
   const editorRef = useRef(null)
   const titleRef = useRef(null)
@@ -510,6 +514,53 @@ export function NoteEditor({ note, onBack }) {
     e.target.value = ''
   }
 
+  const handleVideoAttach = (e) => {
+    const file = e.target.files?.[0]
+    if (!file || !note?.id) return
+    const reader = new FileReader()
+    reader.onload = (ev) => {
+      if (!ev.target?.result) return
+      const attachment = { id: nanoid(), name: file.name, type: 'video', dataUrl: ev.target.result }
+      const existing = note.attachments || []
+      updateNote(note.id, { attachments: [...existing, attachment] })
+      toast.success(`Attached: ${file.name}`)
+    }
+    reader.readAsDataURL(file)
+    e.target.value = ''
+  }
+
+  const handleVoiceSave = ({ dataUrl, duration, name }) => {
+    if (!note?.id) return
+    const attachment = { id: nanoid(), name, type: 'voice', dataUrl, duration }
+    const existing = note.attachments || []
+    updateNote(note.id, { attachments: [...existing, attachment] })
+    setShowVoiceRecorder(false)
+    toast.success('Voice note saved')
+  }
+
+  const handleRemoveMedia = (attachmentId) => {
+    if (!note?.id) return
+    const attachments = (note.attachments || []).filter(a => a.id !== attachmentId)
+    updateNote(note.id, { attachments })
+  }
+
+  const handleEditorDrop = useCallback((e) => {
+    const files = e.dataTransfer?.files
+    if (!files?.length) return
+    const imageFiles = Array.from(files).filter(f => f.type.startsWith('image/'))
+    if (!imageFiles.length) return
+    e.preventDefault()
+    for (const file of imageFiles) {
+      const reader = new FileReader()
+      reader.onload = (ev) => {
+        if (ev.target?.result && editor) {
+          editor.chain().focus().setImage({ src: ev.target.result }).run()
+        }
+      }
+      reader.readAsDataURL(file)
+    }
+  }, [editor])
+
   const wordCount = editor?.storage?.characterCount?.words() ?? 0
   const readingTime = Math.max(1, Math.ceil(wordCount / 200))
 
@@ -581,7 +632,7 @@ export function NoteEditor({ note, onBack }) {
         {/* Export button */}
         <div className="relative">
         <button
-          onClick={handleExport}
+          onClick={() => setShowExportMenu(v => !v)}
           title="Export"
           aria-label="Export"
           className="w-7 h-7 flex items-center justify-center rounded-lg transition-all text-text-muted hover:text-text-secondary"
@@ -722,7 +773,7 @@ export function NoteEditor({ note, onBack }) {
         style={{ borderColor: 'var(--color-border)', minHeight: 40 }}
       >
         <TagChips note={note} />
-        {(note.attachments || []).map(att => (
+        {(note.attachments || []).filter(a => a.type !== 'video' && a.type !== 'voice').map(att => (
           <button
             key={att.id}
             onClick={() => setActiveFileViewer(att)}
@@ -755,7 +806,14 @@ export function NoteEditor({ note, onBack }) {
       </div>
 
       {/* ── Toolbar ── */}
-      {!showPreview && <EditorToolbar editor={editor} onAttach={() => fileInputRef.current?.click()} />}
+      {!showPreview && (
+        <EditorToolbar
+          editor={editor}
+          onAttach={() => fileInputRef.current?.click()}
+          onAttachVideo={() => videoInputRef.current?.click()}
+          onVoiceNote={() => setShowVoiceRecorder(v => !v)}
+        />
+      )}
       <input
         ref={fileInputRef}
         type="file"
@@ -784,12 +842,28 @@ export function NoteEditor({ note, onBack }) {
           e.target.value = ''
         }}
       />
+      <input ref={videoInputRef} type="file" accept="video/*" className="hidden" onChange={handleVideoAttach} />
+
+      {/* ── Voice Recorder ── */}
+      {showVoiceRecorder && (
+        <div className="px-6 py-3" style={{ borderBottom: '1px solid var(--color-border)' }}>
+          <VoiceRecorder
+            onSave={handleVoiceSave}
+            onCancel={() => setShowVoiceRecorder(false)}
+          />
+        </div>
+      )}
+
+      {/* ── Media Attachments ── */}
+      <MediaAttachments attachments={note.attachments} onRemove={handleRemoveMedia} />
 
       {/* ── Editor + File Viewer ── */}
       <div className="flex flex-1 min-h-0">
         <div
           ref={scrollContainerRef}
           className={`flex-1 overflow-y-auto min-h-0${focusMode ? ' focus-mode' : ''}`}
+          onDragOver={(e) => { if (e.dataTransfer?.types.includes('Files')) e.preventDefault() }}
+          onDrop={handleEditorDrop}
           style={{
             '--editor-font-size': `${editorFontSize}px`,
             '--editor-line-height': editorLineHeight,

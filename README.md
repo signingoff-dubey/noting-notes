@@ -170,6 +170,19 @@ Data currently lives in `localStorage` — no server, no account, instant setup.
 
 ## Changelog
 
+### v2.0.5 — 2026-07-21
+- **Multimedia editor**: Inline video player with play/pause, seekbar, scrubber, volume, fullscreen
+- **Voice notes**: Record audio directly in the editor via MediaRecorder API, playback with seekbar
+- **Audio file support**: Attach audio files — rendered as inline AudioPlayer with seekbar
+- **Drag-drop images**: Drop image files anywhere in the editor to insert inline
+- **Video/voice attachments**: Dedicated MediaAttachments section below editor toolbar, separate from document attachments
+- **Animated waveform**: Voice recorder now shows real-time animated bars during recording
+- **Improved empty state**: Helpful getting-started view with keyboard shortcut hints when no note is selected
+- **Polish pass**: Focus-visible rings + active states on Button; removed 60+ inline hover style mutations across 13 files; replaced unused imports; Calendar errors now use toast
+- **Typography overhaul**: Font hierarchy (Space Mono for display, Geist for body), added `--text-2xs` token, fixed line-height and heading spacing across 18 files
+- **Audit batch 2**: ARIA roles (`dialog`, `switch`, `aria-pressed`, `aria-modal`); theming fixes (25 rgba → CSS variables); responsive layout; anti-pattern cleanup across 15 files
+- **Fixed crash on load**: Missing apiConfig, jszip, and Firebase guard — app no longer crashes on cold start
+
 ### v2.0.0 — 2026-07-16
 - **Security**: All AI calls now proxy through FastAPI backend — API key never exposed to the browser
 - **Groq API key**: Updated to new key, auto-fallback from `GROQ_API_KEY` env var

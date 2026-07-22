@@ -12,10 +12,10 @@ function ToolBtn({ onClick, active, disabled, title, children }) {
       type="button"
       onClick={onClick}
       disabled={disabled}
-      title={title}
+      aria-label={title}
       aria-pressed={active}
       className={cn(
-        'flex items-center justify-center w-7 h-7 transition-colors duration-[100ms] shrink-0',
+        'flex items-center justify-center w-11 h-11 transition-colors duration-[100ms] shrink-0',
         'text-text-secondary hover:bg-surface-hover hover:text-text-primary',
         active && 'bg-surface-active text-accent',
         disabled && 'opacity-30 cursor-not-allowed',
@@ -28,7 +28,7 @@ function ToolBtn({ onClick, active, disabled, title, children }) {
 }
 
 function Divider() {
-  return <div className="w-px h-5 bg-border mx-0.5 shrink-0" />
+  return <div role="separator" className="w-px h-5 bg-border mx-0.5 shrink-0" />
 }
 
 /* ── Table grid picker ── */

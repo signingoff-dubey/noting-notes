@@ -72,10 +72,6 @@ export const useAIStore = create((set, get) => ({
     set({ models: GROQ_MODELS, ollamaAvailable: false, isLoadingModels: false })
   },
 
-  saveApiConfig: async (config) => {
-    return true
-  },
-
   sendMessage: (content, noteContent = '', images = [], userRequestedWrite = false) => {
     const { activeModel, contextNoteId, messages } = get()
 

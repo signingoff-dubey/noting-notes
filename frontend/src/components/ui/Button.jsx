@@ -11,10 +11,10 @@ const variants = {
 }
 
 const sizes = {
-  sm:   'h-7 px-3 text-xs',
-  md:   'h-8 px-4 text-sm',
-  lg:   'h-9 px-5 text-base',
-  icon: 'h-7 w-7 p-0',
+  sm:   'h-10 px-3 text-xs',
+  md:   'h-11 px-4 text-sm',
+  lg:   'h-12 px-5 text-base',
+  icon: 'h-11 w-11 p-0',
 }
 
 export function Button({

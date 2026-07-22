@@ -26,10 +26,11 @@ function FloatBtn({ onClick, active, title, children, ai, loading }) {
       type="button"
       onClick={onClick}
       title={title}
+      aria-label={title}
       disabled={loading}
       aria-pressed={active}
       className={cn(
-        'flex items-center justify-center gap-1 h-full px-2 font-mono text-xs transition-colors duration-[100ms]',
+        'flex items-center justify-center gap-1 h-[34px] px-2 font-mono text-xs transition-colors duration-[100ms]',
         'text-text-secondary hover:text-text-primary',
         active && 'text-accent',
         ai && 'bg-accent-dim hover:bg-surface-active',

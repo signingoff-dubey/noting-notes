@@ -45,9 +45,18 @@ function NoteRow({ note, active, onClick, folderName }) {
   const preview = extractText(note.content)
   const indent = (note.pinned || note.starred || note.is_vault) ? 14 : 0
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      onClick()
+    }
+  }
+
   return (
     <button
       onClick={onClick}
+      onKeyDown={handleKeyDown}
+      aria-current={active ? 'true' : undefined}
       className={cn(
         'flex flex-col gap-0.5 w-full px-3 py-2.5 text-left border-b transition-colors group',
         active

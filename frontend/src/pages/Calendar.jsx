@@ -19,13 +19,23 @@ const PRIORITY_COLOR = {
   none:   'var(--color-text-muted)',
 }
 
-function DayCell({ day, isCurrentMonth, isCurrentDay, isSelected, tasks, notes, onClick }) {
+function DayCell({ day, isCurrentMonth, isSelected, tasks, notes, onClick }) {
   const hasItems = tasks.length > 0 || notes.length > 0
   const isEmpty = !hasItems
+  const isToday = isSameDay(day, new Date())
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      onClick()
+    }
+  }
 
   return (
     <button
       onClick={onClick}
+      onKeyDown={handleKeyDown}
+      aria-pressed={isSelected}
       aria-label={format(day, 'EEEE, MMMM d, yyyy')}
       className={cn(
         'flex flex-col p-1.5 border-b border-r text-left transition-colors min-h-[80px] hover:bg-surface-hover',
@@ -42,9 +52,9 @@ function DayCell({ day, isCurrentMonth, isCurrentDay, isSelected, tasks, notes, 
         style={{
           fontSize: 'var(--text-xs)',
           borderRadius: 6,
-          background: isCurrentDay ? 'var(--color-accent)' : 'transparent',
-          color: isCurrentDay ? 'var(--color-bg)' : 'var(--color-text-secondary)',
-          fontWeight: isCurrentDay ? 700 : 400,
+          background: isToday ? 'var(--color-accent)' : 'transparent',
+          color: isToday ? 'var(--color-bg)' : 'var(--color-text-secondary)',
+          fontWeight: isToday ? 700 : 400,
         }}
       >
         {format(day, 'd')}
@@ -204,7 +214,6 @@ export function Calendar() {
             key={format(day, 'yyyy-MM-dd')}
                 day={day}
                 isCurrentMonth={isSameMonth(day, currentDate)}
-                isCurrentDay={isToday(day)}
                 isSelected={selectedDate ? isSameDay(day, selectedDate) : false}
                 tasks={getTasksForDay(day)}
                 notes={getNotesForDay(day)}

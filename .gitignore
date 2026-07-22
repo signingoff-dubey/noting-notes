@@ -50,4 +50,20 @@ npm-debug.log*
 # Graphify generated output
 graphify-out/
 .graphify_detect.json
+.graphify_python
+
+# Superdesign scratch files
+.superdesign/
+
+# Scratch / design dump files
+design_dump.txt
+design_styles.css
+design_template.html
+
+# Test scripts
+*.ps1
+
+# Root-level package files (frontend has its own)
+/package.json
+/package-lock.json
 

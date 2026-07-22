@@ -126,24 +126,42 @@ Create `backend/.env` and `frontend/.env.local` from the `.example` files.
 
 ```
 ink/
-├── frontend/              ← React app (Vite)
+├── frontend/                ← React 18 + Vite + Tailwind
 │   ├── src/
-│   │   ├── components/
-│   │   │   ├── ai/        ← AI sidebar, model picker
-│   │   │   ├── editor/    ← TipTap editor, floating toolbar
-│   │   │   ├── notes/     ← NoteCard, tag chips
-│   │   │   ├── sidebar/   ← Left nav, notes panel, folder tree
-│   │   │   ├── viewer/    ← FileViewer (PDF, DOCX, XLSX, PPTX)
-│   │   │   └── ui/        ← Button, Modal, Toast, Spinner, Dropdown
-│   │   ├── pages/         ← Notes, Tasks, Calendar, Settings, Archive, Tags, Dashboard
-│   │   ├── store/         ← Zustand stores (notes, tasks, ai, ui, vault, auth)
-│   │   ├── lib/           ← api.js, cn.js, firebase.js utilities
-│   │   └── index.css      ← All themes + design tokens
+│   │   ├── components/     
+│   │   │   ├── ai/          ← AI sidebar, model picker
+│   │   │   ├── editor/      ← TipTap editor, floating toolbar, link extension
+│   │   │   ├── media/       ← Audio/Video players, voice recorder, media attachments
+│   │   │   ├── notes/       ← NoteCard, NoteGrid, NoteList, TagChips
+│   │   │   ├── sidebar/     ← Left nav, notes panel, folder tree
+│   │   │   ├── ui/          ← Button, Modal, Toast, Spinner, Dropdown, CommandPalette
+│   │   │   └── viewer/      ← FileViewer (PDF, DOCX, XLSX, PPTX inline)
+│   │   ├── pages/           ← Notes, Tasks, Calendar, Settings, Dashboard,
+│   │   │                      Archive, Tags, Favourites, Journal
+│   │   ├── store/           ← 6 Zustand stores (notes, tasks, ai, ui, vault, auth)
+│   │   ├── lib/             ← api.js, cn.js, firebase.js, useRipple
+│   │   └── index.css        ← All 8 themes + design tokens
+│   ├── public/
+│   ├── index.html
+│   ├── vite.config.js
+│   ├── tailwind.config.js
 │   └── package.json
-├── backend/               ← FastAPI (disabled — future use)
-│   └── requirements.txt
-├── netlify.toml           ← Netlify build config + SPA redirect
-└── PRD.md
+│
+├── backend/                 ← FastAPI + Python 3.11
+│   ├── main.py             ← Entry point, CORS, route registration
+│   ├── routes/             ← notes, folders, tasks, attachments, ai, vault, settings
+│   ├── services/           ← Business logic (note, ai, embed, file, folder, task, vault)
+│   ├── models/             ← Pydantic v2 request/response schemas
+│   └── storage/            ← JSON read/write layer (store.py)
+│
+├── AGENTS.md               ← Single source of truth for AI coding agents
+├── ARCHITECTURE.md          ← Technical decisions & architecture
+├── DESIGN_SYSTEM.md         ← UI design tokens & component specs
+├── PRD.md                   ← Product requirements & milestones
+├── netlify.toml             ← Netlify build config + SPA redirect
+├── run.bat                  ← Windows startup script
+├── run.sh                   ← macOS/Linux startup script
+└── .gitignore
 ```
 
 ---

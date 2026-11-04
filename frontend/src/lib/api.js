@@ -34,6 +34,70 @@ async function upload(path, formData) {
   return res.json()
 }
 
+// Temporary: call Groq straight from the browser when no backend is reachable.
+// Key comes from the build-time env var VITE_GROQ_API_KEY (never committed).
+const GROQ_KEY = import.meta.env.VITE_GROQ_API_KEY
+const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions'
+const GROQ_SYSTEM =
+  'You are a helpful AI assistant embedded in NOTING, a local notes application. ' +
+  'You help the user understand, summarize, and work with their notes. ' +
+  'Be concise and direct. Format code with markdown code blocks.'
+
+function streamGroq(payload, onToken, onDone, onError) {
+  const ctrl = new AbortController()
+  let system = GROQ_SYSTEM
+  if (payload.note_content) {
+    system += `\n\n## Current Note\n${payload.note_content.slice(0, 6000)}`
+  }
+  const history = (payload.history || []).slice(-20)
+  const messages = [
+    { role: 'system', content: system },
+    ...history,
+    { role: 'user', content: payload.message },
+  ]
+
+  fetch(GROQ_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${GROQ_KEY}`,
+    },
+    body: JSON.stringify({ model: payload.model, messages, stream: true }),
+    signal: ctrl.signal,
+  })
+    .then(async (res) => {
+      if (!res.ok) {
+        let msg = `Groq error ${res.status}`
+        try { const err = await res.json(); msg = err.error?.message || msg } catch {}
+        throw new Error(msg)
+      }
+      const reader = res.body.getReader()
+      const decoder = new TextDecoder()
+      let buffer = ''
+      while (true) {
+        const { done, value } = await reader.read()
+        if (done) break
+        buffer += decoder.decode(value, { stream: true })
+        const lines = buffer.split('\n')
+        buffer = lines.pop()
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue
+          const data = line.slice(6).trim()
+          if (data === '[DONE]') { onDone?.(); return }
+          try {
+            const token = JSON.parse(data).choices?.[0]?.delta?.content
+            if (token) onToken(token)
+          } catch {}
+        }
+      }
+      onDone?.()
+    })
+    .catch((err) => {
+      if (err.name !== 'AbortError') onError?.(err)
+    })
+  return () => ctrl.abort()
+}
+
 export const api = {
   notes: {
     list: ()           => request('GET',    '/api/notes'),
@@ -77,6 +141,7 @@ export const api = {
     rephrase:      (data)   => request('POST', '/api/ai/rephrase', data),
 
     chatStream: (payload, onToken, onDone, onError) => {
+      if (GROQ_KEY) return streamGroq(payload, onToken, onDone, onError)
       const ctrl = new AbortController()
       fetch(`${BASE_URL}/api/ai/chat`, {
         method: 'POST',

@@ -95,6 +95,7 @@ export const useAIStore = create((set, get) => ({
         note_id: contextNoteId,
         message: content,
         note_content: noteContent,
+        history: messages.map(m => ({ role: m.role, content: m.content })),
       },
       (token) => {
         accumulated += token

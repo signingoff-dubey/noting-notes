@@ -34,9 +34,9 @@ async def get_config():
     # Mask key: return has_key bool, not the actual key (for display)
     return {
         "type": config.get("type", "ollama"),
-        "base_url": config.get("base_url", "https://api.openai.com/v1"),
+        "base_url": config.get("base_url", "https://api.groq.com/openai/v1"),
         "api_key": config.get("api_key", ""),
-        "model": config.get("model", "gpt-4o-mini"),
+        "model": config.get("model", "llama-3.3-70b-versatile"),
         "has_key": bool(config.get("api_key")),
     }
 
@@ -86,7 +86,7 @@ async def chat_stream_endpoint(req: ChatRequest):
                 stream_fn = chat_stream_openai(
                     config["base_url"],
                     config["api_key"],
-                    req.model or config.get("model", "gpt-4o-mini"),
+                    req.model or config.get("model", "llama-3.3-70b-versatile"),
                     req.message,
                     req.note_content,
                     history,

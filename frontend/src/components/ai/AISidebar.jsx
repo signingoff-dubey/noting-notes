@@ -69,16 +69,16 @@ function NoLLMBanner({ onInstall, onAddKey }) {
 
 /* ── Custom API modal ── */
 function CustomAPIModal({ open, onClose, initial, onSave }) {
-  const [baseUrl, setBaseUrl] = useState(initial?.base_url || 'https://api.openai.com/v1')
+  const [baseUrl, setBaseUrl] = useState(initial?.base_url || 'https://api.groq.com/openai/v1')
   const [apiKey, setApiKey] = useState(initial?.api_key || '')
-  const [model, setModel] = useState(initial?.model || 'gpt-4o-mini')
+  const [model, setModel] = useState(initial?.model || 'llama-3.3-70b-versatile')
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
     if (open) {
-      setBaseUrl(initial?.base_url || 'https://api.openai.com/v1')
+      setBaseUrl(initial?.base_url || 'https://api.groq.com/openai/v1')
       setApiKey(initial?.api_key || '')
-      setModel(initial?.model || 'gpt-4o-mini')
+      setModel(initial?.model || 'llama-3.3-70b-versatile')
     }
   }, [open])
 

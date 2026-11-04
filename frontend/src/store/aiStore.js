@@ -151,10 +151,13 @@ export const useAIStore = create((set, get) => ({
   apiConfig: {},
   saveApiConfig: async (config) => {
     try {
-      localStorage.setItem('ink_ai_config', JSON.stringify(config))
-      set({ apiConfig: config })
+      await api.ai.saveConfig(config)
+      set({ apiConfig: config, error: null })
       return true
-    } catch { return false }
+    } catch (err) {
+      set({ error: err.message || 'Failed to save API config' })
+      return false
+    }
   },
 
   clearError: () => set({ error: null }),

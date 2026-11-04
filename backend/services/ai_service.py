@@ -23,9 +23,9 @@ MAX_CONVERSATION_PAIRS = 10
 
 _DEFAULT_CONFIG = {
     "type": "ollama",
-    "base_url": "https://api.openai.com/v1",
+    "base_url": "https://api.groq.com/openai/v1",
     "api_key": "",
-    "model": "gpt-4o-mini",
+    "model": "llama-3.3-70b-versatile",
 }
 
 
